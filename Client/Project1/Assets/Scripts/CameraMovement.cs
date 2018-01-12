@@ -44,13 +44,13 @@ public class CameraMovement : MonoBehaviour {
         {
             //dist -= 1 * Input.mouseScrollDelta.y;
 
-            //if (dist < 0.5)
+            //if (dist < 40)
             //{
-            //    dist = 1;
+            //    dist = 40;
             //}
-            //else if (dist >= 9)
+            //else if (dist >= 90)
             //{
-            //    dist = 9;
+            //    dist = 90;
             //}
 
             x += Input.GetAxis("Mouse X") * xSpeed * 0.015f;

@@ -1,29 +1,29 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 6f;
+    private float h = 0.0f;
+    private float v = 0.0f;
 
-    Vector3 movement;
-    Rigidbody playerRigidbody;
+    private Transform tr;
+    
+    float Movespeed = 5.0f;
+    float Rotspeed = 150.0f;
 
-    void Awake()
+    void Start()
     {
-        playerRigidbody = GetComponent<Rigidbody>();
+        tr = GetComponent<Transform>();            
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxis("Vertical");
 
-        Move(h, v);
-    }
+        Vector3 move = (Vector3.forward * v) + (Vector3.right * h);
 
-    void Move(float h, float v)
-    {
-        movement.Set(h, 0f, v);
-        movement = movement.normalized * speed * Time.deltaTime;
-        playerRigidbody.MovePosition(transform.position + movement);
+        tr.Translate(move * Time.deltaTime * Movespeed, Space.Self);
+        tr.Rotate(Vector3.up * Time.deltaTime * Rotspeed * Input.GetAxis("Mouse X"));
     }
 }
