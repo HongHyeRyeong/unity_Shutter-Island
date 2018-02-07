@@ -3,15 +3,20 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public float rotationSpeed = 50f;
+    private float PlayerMoveSpeed = 0;
+    float rotationSpeed = 50f;
 
     void Update()
     {
+        if (PlayerMoveSpeed == 0)
+        {
+            PlayerMoveSpeed = GameObject.Find("Player").GetComponent<PlayerState>().MoveSpeed;
+        }
+
         float horizontal = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
         transform.Rotate(0, horizontal, 0);
 
-        float vertical = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
+        float vertical = Input.GetAxis("Vertical") * PlayerMoveSpeed * Time.deltaTime;
         transform.Translate(0, 0, vertical); ;
     }
 
