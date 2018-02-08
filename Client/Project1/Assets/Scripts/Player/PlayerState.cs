@@ -58,7 +58,7 @@ public class PlayerState : MonoBehaviour
 
     public void DamageByBoss()
     {
-        if (Life != 0)  // 1이나 2
+        if (Life != 0 && Prison == false)  // 1이나 2
         {
             if (Hp == 100f)
             {
