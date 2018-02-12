@@ -12,7 +12,8 @@ public class Anim
 public class PlayerCtrl : MonoBehaviour
 {
     private float PlayerMoveSpeed = 0;
-    float rotationSpeed = 60f;
+    private float rotationSpeed = 60f;
+    private bool PrisonTP = false;
 
     //
     public Anim anim;
@@ -35,28 +36,58 @@ public class PlayerCtrl : MonoBehaviour
         }
 
         // Movement
-        float h = Input.GetAxis("Horizontal");
-        transform.Rotate(0, h * rotationSpeed * Time.deltaTime, 0);
+        bool p = GameObject.Find("Player").GetComponent<PlayerState>().Prison;
 
-        float v = Input.GetAxis("Vertical");
-        transform.Translate(0, 0, v * PlayerMoveSpeed * Time.deltaTime); ;
+        if (p)
+        {
+            if (PrisonTP == false)
+            {
+                PrisonTP = true;
+                _animation.CrossFade(anim.idle.name, 0.3f);
 
-        // Animation
-        if (v >= 0.1f)
-        {
-            _animation.CrossFade(anim.runFront.name, 0.3f);
-        }
-        else if (v <= -0.1f)
-        {
-            _animation.CrossFade(anim.runBack.name, 0.3f);
-        }
-        else if (h != 0)
-        {
-            _animation.CrossFade(anim.runFront.name, 0.3f);
+                GameObject[] respawns = GameObject.FindGameObjectsWithTag("Prison");
+                Transform minTransform = transform;
+                float minDist = 10000f;
+
+                foreach (GameObject respawn in respawns)
+                {
+                    float dist = Vector3.Distance(transform.position, respawn.transform.position);
+
+                    if (dist < minDist)
+                    {
+                        minDist = dist;
+                        minTransform = respawn.transform;
+                    }
+                }
+
+                transform.position = minTransform.position;
+            }
         }
         else
         {
-            _animation.CrossFade(anim.idle.name, 0.3f);
+            float h = Input.GetAxis("Horizontal");
+            transform.Rotate(0, h * rotationSpeed * Time.deltaTime, 0);
+
+            float v = Input.GetAxis("Vertical");
+            transform.Translate(0, 0, v * PlayerMoveSpeed * Time.deltaTime);
+
+            // Animation
+            if (v >= 0.1f)
+            {
+                _animation.CrossFade(anim.runFront.name, 0.3f);
+            }
+            else if (v <= -0.1f)
+            {
+                _animation.CrossFade(anim.runBack.name, 0.3f);
+            }
+            else if (h != 0)
+            {
+                _animation.CrossFade(anim.runFront.name, 0.3f);
+            }
+            else
+            {
+                _animation.CrossFade(anim.idle.name, 0.3f);
+            }
         }
     }
 

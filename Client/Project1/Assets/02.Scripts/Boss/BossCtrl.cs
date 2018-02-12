@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BossCtrl : MonoBehaviour {
-    public float moveSpeed = 5f;
+    float moveSpeed = 8f;
 
     // 카메라
     private float x;

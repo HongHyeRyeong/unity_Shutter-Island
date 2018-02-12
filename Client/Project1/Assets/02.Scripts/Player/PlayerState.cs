@@ -23,7 +23,7 @@ public class PlayerState : MonoBehaviour
     public float MoveSpeed = 5f;
     private int Power = 10;
     private int WorkSpeed = 10;
-    private bool Prison = false;
+    public bool Prison = false;
 
     void Start()
     {
@@ -58,6 +58,9 @@ public class PlayerState : MonoBehaviour
 
     public void DamageByBoss()
     {
+        //print("HP: " + Hp);
+        //print("Life: " + Life);
+
         if (Life != 0 && Prison == false)  // 1이나 2
         {
             if (Hp == 100f)
