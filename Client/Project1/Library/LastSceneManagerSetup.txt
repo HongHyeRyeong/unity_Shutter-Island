@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/01.Scene/Player.unity
+- path: Assets/01.Scene/Boss.unity
   isLoaded: 1
   isActive: 1
