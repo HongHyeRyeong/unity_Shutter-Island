@@ -11,16 +11,48 @@ public class Anim
 
 public class PlayerCtrl : MonoBehaviour
 {
-    private float PlayerMoveSpeed = 0;
-    private float rotationSpeed = 60f;
+    public Anim anim;
+    public Animation _animation;
+    
+    private int Character;
+    private int State;
+
+    private int Life = 2;
+    private float Hp = 100f;
+    private int Power = 10;
+    private float Stamina = 4f;
+    private float maxStamina;
+    public float MoveSpeed = 4f;
+    private int WorkSpeed = 10;
+
+    public bool Prison = false;
     private bool PrisonTP = false;
 
     //
-    public Anim anim;
-    public Animation _animation;
+    const int Cha_Default = 0;
+    const int Cha_Stamina = 1;
+    const int Cha_WorkSpeed = 2;
+    const int Cha_Damage = 3;
 
     void Start()
     {
+        Character = Cha_Default;
+
+        if (Character == Cha_Stamina)
+        {
+            Stamina = 6f;
+        }
+        else if (Character == Cha_WorkSpeed)
+        {
+            WorkSpeed = 15;
+        }
+        else if (Character == Cha_Damage)
+        {
+            Power = 15;
+        }
+
+        maxStamina = Stamina;
+
         _animation = GetComponentInChildren<Animation>();
 
         _animation.clip = anim.idle;
@@ -29,89 +61,117 @@ public class PlayerCtrl : MonoBehaviour
 
     void Update()
     {
-        // Init
-        if (PlayerMoveSpeed == 0)
-        {
-            PlayerMoveSpeed = GameObject.Find("Player").GetComponent<PlayerState>().MoveSpeed;
-        }
-
         // Movement
-        bool p = GameObject.Find("Player").GetComponent<PlayerState>().Prison;
+        float h = Input.GetAxis("Horizontal");
+        float rotationSpeed = 100f;
+        transform.Rotate(0, h * rotationSpeed * Time.deltaTime, 0);
 
-        if (p)
+        float v = Input.GetAxis("Vertical");
+        transform.Translate(0, 0, v * MoveSpeed * Time.deltaTime);
+
+        // Animation
+        if (v >= 0.1f)
         {
-            if (PrisonTP == false)
-            {
-                PrisonTP = true;
-                _animation.CrossFade(anim.idle.name, 0.3f);
-
-                GameObject[] respawns = GameObject.FindGameObjectsWithTag("Prison");
-                Transform minTransform = transform;
-                float minDist = 10000f;
-
-                foreach (GameObject respawn in respawns)
-                {
-                    float dist = Vector3.Distance(transform.position, respawn.transform.position);
-
-                    if (dist < minDist)
-                    {
-                        minDist = dist;
-                        minTransform = respawn.transform;
-                    }
-                }
-
-                transform.position = minTransform.position;
-            }
+            _animation.CrossFade(anim.runFront.name, 0.3f);
+        }
+        else if (v <= -0.1f)
+        {
+            _animation.CrossFade(anim.runBack.name, 0.3f);
+        }
+        else if (h != 0)
+        {
+            _animation.CrossFade(anim.runFront.name, 0.3f);
         }
         else
         {
-            float h = Input.GetAxis("Horizontal");
-            transform.Rotate(0, h * rotationSpeed * Time.deltaTime, 0);
+            _animation.CrossFade(anim.idle.name, 0.3f);
+        }
 
-            float v = Input.GetAxis("Vertical");
-            transform.Translate(0, 0, v * PlayerMoveSpeed * Time.deltaTime);
+        if (Prison)
+            PrisonTrue();
 
-            // Animation
-            if (v >= 0.1f)
-            {
-                _animation.CrossFade(anim.runFront.name, 0.3f);
-            }
-            else if (v <= -0.1f)
-            {
-                _animation.CrossFade(anim.runBack.name, 0.3f);
-            }
-            else if (h != 0)
-            {
-                _animation.CrossFade(anim.runFront.name, 0.3f);
-            }
-            else
-            {
-                _animation.CrossFade(anim.idle.name, 0.3f);
-            }
+        Key();
+
+        // End
+        if (Life == 0 || Hp <= 0)
+        {
+            gameObject.SetActive(false);
         }
     }
 
-    //private float h = 0.0f;
-    //private float v = 0.0f;
+    void Key()
+    {
+        // Stamina
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            Stamina -= Time.deltaTime;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            MoveSpeed = 6f;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            MoveSpeed = 4f;
+        }
+        else
+        {
+            if (Stamina < maxStamina)
+                Stamina += Time.deltaTime;
+        }
+    }
 
-    //private Transform tr;
+    public void DamageByBoss()
+    {
+        if (Life != 0 && Prison == false)  // 1이나 2
+        {
+            if (Hp == 100f)
+            {
+                Hp = 50f;
+            }
+            else if (Hp == 50f)
+            {
+                Life -= 1;
+                Prison = true;
+            }
+        }
 
-    //float Movespeed = 5.0f;
-    //float Rotspeed = 150.0f;
+        //print("HP: " + Hp);
+        //print("Life: " + Life);
+    }
 
-    //void Start()
-    //{
-    //    tr = GetComponent<Transform>();
-    //}
+    void PrisonTrue()
+    {
+        Hp -= 0.5f * Time.deltaTime;
+        print("HP: " + Hp);
 
-    //void Update()
-    //{
-    //    h = Input.GetAxis("Horizontal");
-    //    v = Input.GetAxis("Vertical");
+        if (PrisonTP == false)
+        {
+            PrisonTP = true;
+            _animation.CrossFade(anim.idle.name, 0.3f);
 
-    //    Vector3 move = (Vector3.forward * v) + (Vector3.right * h);
+            GameObject[] respawns = GameObject.FindGameObjectsWithTag("Prison");
+            Transform minTransform = transform;
+            float minDist = 10000f;
 
-    //    tr.Translate(move * Time.deltaTime * Movespeed, Space.Self);
-    //    tr.Rotate(Vector3.up * Time.deltaTime * Rotspeed * Input.GetAxis("Mouse X"));
-    //}
+            foreach (GameObject respawn in respawns)
+            {
+                float dist = Vector3.Distance(transform.position, respawn.transform.position);
+
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    minTransform = respawn.transform;
+                }
+            }
+
+            transform.position = minTransform.position;
+        }
+    }
+
+    void PrisonFalse()
+    {
+        Prison = false;
+        Hp = 50;
+    }
 }
