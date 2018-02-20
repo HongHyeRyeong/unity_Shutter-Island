@@ -16,7 +16,7 @@ public class BossCtrl : MonoBehaviour {
 
         x += Input.GetAxis("Mouse X") * xSpeed * 0.015f;
 
-        //transform.Translate(new Vector3(h, 0, v) * MoveSpeed * Time.deltaTime);
+        transform.Translate(new Vector3(h, 0, v) * MoveSpeed * Time.deltaTime);
 
         Quaternion rotation = Quaternion.Euler(0, x, 0);
         transform.rotation = rotation;

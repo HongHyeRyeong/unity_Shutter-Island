@@ -119,6 +119,8 @@ public class PlayerCtrl : MonoBehaviour
             if (Stamina < maxStamina)
                 Stamina += Time.deltaTime;
         }
+
+        //print(Stamina);
     }
 
     public void DamageByBoss()
