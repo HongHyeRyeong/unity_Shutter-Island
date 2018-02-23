@@ -2,7 +2,7 @@
 using System.Collections;
 
 [System.Serializable]
-public class Anim
+public class AnimPlayer
 {
     public AnimationClip idle;
     public AnimationClip runFront;
@@ -11,7 +11,7 @@ public class Anim
 
 public class PlayerCtrl : MonoBehaviour
 {
-    public Anim anim;
+    public AnimPlayer anim;
     public Animation _animation;
     
     private int Character;
