@@ -15,15 +15,17 @@ public class PlayerCtrl : MonoBehaviour
     public Animation _animation;
     
     private int Character;
-    private int State;
+    public int State;
 
     private int Life = 2;
     private float Hp = 100f;
-    private int Power = 10;
+    private float Power = 10;
     private float Stamina = 4f;
     private float maxStamina;
     public float MoveSpeed = 4f;
     private int WorkSpeed = 10;
+    
+    float AttackTime = 0.5f;
 
     public bool Prison = false;
     private bool PrisonTP = false;
@@ -34,9 +36,15 @@ public class PlayerCtrl : MonoBehaviour
     const int Cha_WorkSpeed = 2;
     const int Cha_Damage = 3;
 
+    const int State_Idle = 0;
+    const int State_Run = 1;
+    const int State_AttackUp = 2;
+    const int State_AttackDown = 3;
+
     void Start()
     {
         Character = Cha_Default;
+        State = State_Idle;
 
         if (Character == Cha_Stamina)
         {
@@ -67,7 +75,7 @@ public class PlayerCtrl : MonoBehaviour
         transform.Rotate(0, h * rotationSpeed * Time.deltaTime, 0);
 
         float v = Input.GetAxis("Vertical");
-        transform.Translate(0, 0, v * MoveSpeed * Time.deltaTime);
+        //transform.Translate(0, 0, v * MoveSpeed * Time.deltaTime);
 
         // Animation
         if (v >= 0.1f)
@@ -87,10 +95,58 @@ public class PlayerCtrl : MonoBehaviour
             _animation.CrossFade(anim.idle.name, 0.3f);
         }
 
+        // State
+        if (State == State_AttackUp || State == State_AttackDown)
+        {
+
+        }
+        else
+        {
+            if (v != 0 || h != 0)
+                State = State_Run;
+            else
+                State = State_Idle;
+        }
+
+        //
+        if (State == State_AttackUp || State == State_AttackDown)
+        {
+            AttackTime -= Time.deltaTime;
+
+            if (AttackTime > 0)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (State == State_AttackDown)
+                        DamageByBoss();
+                    else
+                    {
+                        State = State_Idle;
+                        GameObject.Find("Boss").GetComponent<BossCtrl>().DamageByPlayer(Power);
+                    }
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    if (State == State_AttackUp)
+                        DamageByBoss();
+                    else
+                    {
+                        State = State_Idle;
+                        GameObject.Find("Boss").GetComponent<BossCtrl>().DamageByPlayer(Power);
+                    }
+
+                }
+            }
+            else
+            {
+                DamageByBoss();
+            }
+        }
+
         if (Prison)
             PrisonTrue();
 
-        Key();
+        InputGet();
 
         // End
         if (Life == 0 || Hp <= 0)
@@ -99,33 +155,46 @@ public class PlayerCtrl : MonoBehaviour
         }
     }
 
-    void Key()
+    void InputGet()
     {
         // Stamina
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            Stamina -= Time.deltaTime;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            MoveSpeed = 6f;
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             MoveSpeed = 4f;
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (Stamina > 0)
+            {
+                MoveSpeed = 6f;
+                Stamina -= Time.deltaTime;
+            }
+            else
+            {
+                MoveSpeed = 4f;
+            }
         }
         else
         {
             if (Stamina < maxStamina)
-                Stamina += Time.deltaTime;
+                Stamina += 0.1f * Time.deltaTime;
         }
-
-        //print(Stamina);
     }
 
-    public void DamageByBoss()
+    public void AttackByBoss(int BossState)
     {
-        if (Life != 0 && Prison == false)  // 1이나 2
+        State = State_AttackUp;
+        //State = BossState;
+        AttackTime = 0.5f;
+    }
+
+    void DamageByBoss()
+    {
+        State = State_Idle;
+        print("dd");
+
+        if (Life != 0 && Prison == false)
         {
             if (Hp == 100f)
             {
@@ -137,15 +206,12 @@ public class PlayerCtrl : MonoBehaviour
                 Prison = true;
             }
         }
-
-        //print("HP: " + Hp);
-        //print("Life: " + Life);
     }
 
     void PrisonTrue()
     {
         Hp -= 0.5f * Time.deltaTime;
-        print("HP: " + Hp);
+        //print("HP: " + Hp);
 
         if (PrisonTP == false)
         {
