@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using NetworkModule;
+using GameServer;
 
 [System.Serializable]
 public class AnimPlayer
@@ -13,6 +15,8 @@ public class PlayerCtrl : MonoBehaviour
 {
     public AnimPlayer anim;
     public Animation _animation;
+
+    NetworkManager network_manager;
     
     private int Character;
     public int State;
@@ -65,6 +69,11 @@ public class PlayerCtrl : MonoBehaviour
 
         _animation.clip = anim.idle;
         _animation.Play();
+    }
+
+    private void Awake()
+    {
+        //this.network_manager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
     }
 
     void Update()
@@ -155,7 +164,7 @@ public class PlayerCtrl : MonoBehaviour
         }
     }
 
-    void InputGet()
+    public void InputGet()
     {
         // Stamina
         if (Input.GetKeyUp(KeyCode.LeftShift))

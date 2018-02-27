@@ -8,7 +8,8 @@ public class AnimBoss
     public AnimationClip Idle;
     public AnimationClip Run;
     public AnimationClip AttackUp;
-    public AnimationClip Tired;
+    public AnimationClip AttackDown;
+    public AnimationClip Parry;
     public AnimationClip Down;
 }
 
@@ -80,7 +81,7 @@ public class BossCtrl : MonoBehaviour
 
             if (State == State_Damage)
             {
-                _animation.CrossFade(anim.Down.name, 0.2f);
+                _animation.CrossFade(anim.Parry.name, 0.2f);
             }
         }
         else
