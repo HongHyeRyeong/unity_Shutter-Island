@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Boss
   - Prison
+  - Murderer
+  - Survivor
   layers:
   - Default
   - TransparentFX

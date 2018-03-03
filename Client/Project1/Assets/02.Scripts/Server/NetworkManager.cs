@@ -69,7 +69,7 @@ public class NetworkManager : MonoBehaviour
             case PROTOCOL.MOVE:
                 {
                     string text = msg.pop_string();
-                    GameObject.Find("PlayerCtrl").GetComponent<PlayerCtrl>().InputGet();
+                    GameObject.Find("SurvivorCtrl").GetComponent<SurvivorCtrl>().InputGet();
                 }
                 break;
         }
