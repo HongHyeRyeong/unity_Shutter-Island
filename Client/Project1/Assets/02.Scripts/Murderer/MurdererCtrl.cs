@@ -2,20 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class AnimBoss
-{
-    public AnimationClip Idle;
-    public AnimationClip Run;
-    public AnimationClip AttackW;
-    public AnimationClip AttackL;
-    public AnimationClip Parry;
-}
-
 public class MurdererCtrl : MonoBehaviour
 {
-    public AnimBoss anim;
-    public Animation _animation;
+    private Animator ani;
 
     private int State;
     private float Hp = 200f;
@@ -35,12 +24,9 @@ public class MurdererCtrl : MonoBehaviour
 
     void Start()
     {
+        ani = this.gameObject.GetComponent<Animator>();
+
         State = State_Idle;
-
-        _animation = GetComponentInChildren<Animation>();
-
-        _animation.clip = anim.Idle;
-        _animation.Play();
     }
 
     void Update()
@@ -51,7 +37,7 @@ public class MurdererCtrl : MonoBehaviour
 
         x += Input.GetAxis("Mouse X") * xSpeed * 0.015f;
 
-        if (State != State_AttackW && State != State_AttackL && State != State_Parry)
+        if (State == State_Run)
         {
             transform.Translate(new Vector3(h, 0, v) * MoveSpeed * Time.deltaTime);
         }
@@ -60,40 +46,48 @@ public class MurdererCtrl : MonoBehaviour
         transform.rotation = rotation;
 
         // State
-        if (_animation.isPlaying)
+        if ((ani.GetCurrentAnimatorStateInfo(0).IsName("AttackW") ||
+                ani.GetCurrentAnimatorStateInfo(0).IsName("AttackL") ||
+                ani.GetCurrentAnimatorStateInfo(0).IsName("Parry")) &&
+                ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
-            if (State != State_AttackW && State != State_AttackL && State != State_Parry)
-            {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    State = State_AttackW;
-                    isAttack = true;
-                }
-                else if (Input.GetMouseButtonDown(1))
-                {
-                    State = State_AttackL;
-                    isAttack = true;
-                }
-            }
-        }
-        else
-        {
-            State = State_Idle;
+            ani.SetBool("isAttackW", false);
+            ani.SetBool("isAttackL", false);
+            ani.SetBool("isParry", false);
             isAttack = false;
+
+            State = State_Idle;
         }
 
-        if (State == State_Idle)
+        if (State == State_Idle || State == State_Run)
         {
             if (v != 0 || h != 0)
+            {
                 State = State_Run;
-        }
-        else if (State == State_Run)
-        {
-            if (v == 0 && h == 0)
+                ani.SetBool("isRun", true);
+            }
+            else
+            {
                 State = State_Idle;
+                ani.SetBool("isRun", false);
+            }
         }
 
-        AnimationByState();
+        if (State != State_AttackW && State != State_AttackL && State != State_Parry)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                State = State_AttackW;
+                ani.SetBool("isAttackW", true);
+                isAttack = true;
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                State = State_AttackL;
+                ani.SetBool("isAttackL", true);
+                isAttack = true;
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision col)
@@ -108,20 +102,7 @@ public class MurdererCtrl : MonoBehaviour
     public void DamageByPlayer(float Power)
     {
         State = State_Parry;
+        ani.SetBool("isParry", true);
         Hp -= Power;
-    }
-
-    void AnimationByState()
-    {
-        if (State == State_Idle)
-            _animation.CrossFade(anim.Idle.name, 0.2f);
-        else if (State == State_Run)
-            _animation.CrossFade(anim.Run.name, 0.2f);
-        else if (State == State_AttackW)
-            _animation.CrossFade(anim.AttackW.name, 0.2f);
-        else if (State == State_AttackL)
-            _animation.CrossFade(anim.AttackL.name, 0.2f);
-        else if (State == State_Parry)
-            _animation.CrossFade(anim.Parry.name, 0.2f);
     }
 }
