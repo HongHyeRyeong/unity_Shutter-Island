@@ -59,7 +59,7 @@ public class SurvivorCamera : MonoBehaviour {
             y = ClampAngle(y, yMinLimit, yMaxLimit);
 
             Quaternion rotation = Quaternion.Euler(y, x, 0);
-            Vector3 position = rotation * new Vector3(0, 0.0f, -dist) + target.position + new Vector3(0.0f, 0.0f, 0.0f);
+            Vector3 position = rotation * new Vector3(0, 0.0f, -dist) + target.position + new Vector3(0.0f, 1.0f, 0.0f);
 
             transform.rotation = rotation;
             transform.position = position;

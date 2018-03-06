@@ -40,7 +40,7 @@ public class SurvivorCtrl : MonoBehaviour
 
     void Start()
     {
-        ani = this.gameObject.GetComponent<Animator>();
+        ani = GameObject.Find("SurvivorModel").gameObject.GetComponent<Animator>();
 
         Character = Cha_Default;
         State = State_Idle;

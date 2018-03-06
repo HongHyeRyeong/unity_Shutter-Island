@@ -24,7 +24,7 @@ public class MurdererCtrl : MonoBehaviour
 
     void Start()
     {
-        ani = this.gameObject.GetComponent<Animator>();
+        ani = GameObject.Find("MurdererModel").gameObject.GetComponent<Animator>();
 
         State = State_Idle;
     }
