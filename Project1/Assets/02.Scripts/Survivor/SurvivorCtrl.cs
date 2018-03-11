@@ -153,11 +153,6 @@ public class SurvivorCtrl : MonoBehaviour
         }
     }
 
-    public void SetState(int s)
-    {
-        State = s;
-    }
-
     public void InputGet()
     {
         // Stamina
