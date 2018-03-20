@@ -12,6 +12,7 @@ public class SurvivorItem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
+            this.GetComponent<SurvivorCtrl>().SetAnimation("isPickItem");
             ItemPut(Item.GetComponent<ItemCtrl>().ItemType, Item.GetComponent<ItemCtrl>().ItemLevel);
             Destroy(Item);
         }
@@ -35,6 +36,8 @@ public class SurvivorItem : MonoBehaviour
             for (int i = 0; i < 3; ++i)
                 ItemClothes[i] = false;
             ItemClothes[level - 1] = true;
+
+            GameObject.Find("Bip001 Spine1").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
         }
         else if (type == 3)
         {

@@ -259,9 +259,6 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="NetworkModule">
-      <HintPath>Assets/02.Scripts/Server/NetworkModule/NetworkModule.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.Advertisements">
       <HintPath>C:/Users/my/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
     </Reference>
@@ -289,11 +286,6 @@
     <Compile Include="Assets\02.Scripts\Item\ItemPut.cs" />
     <Compile Include="Assets\02.Scripts\Murderer\MurdererCamera.cs" />
     <Compile Include="Assets\02.Scripts\Murderer\MurdererCtrl.cs" />
-    <Compile Include="Assets\02.Scripts\Server\NetworkManager.cs" />
-    <Compile Include="Assets\02.Scripts\Server\NetworkModule\NetworkEventManager.cs" />
-    <Compile Include="Assets\02.Scripts\Server\NetworkModule\NetworkUnityService.cs" />
-    <Compile Include="Assets\02.Scripts\Server\NetworkModule\RemoteServerPeer.cs" />
-    <Compile Include="Assets\02.Scripts\Server\protocol.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorCamera.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorItem.cs" />

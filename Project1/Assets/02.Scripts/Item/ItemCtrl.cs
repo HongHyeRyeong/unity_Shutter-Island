@@ -6,7 +6,7 @@ public class ItemCtrl : MonoBehaviour
 {
     public int ItemType;    // 1: 모자 2: 옷 3: 가방
     public int ItemLevel;
-    public bool SurvivorEnter = false;
+    bool SurvivorEnter = false;
 
     void Update()
     {

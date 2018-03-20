@@ -48,16 +48,9 @@ public class MurdererCtrl : MonoBehaviour
         }
 
         // State
-        if ((ani.GetCurrentAnimatorStateInfo(0).IsName("AttackW") ||
-                ani.GetCurrentAnimatorStateInfo(0).IsName("AttackL") ||
-                ani.GetCurrentAnimatorStateInfo(0).IsName("Parry")) &&
+        if ((State == State_AttackW || State == State_AttackL || State == State_Parry) &&
                 ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
         {
-            ani.SetBool("isAttackW", false);
-            ani.SetBool("isAttackL", false);
-            ani.SetBool("isParry", false);
-            isAttack = false;
-
             State = State_Idle;
         }
 
@@ -73,38 +66,35 @@ public class MurdererCtrl : MonoBehaviour
                 State = State_Idle;
                 ani.SetBool("isRun", false);
             }
-        }
 
-        if (State != State_AttackW && State != State_AttackL && State != State_Parry)
-        {
             if (Input.GetMouseButtonDown(0))
             {
                 State = State_AttackW;
-                ani.SetBool("isAttackW", true);
+                ani.SetTrigger("isAttackW");
                 isAttack = true;
             }
             else if (Input.GetMouseButtonDown(1))
             {
                 State = State_AttackL;
-                ani.SetBool("isAttackL", true);
+                ani.SetTrigger("isAttackL");
                 isAttack = true;
             }
         }
     }
 
-    private void OnCollisionEnter(Collision col)
+    private void OnTriggerEnter(Collider other)
     {
-        if (col.transform.tag == "Survivor" && isAttack)
+        if (other.tag == "Survivor" && isAttack)
         {
             isAttack = false;
-            col.gameObject.GetComponent<SurvivorCtrl>().AttackByBoss(State);
+            other.gameObject.GetComponent<SurvivorCtrl>().AttackByBoss(State);
         }
     }
 
     public void DamageByPlayer(float Power)
     {
         State = State_Parry;
-        ani.SetBool("isParry", true);
+        ani.SetTrigger("isParry");
         Hp -= Power;
     }
 }

@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
-using NetworkModule;
-using GameServer;
 
 public class SurvivorCtrl : MonoBehaviour
 {
-    NetworkManager network_manager;
-
     private Animator ani;
+    Rigidbody rid;
 
+    Vector3 movement;
+
+    //
     private int Character;
     private int State;
 
@@ -35,12 +35,15 @@ public class SurvivorCtrl : MonoBehaviour
     const int State_SlowRun = 1;
     const int State_Run = 2;
     const int State_Hit = 3;
+    const int State_Parry = 4;
+    const int State_PickItem = 5;
     const int State_AttackW = 10;
     const int State_AttackL = 11;
 
     void Start()
     {
         ani = GameObject.Find("SurvivorModel").gameObject.GetComponent<Animator>();
+        rid = GetComponent<Rigidbody>();
 
         Character = Cha_Default;
         State = State_Idle;
@@ -61,39 +64,49 @@ public class SurvivorCtrl : MonoBehaviour
         maxStamina = Stamina;
     }
 
-    private void Awake()
-    {
-        //this.network_manager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
-    }
-
-    void Update()
+    void FixedUpdate()
     {
         // Movement
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        float rotationSpeed = 100f;
+        movement.Set(h, 0, v);
+        movement = movement.normalized * MoveSpeed * Time.deltaTime;
 
-        if (State != State_AttackW && State != State_AttackL)
-            transform.Rotate(0, h * rotationSpeed * Time.deltaTime, 0);
+        //if (State == State_Run || State == State_SlowRun)
+        //    rid.MovePosition(transform.position + movement);
 
-        if (State == State_Run|| State == State_SlowRun)
-            transform.Translate(0, 0, v * MoveSpeed * Time.deltaTime);
+        if (h != 0 || v != 0)
+        {
+            float rotationSpeed = 360f;
+
+            Quaternion newRotation = Quaternion.LookRotation(movement);
+
+            if (State == State_Run || State == State_SlowRun)
+                rid.rotation = Quaternion.Slerp(rid.rotation, newRotation, rotationSpeed * Time.deltaTime);
+        }
 
         // State
-
-        if (ani.GetCurrentAnimatorStateInfo(0).IsName("AttackW") ||
-                ani.GetCurrentAnimatorStateInfo(0).IsName("AttackL") ||
-                ani.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+        if ((State == State_Parry || State == State_Hit) &&
+                ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
         {
-            ani.SetBool("isAttackW", false);
-            ani.SetBool("isAttackL", false);
-            ani.SetBool("isHit", false);
-
             State = State_Idle;
         }
 
-        if (State == State_AttackW || State == State_AttackL)
+        if (State == State_Idle || State == State_SlowRun || State == State_Run)
+        {
+            if (v != 0 || h != 0)
+            {
+                State = State_SlowRun;
+                ani.SetBool("isSlowRun", true);
+            }
+            else
+            {
+                ani.SetBool("isSlowRun", false);
+                ani.SetBool("isRun", false);
+            }
+        }
+        else if (State == State_AttackW || State == State_AttackL)
         {
             AttackTime -= Time.deltaTime;
 
@@ -105,7 +118,8 @@ public class SurvivorCtrl : MonoBehaviour
                         DamageByBoss();
                     else
                     {
-                        ani.SetBool("isAttackW", true);
+                        State = State_Parry;
+                        ani.SetTrigger("isAttackW");
                         GameObject.Find("Murderer").GetComponent<MurdererCtrl>().DamageByPlayer(Power);
                     }
                 }
@@ -115,7 +129,8 @@ public class SurvivorCtrl : MonoBehaviour
                         DamageByBoss();
                     else
                     {
-                        ani.SetBool("isAttackL", true);
+                        State = State_Parry;
+                        ani.SetTrigger("isAttackL");
                         GameObject.Find("Murderer").GetComponent<MurdererCtrl>().DamageByPlayer(Power);
                     }
 
@@ -124,20 +139,6 @@ public class SurvivorCtrl : MonoBehaviour
             else
             {
                 DamageByBoss();
-            }
-        }
-        else
-        {
-            if (v != 0 || h != 0)
-            {
-                State = State_SlowRun;
-                ani.SetBool("isSlowRun", true);
-            }
-            else
-            {
-                State = State_Idle;
-                ani.SetBool("isSlowRun", false);
-                ani.SetBool("isRun", false);
             }
         }
 
@@ -209,7 +210,7 @@ public class SurvivorCtrl : MonoBehaviour
             if (Hp == 100f)
             {
                 State = State_Hit;
-                ani.SetBool("isHit", true);
+                ani.SetTrigger("isHit");
                 Hp = 50f;
             }
             else if (Hp == 50f)
@@ -218,6 +219,14 @@ public class SurvivorCtrl : MonoBehaviour
                 Prison = true;
             }
         }
+    }
+
+    public void SetAnimation(string name)
+    {
+        if (name == "isPickItem")
+            State = State_PickItem;
+
+        ani.SetTrigger(name);
     }
 
     void PrisonTrue()

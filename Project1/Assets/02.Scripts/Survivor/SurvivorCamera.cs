@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SurvivorCamera : MonoBehaviour {
+public class SurvivorCamera : MonoBehaviour
+{
     public Transform target;
 
     //카메라와의 거리
@@ -14,6 +15,7 @@ public class SurvivorCamera : MonoBehaviour {
 
     //카메라 초기 위치
     private float x;
+    private float saveX;
     private float y;
 
     //y값 제한
@@ -35,6 +37,7 @@ public class SurvivorCamera : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         Vector3 angles = transform.eulerAngles;
         x = angles.y;
+        saveX = angles.y;
         y = angles.x;
     }
 
@@ -42,16 +45,16 @@ public class SurvivorCamera : MonoBehaviour {
     {
         if (target)
         {
-            //dist -= 1 * Input.mouseScrollDelta.y;
+            dist -= 0.5f * Input.mouseScrollDelta.y;
 
-            //if (dist < 40)
-            //{
-            //    dist = 40;
-            //}
-            //else if (dist >= 90)
-            //{
-            //    dist = 90;
-            //}
+            if (dist < 3)
+            {
+                dist = 3;
+            }
+            else if (dist >= 7)
+            {
+                dist = 7;
+            }
 
             x += Input.GetAxis("Mouse X") * xSpeed * 0.015f;
             y -= Input.GetAxis("Mouse Y") * ySpeed * 0.015f;
@@ -63,6 +66,11 @@ public class SurvivorCamera : MonoBehaviour {
 
             transform.rotation = rotation;
             transform.position = position;
+        }
+
+        if (Input.GetMouseButtonDown(2))
+        {
+            x = saveX;
         }
     }
 }
