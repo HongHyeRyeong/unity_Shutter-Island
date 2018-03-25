@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class ItemCtrl : MonoBehaviour
 {
-    public int ItemType;    // 1: 모자 2: 옷 3: 가방
+    public int ItemType;
     public int ItemLevel;
     bool SurvivorEnter = false;
+
+    private void Start()
+    {
+        GameObject items;
+
+        items = GameObject.Find("Items");
+        this.transform.parent = items.transform;
+    }
 
     void Update()
     {

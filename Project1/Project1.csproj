@@ -284,11 +284,13 @@
   <ItemGroup>
     <Compile Include="Assets\02.Scripts\Item\ItemCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Item\ItemPut.cs" />
+    <Compile Include="Assets\02.Scripts\Item\ItemsCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Murderer\MurdererCamera.cs" />
     <Compile Include="Assets\02.Scripts\Murderer\MurdererCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorCamera.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorItem.cs" />
+    <Compile Include="Assets\02.Scripts\UI\UICtrl.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -34,7 +34,6 @@ public class SurvivorCamera : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         Vector3 angles = transform.eulerAngles;
         x = angles.y;
         saveX = angles.y;

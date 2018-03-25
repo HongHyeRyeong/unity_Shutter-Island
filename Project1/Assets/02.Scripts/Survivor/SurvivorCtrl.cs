@@ -66,29 +66,15 @@ public class SurvivorCtrl : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Movement
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        movement.Set(h, 0, v);
-        movement = movement.normalized * MoveSpeed * Time.deltaTime;
-
-        //if (State == State_Run || State == State_SlowRun)
-        //    rid.MovePosition(transform.position + movement);
-
-        if (h != 0 || v != 0)
-        {
-            float rotationSpeed = 360f;
-
-            Quaternion newRotation = Quaternion.LookRotation(movement);
-
-            if (State == State_Run || State == State_SlowRun)
-                rid.rotation = Quaternion.Slerp(rid.rotation, newRotation, rotationSpeed * Time.deltaTime);
-        }
-
         // State
-        if ((State == State_Parry || State == State_Hit) &&
-                ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
+        if ((ani.GetCurrentAnimatorStateInfo(0).IsName("AttackW") ||
+            ani.GetCurrentAnimatorStateInfo(0).IsName("AttackL") ||
+            ani.GetCurrentAnimatorStateInfo(0).IsName("Hit") ||
+            ani.GetCurrentAnimatorStateInfo(0).IsName("PickItem")) &&
+            ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
         {
             State = State_Idle;
         }
@@ -102,6 +88,7 @@ public class SurvivorCtrl : MonoBehaviour
             }
             else
             {
+                State = State_Idle;
                 ani.SetBool("isSlowRun", false);
                 ani.SetBool("isRun", false);
             }
@@ -140,6 +127,25 @@ public class SurvivorCtrl : MonoBehaviour
             {
                 DamageByBoss();
             }
+        }
+
+        // Movement
+        if (State == State_Run || State == State_SlowRun)
+        {
+            movement.Set(h, 0, v);
+            movement = movement.normalized * MoveSpeed * Time.deltaTime;
+
+            rid.MovePosition(transform.position + movement);
+        }
+
+        if (h != 0 || v != 0)
+        {
+            float rotationSpeed = 360f;
+
+            Quaternion newRotation = Quaternion.LookRotation(movement);
+
+            if (State == State_Run || State == State_SlowRun)
+                rid.rotation = Quaternion.Slerp(rid.rotation, newRotation, rotationSpeed * Time.deltaTime);
         }
 
         if (Prison)

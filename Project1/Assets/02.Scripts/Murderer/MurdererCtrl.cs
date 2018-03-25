@@ -31,25 +31,15 @@ public class MurdererCtrl : MonoBehaviour
 
     void Update()
     {
-        // Movement
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        x += Input.GetAxis("Mouse X") * xSpeed * 0.015f;
-
-        if (State == State_Run)
-            transform.Translate(new Vector3(h, 0, v) * MoveSpeed * Time.deltaTime);
-
-
-        if (State != State_Parry)
-        {
-            Quaternion rotation = Quaternion.Euler(0, x, 0);
-            transform.rotation = rotation;
-        }
 
         // State
-        if ((State == State_AttackW || State == State_AttackL || State == State_Parry) &&
-                ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
+        if ((ani.GetCurrentAnimatorStateInfo(0).IsName("AttackW") ||
+            ani.GetCurrentAnimatorStateInfo(0).IsName("AttackL") ||
+            ani.GetCurrentAnimatorStateInfo(0).IsName("Parry")) &&
+            ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
         {
             State = State_Idle;
         }
@@ -79,6 +69,19 @@ public class MurdererCtrl : MonoBehaviour
                 ani.SetTrigger("isAttackL");
                 isAttack = true;
             }
+        }
+
+        // Movement
+        x += Input.GetAxis("Mouse X") * xSpeed * 0.015f;
+
+        if (State == State_Run)
+            transform.Translate(new Vector3(h, 0, v) * MoveSpeed * Time.deltaTime);
+
+
+        if (State != State_Parry)
+        {
+            Quaternion rotation = Quaternion.Euler(0, x, 0);
+            transform.rotation = rotation;
         }
     }
 
