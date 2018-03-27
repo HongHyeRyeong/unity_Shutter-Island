@@ -16,7 +16,7 @@ public class SurvivorCtrl : MonoBehaviour
     private float Hp = 100f;
     private float Power = 10;
     private float Stamina = 4f;
-    private float maxStamina;
+    public float maxStamina;
     private float MoveSpeed = 4f;
     private int WorkSpeed = 10;
 
@@ -62,6 +62,7 @@ public class SurvivorCtrl : MonoBehaviour
         }
 
         maxStamina = Stamina;
+        GameObject.Find("GameController").GetComponent<UICtrl>().DispStamina(Stamina);
     }
 
     void FixedUpdate()
@@ -74,7 +75,7 @@ public class SurvivorCtrl : MonoBehaviour
             ani.GetCurrentAnimatorStateInfo(0).IsName("AttackL") ||
             ani.GetCurrentAnimatorStateInfo(0).IsName("Hit") ||
             ani.GetCurrentAnimatorStateInfo(0).IsName("PickItem")) &&
-            ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
+            ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
         {
             State = State_Idle;
         }
@@ -140,7 +141,7 @@ public class SurvivorCtrl : MonoBehaviour
 
         if (h != 0 || v != 0)
         {
-            float rotationSpeed = 360f;
+            float rotationSpeed = 10f;
 
             Quaternion newRotation = Quaternion.LookRotation(movement);
 
@@ -185,6 +186,11 @@ public class SurvivorCtrl : MonoBehaviour
 
                     MoveSpeed = 6f;
                     Stamina -= Time.deltaTime;
+
+                    if (Stamina < 0)
+                        Stamina = 0;
+
+                    GameObject.Find("GameController").GetComponent<UICtrl>().DispStamina(Stamina);
                 }
                 else
                 {
@@ -193,11 +199,22 @@ public class SurvivorCtrl : MonoBehaviour
                     MoveSpeed = 4f;
                 }
             }
+            else
+            {
+                if (Stamina < maxStamina)
+                {
+                    Stamina += 0.1f * Time.deltaTime;
+                    GameObject.Find("GameController").GetComponent<UICtrl>().DispStamina(Stamina);
+                }
+            }
         }
         else
         {
             if (Stamina < maxStamina)
+            {
                 Stamina += 0.1f * Time.deltaTime;
+                GameObject.Find("GameController").GetComponent<UICtrl>().DispStamina(Stamina);
+            }
         }
     }
 
