@@ -12,8 +12,16 @@ public class SurvivorItem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
+            int type = Item.GetComponent<ItemCtrl>().ItemType;
+            int level = Item.GetComponent<ItemCtrl>().ItemLevel;
+
             this.GetComponent<SurvivorCtrl>().SetAnimation("isPickItem");
-            ItemPick(Item.GetComponent<ItemCtrl>().ItemType, Item.GetComponent<ItemCtrl>().ItemLevel);
+            ItemPick(type, level);
+
+            GameObject.Find("GameController").GetComponent<UICtrl>().UpdateItemInformation(type);
+            GameObject.Find("GameController").GetComponent<ItemsCtrl>().SurvivorExitItems(
+                Item.GetComponent<ItemCtrl>().ItemsNum);
+
             Destroy(Item);
         }
     }
@@ -88,5 +96,29 @@ public class SurvivorItem : MonoBehaviour
                 }
             }
         }
+    }
+
+    public int ItemGet(int type)
+    {
+        if (type == 1)
+        {
+            for (int i = 0; i < 3; ++i)
+                if (ItemHat[i])
+                    return i + 1;
+        }
+        else if (type == 2)
+        {
+            for (int i = 0; i < 3; ++i)
+                if (ItemClothes[i])
+                    return i + 1;
+        }
+        else if (type == 3)
+        {
+            for (int i = 0; i < 2; ++i)
+                if (ItemBag[i])
+                    return i + 1;
+        }
+
+        return 0;
     }
 }

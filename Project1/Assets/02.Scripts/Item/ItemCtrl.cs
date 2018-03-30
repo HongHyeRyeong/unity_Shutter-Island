@@ -6,27 +6,23 @@ public class ItemCtrl : MonoBehaviour
 {
     public int ItemType;
     public int ItemLevel;
-    bool SurvivorEnter = false;
+
+    public int ItemsNum;
 
     private void Start()
     {
-        GameObject items;
+        ItemsNum = -1;
 
+        GameObject items;
         items = GameObject.Find("Items");
         this.transform.parent = items.transform;
-    }
-
-    void Update()
-    {
-        if (SurvivorEnter)
-            GameObject.Find("Survivor").GetComponent<SurvivorItem>().SurvivorEnterItem(this.gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Survivor")
         {
-            SurvivorEnter = true;
+            ItemsNum = GameObject.Find("GameController").GetComponent<ItemsCtrl>().SurvivorEnterItems(this.gameObject);
         }
     }
 
@@ -34,7 +30,8 @@ public class ItemCtrl : MonoBehaviour
     {
         if (other.gameObject.tag == "Survivor")
         {
-            SurvivorEnter = false;
+            GameObject.Find("GameController").GetComponent<ItemsCtrl>().SurvivorExitItems(ItemsNum);
+            ItemsNum = -1;
         }
     }
 }
