@@ -8,6 +8,7 @@ public class ItemsCtrl : MonoBehaviour
     int numItem = 0;
 
     public GameObject ItemHat1;
+    public GameObject ItemClothes1;
     public GameObject ItemBag1;
 
     private void Update()
@@ -39,11 +40,12 @@ public class ItemsCtrl : MonoBehaviour
         if (type == 1)
         {
             if (level == 1)
-                Instantiate(ItemHat1, position, Quaternion.identity);
+                Instantiate(ItemHat1, position, Quaternion.Euler(-90, 0, 0));
         }
         else if (type == 2)
         {
-
+            if (level == 1)
+                Instantiate(ItemClothes1, position, Quaternion.Euler(0, 0, 180));
         }
         else if (type == 3)
         {

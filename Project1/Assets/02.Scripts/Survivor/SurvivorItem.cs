@@ -44,6 +44,8 @@ public class SurvivorItem : MonoBehaviour
                     ItemPut(type);
 
             ItemClothes[level - 1] = true;
+            GameObject.Find("SurvivorModel").transform.Find("low").gameObject.SetActive(false);
+            GameObject.Find("SurvivorModel").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
         }
         else if (type == 3)
         {
@@ -77,7 +79,21 @@ public class SurvivorItem : MonoBehaviour
         }
         else if (type == 2)
         {
+            for (int i = 0; i < 3; ++i)
+            {
+                if (ItemClothes[i])
+                {
+                    ItemClothes[i] = false;
+                    this.GetComponent<SurvivorCtrl>().SetAnimation("isPickItem");
 
+                    int level = i + 1;
+                    GameObject.Find("SurvivorModel").transform.Find("low").gameObject.SetActive(true);
+                    GameObject.Find("SurvivorModel").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
+                    GameObject.Find("GameController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
+
+                    break;
+                }
+            }
         }
         else if (type == 3)
         {

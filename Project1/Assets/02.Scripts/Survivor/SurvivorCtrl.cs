@@ -3,10 +3,12 @@ using System.Collections;
 
 public class SurvivorCtrl : MonoBehaviour
 {
+    private Transform tr;
+    private Transform trModel;
     private Animator ani;
-    Rigidbody rid;
 
-    Vector3 movement;
+    int trModelNum = 1;
+    float[] trModelRot = new float[8] { 0, 180, 90, -90, -45, 45, 135, -135 };
 
     //
     private int Character;
@@ -42,8 +44,9 @@ public class SurvivorCtrl : MonoBehaviour
 
     void Start()
     {
+        tr = GetComponent<Transform>();
+        trModel = GameObject.Find("SurvivorModel").GetComponent<Transform>();
         ani = GameObject.Find("SurvivorModel").gameObject.GetComponent<Animator>();
-        rid = GetComponent<Rigidbody>();
 
         Character = Cha_Default;
         State = State_Idle;
@@ -131,22 +134,67 @@ public class SurvivorCtrl : MonoBehaviour
         }
 
         // Movement
+        Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
+
+        if (State == State_Run || State == State_SlowRun)
+            tr.Translate(moveDir * Time.deltaTime * MoveSpeed, Space.Self);
+
+        if (State == State_Idle || State == State_Run || State == State_SlowRun)
+            tr.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
+
         if (State == State_Run || State == State_SlowRun)
         {
-            movement.Set(h, 0, v);
-            movement = movement.normalized * MoveSpeed * Time.deltaTime;
-
-            rid.MovePosition(transform.position + movement);
-        }
-
-        if (h != 0 || v != 0)
-        {
-            float rotationSpeed = 10f;
-
-            Quaternion newRotation = Quaternion.LookRotation(movement);
-
-            if (State == State_Run || State == State_SlowRun)
-                rid.rotation = Quaternion.Slerp(rid.rotation, newRotation, rotationSpeed * Time.deltaTime);
+            if (h != 0 || v != 0)
+            {
+                if (v > 0 && h == 0 && trModelNum != 1)
+                {
+                    float angle = -trModelRot[trModelNum - 1] + trModelRot[0];
+                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                    trModelNum = 1;
+                }
+                else if (v < 0 && h == 0 && trModelNum != 2)
+                {
+                    float angle = -trModelRot[trModelNum - 1] + trModelRot[1];
+                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                    trModelNum = 2;
+                }
+                else if (v == 0 && h > 0 && trModelNum != 3)
+                {
+                    float angle = -trModelRot[trModelNum - 1] + trModelRot[2];
+                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                    trModelNum = 3;
+                }
+                else if (v == 0 && h < 0 && trModelNum != 4)
+                {
+                    float angle = -trModelRot[trModelNum - 1] + trModelRot[3];
+                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                    trModelNum = 4;
+                }
+                else if (v > 0 && h < 0 && trModelNum != 5)
+                {
+                    float angle = -trModelRot[trModelNum - 1] + trModelRot[4];
+                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                    trModelNum = 5;
+                }
+                else if (v > 0 && h > 0 && trModelNum != 6)
+                {
+                    float angle = -trModelRot[trModelNum - 1] + trModelRot[5];
+                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                    trModelNum = 6;
+                }
+                else if (v < 0 && h > 0 && trModelNum != 7)
+                {
+                    float angle = -trModelRot[trModelNum - 1] + trModelRot[6];
+                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                    trModelNum = 7;
+                }
+                else if (v < 0 && h < 0 && trModelNum != 8)
+                {
+                    float angle = -trModelRot[trModelNum - 1] + trModelRot[7];
+                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                    trModelNum = 8;
+                }
+            }
         }
 
         if (Prison)
@@ -247,7 +295,11 @@ public class SurvivorCtrl : MonoBehaviour
     public void SetAnimation(string name)
     {
         if (name == "isPickItem")
+        {
             State = State_PickItem;
+            ani.SetBool("isSlowRun", false);
+            ani.SetBool("isRun", false);
+        }
 
         ani.SetTrigger(name);
     }
