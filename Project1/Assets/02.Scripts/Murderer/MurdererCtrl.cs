@@ -90,7 +90,7 @@ public class MurdererCtrl : MonoBehaviour
         if (other.tag == "Survivor" && isAttack)
         {
             isAttack = false;
-            other.gameObject.GetComponent<SurvivorCtrl>().AttackByBoss(State);
+            other.gameObject.GetComponent<SurvivorCtrl>().AttackByMurderer(State);
         }
     }
 

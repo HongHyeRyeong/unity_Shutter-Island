@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class ItemsCtrl : MonoBehaviour
 {
+    public GameObject ItemHat1;
+    public GameObject ItemHat2;
+    public GameObject ItemHat3;
+    public GameObject ItemClothes1;
+    public GameObject ItemClothes2;
+    public GameObject ItemClothes3;
+    public GameObject ItemBag1;
+    public GameObject ItemBag2;
+
     GameObject[] Items = new GameObject[100];
     int numItem = 0;
-
-    public GameObject ItemHat1;
-    public GameObject ItemClothes1;
-    public GameObject ItemBag1;
 
     private void Update()
     {
@@ -27,8 +32,7 @@ public class ItemsCtrl : MonoBehaviour
                     break;
                 }
         }
-
-        if (numItem == 0)
+        else if (numItem == 0)
         {
             if (GameObject.Find("GameController").GetComponent<UICtrl>().HUDItem.activeSelf)
                 GameObject.Find("GameController").GetComponent<UICtrl>().HUDItem.SetActive(false);
@@ -41,16 +45,26 @@ public class ItemsCtrl : MonoBehaviour
         {
             if (level == 1)
                 Instantiate(ItemHat1, position, Quaternion.Euler(-90, 0, 0));
+            else if (level == 2)
+                Instantiate(ItemHat2, position, Quaternion.Euler(-90, 0, 0));
+            else if (level == 3)
+                Instantiate(ItemHat3, position, Quaternion.Euler(-90, 0, 0));
         }
         else if (type == 2)
         {
             if (level == 1)
                 Instantiate(ItemClothes1, position, Quaternion.Euler(0, 0, 180));
+            else if (level == 2)
+                Instantiate(ItemClothes2, position, Quaternion.Euler(0, 0, 180));
+            else if (level == 3)
+                Instantiate(ItemClothes3, position, Quaternion.Euler(0, 0, 180));
         }
         else if (type == 3)
         {
             if (level == 1)
                 Instantiate(ItemBag1, position, Quaternion.identity);
+            else if (level == 2)
+                Instantiate(ItemBag2, position, Quaternion.identity);
         }
     }
 

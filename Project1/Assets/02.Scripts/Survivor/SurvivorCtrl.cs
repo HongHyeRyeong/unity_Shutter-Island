@@ -4,11 +4,11 @@ using System.Collections;
 public class SurvivorCtrl : MonoBehaviour
 {
     private Transform tr;
-    private Transform trModel;
     private Animator ani;
 
-    int trModelNum = 1;
+    private Transform trModel;
     float[] trModelRot = new float[8] { 0, 180, 90, -90, -45, 45, 135, -135 };
+    int trModelNum = 1;
 
     //
     private int Character;
@@ -16,7 +16,7 @@ public class SurvivorCtrl : MonoBehaviour
 
     private int Life = 2;
     private float Hp = 100f;
-    private float Power = 10;
+    private float Power = 10f;
     private float Stamina = 4f;
     public float maxStamina;
     private float MoveSpeed = 4f;
@@ -37,7 +37,7 @@ public class SurvivorCtrl : MonoBehaviour
     const int State_SlowRun = 1;
     const int State_Run = 2;
     const int State_Hit = 3;
-    const int State_Parry = 4;
+    const int State_ParryToMurderer = 4;
     const int State_PickItem = 5;
     const int State_AttackW = 10;
     const int State_AttackL = 11;
@@ -65,10 +65,11 @@ public class SurvivorCtrl : MonoBehaviour
         }
 
         maxStamina = Stamina;
+        GameObject.Find("GameController").GetComponent<UICtrl>().DispHP(Hp);
         GameObject.Find("GameController").GetComponent<UICtrl>().DispStamina(Stamina);
     }
 
-    void FixedUpdate()
+    void Update()
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
@@ -106,10 +107,10 @@ public class SurvivorCtrl : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     if (State == State_AttackL)
-                        DamageByBoss();
+                        DamageByMurderer();
                     else
                     {
-                        State = State_Parry;
+                        State = State_ParryToMurderer;
                         ani.SetTrigger("isAttackW");
                         GameObject.Find("Murderer").GetComponent<MurdererCtrl>().DamageByPlayer(Power);
                     }
@@ -117,10 +118,10 @@ public class SurvivorCtrl : MonoBehaviour
                 else if (Input.GetMouseButtonDown(1))
                 {
                     if (State == State_AttackW)
-                        DamageByBoss();
+                        DamageByMurderer();
                     else
                     {
-                        State = State_Parry;
+                        State = State_ParryToMurderer;
                         ani.SetTrigger("isAttackL");
                         GameObject.Find("Murderer").GetComponent<MurdererCtrl>().DamageByPlayer(Power);
                     }
@@ -128,13 +129,11 @@ public class SurvivorCtrl : MonoBehaviour
                 }
             }
             else
-            {
-                DamageByBoss();
-            }
+                DamageByMurderer();
         }
 
         // Movement
-        Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
+        Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h * 0.5f);
 
         if (State == State_Run || State == State_SlowRun)
             tr.Translate(moveDir * Time.deltaTime * MoveSpeed, Space.Self);
@@ -146,13 +145,13 @@ public class SurvivorCtrl : MonoBehaviour
         {
             if (h != 0 || v != 0)
             {
-                if (v > 0 && h == 0 && trModelNum != 1)
+                if (v > 0 && trModelNum != 1)
                 {
                     float angle = -trModelRot[trModelNum - 1] + trModelRot[0];
                     trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
                     trModelNum = 1;
                 }
-                else if (v < 0 && h == 0 && trModelNum != 2)
+                else if (v < 0 && trModelNum != 2)
                 {
                     float angle = -trModelRot[trModelNum - 1] + trModelRot[1];
                     trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
@@ -170,30 +169,30 @@ public class SurvivorCtrl : MonoBehaviour
                     trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
                     trModelNum = 4;
                 }
-                else if (v > 0 && h < 0 && trModelNum != 5)
-                {
-                    float angle = -trModelRot[trModelNum - 1] + trModelRot[4];
-                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                    trModelNum = 5;
-                }
-                else if (v > 0 && h > 0 && trModelNum != 6)
-                {
-                    float angle = -trModelRot[trModelNum - 1] + trModelRot[5];
-                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                    trModelNum = 6;
-                }
-                else if (v < 0 && h > 0 && trModelNum != 7)
-                {
-                    float angle = -trModelRot[trModelNum - 1] + trModelRot[6];
-                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                    trModelNum = 7;
-                }
-                else if (v < 0 && h < 0 && trModelNum != 8)
-                {
-                    float angle = -trModelRot[trModelNum - 1] + trModelRot[7];
-                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                    trModelNum = 8;
-                }
+                //else if (v > 0 && h < 0 && trModelNum != 5)
+                //{
+                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[4];
+                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                //    trModelNum = 5;
+                //}
+                //else if (v > 0 && h > 0 && trModelNum != 6)
+                //{
+                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[5];
+                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                //    trModelNum = 6;
+                //}
+                //else if (v < 0 && h > 0 && trModelNum != 7)
+                //{
+                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[6];
+                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                //    trModelNum = 7;
+                //}
+                //else if (v < 0 && h < 0 && trModelNum != 8)
+                //{
+                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[7];
+                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                //    trModelNum = 8;
+                //}
             }
         }
 
@@ -201,12 +200,6 @@ public class SurvivorCtrl : MonoBehaviour
             PrisonTrue();
 
         InputGet();
-
-        // End
-        if (Life == 0 || Hp <= 0)
-        {
-            gameObject.SetActive(false);
-        }
     }
 
     public void InputGet()
@@ -215,12 +208,12 @@ public class SurvivorCtrl : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             MoveSpeed = 4f;
+            ani.SetBool("isRun", false);
 
             if (State == State_Run)
             {
                 State = State_SlowRun;
             }
-            ani.SetBool("isRun", false);
         }
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -266,32 +259,6 @@ public class SurvivorCtrl : MonoBehaviour
         }
     }
 
-    public void AttackByBoss(int BossState)
-    {
-        State = BossState;
-        AttackTime = 0.5f;
-    }
-
-    void DamageByBoss()
-    {
-        State = State_Idle;
-
-        if (Life != 0 && Prison == false)
-        {
-            if (Hp == 100f)
-            {
-                State = State_Hit;
-                ani.SetTrigger("isHit");
-                Hp = 50f;
-            }
-            else if (Hp == 50f)
-            {
-                Life -= 1;
-                Prison = true;
-            }
-        }
-    }
-
     public void SetAnimation(string name)
     {
         if (name == "isPickItem")
@@ -304,9 +271,44 @@ public class SurvivorCtrl : MonoBehaviour
         ani.SetTrigger(name);
     }
 
+    public void AttackByMurderer(int MurdererState)
+    {
+        if (!Prison)
+        {
+            State = MurdererState;
+            AttackTime = 0.5f;
+        }
+    }
+
+    void DamageByMurderer()
+    {
+        State = State_Idle;
+
+        if (Hp == 100f)
+        {
+            State = State_Hit;
+            ani.SetTrigger("isHit");
+            Hp = 50f;
+            GameObject.Find("GameController").GetComponent<UICtrl>().DispHP(Hp);
+        }
+        else if (Hp == 50f)
+        {
+            Prison = true;
+            Life -= 1;
+            GameObject.Find("GameController").GetComponent<UICtrl>().DispLife(Life);
+        }
+
+        if (Life == 0)
+            Dead();
+    }
+
     void PrisonTrue()
     {
         Hp -= 0.5f * Time.deltaTime;
+        GameObject.Find("GameController").GetComponent<UICtrl>().DispHP(Hp);
+
+        if (Hp <= 0)
+            Dead();
 
         if (PrisonTP == false)
         {
@@ -334,6 +336,13 @@ public class SurvivorCtrl : MonoBehaviour
     void PrisonFalse()
     {
         Prison = false;
-        Hp = 50;
+        PrisonTP = false;
+        Hp = 100;
+        GameObject.Find("GameController").GetComponent<UICtrl>().DispHP(Hp);
+    }
+
+    void Dead()
+    {
+        gameObject.SetActive(false);
     }
 }

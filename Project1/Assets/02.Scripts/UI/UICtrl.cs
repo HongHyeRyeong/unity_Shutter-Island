@@ -6,35 +6,42 @@ using UnityEngine.UI;
 public class UICtrl : MonoBehaviour
 {
     public GameObject Inven;
-    bool isInven;
+    bool isInven = false;
 
-    public GameObject Item;
-    public Text txtItem;
+    public GameObject ItemInfor;
+    public Text txtItemInfor;
 
     public GameObject HUDItem;
     public Text txtHUDItem;
 
+    public Image imgLife;
+    public Sprite spLife1;
+    public Sprite spLife2;
+
+    public Image imgHP;
+    public Text txtHP;
+
     public Image imgStamina;
     public Text txtStamina;
-    float maxStamina;
+    float maxStamina = 0;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-
-        isInven = false;
-        maxStamina = GameObject.Find("Survivor").GetComponent<SurvivorCtrl>().maxStamina;
     }
 
     void Update()
     {
+        if (maxStamina == 0)
+            maxStamina = GameObject.Find("Survivor").GetComponent<SurvivorCtrl>().maxStamina;
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (isInven)
             {
                 isInven = false;
                 Inven.SetActive(false);
-                Item.SetActive(false);
+                ItemInfor.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked;
             }
             else
@@ -45,13 +52,13 @@ public class UICtrl : MonoBehaviour
             }
         }
 
-        if (Item.activeSelf)
+        if (ItemInfor.activeSelf)
         {
             Vector3 pos = Input.mousePosition;
             pos.x += 150;
             pos.y -= 50;
 
-            Item.transform.position = pos;
+            ItemInfor.transform.position = pos;
         }
     }
 
@@ -63,13 +70,13 @@ public class UICtrl : MonoBehaviour
 
     public void OnMouseInventory(int type)
     {
-        Item.SetActive(true);
+        ItemInfor.SetActive(true);
         UpdateItemInformation(type);
     }
 
     public void OffMouseInventory()
     {
-        Item.SetActive(false);
+        ItemInfor.SetActive(false);
     }
 
     public void UpdateItemInformation(int type)
@@ -77,35 +84,33 @@ public class UICtrl : MonoBehaviour
         int level = GameObject.Find("Survivor").GetComponent<SurvivorItem>().ItemGet(type);
 
         if (level == 0)
-        {
-            txtItem.text = "아이템이 존재하지 않습니다.";
-        }
+            txtItemInfor.text = "장착된 아이템이 없습니다.";
         else
         {
             if (type == 1)
             {
                 if (level == 1)
-                    txtItem.text = "모자 1단계(장치 속도 2초 감소)";
+                    txtItemInfor.text = "모자 1단계(장치 속도 2초 감소)";
                 else if (level == 2)
-                    txtItem.text = "모자 2단계(장치 속도 3초 감소)";
+                    txtItemInfor.text = "모자 2단계(장치 속도 3초 감소)";
                 else if (level == 3)
-                    txtItem.text = "모자 3단계(장치 속도 4초 감소)";
+                    txtItemInfor.text = "모자 3단계(장치 속도 4초 감소)";
             }
             else if (type == 2)
             {
                 if (level == 1)
-                    txtItem.text = "옷 1단계(스테미너 50 증가)";
+                    txtItemInfor.text = "옷 1단계(스테미너 50 증가)";
                 else if (level == 2)
-                    txtItem.text = "옷 2단계(스테미너 100 증가)";
+                    txtItemInfor.text = "옷 2단계(스테미너 100 증가)";
                 else if (level == 3)
-                    txtItem.text = "옷 3단계(스테미너 200 증가)";
+                    txtItemInfor.text = "옷 3단계(스테미너 200 증가)";
             }
             else if (type == 3)
             {
                 if (level == 1)
-                    txtItem.text = "가방 1단계(장치 부품 1개 추가 가능)";
+                    txtItemInfor.text = "가방 1단계(장치 부품 1개 추가 가능)";
                 else if (level == 2)
-                    txtItem.text = "가방 2단계(장치 부품 2개 추가 가능)";
+                    txtItemInfor.text = "가방 2단계(장치 부품 2개 추가 가능)";
             }
         }
     }
@@ -143,9 +148,27 @@ public class UICtrl : MonoBehaviour
         }
     }
 
-    public void DispStamina(float s)
+    public void DispLife(int life)
     {
-        txtStamina.text = s.ToString("N2");
-        imgStamina.fillAmount = s / maxStamina;
+        if (life == 1)
+        {
+            imgLife.sprite = spLife1;
+        }
+        else if (life == 2)
+        {
+            imgLife.sprite = spLife2;
+        }
+    }
+
+    public void DispHP(float hp)
+    {
+        txtHP.text = hp.ToString("N2");
+        imgHP.fillAmount = hp / 100;
+    }
+
+    public void DispStamina(float stamina)
+    {
+        txtStamina.text = stamina.ToString("N2");
+        imgStamina.fillAmount = stamina / maxStamina;
     }
 }

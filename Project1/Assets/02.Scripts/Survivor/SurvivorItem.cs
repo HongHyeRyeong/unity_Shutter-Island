@@ -19,14 +19,13 @@ public class SurvivorItem : MonoBehaviour
             ItemPick(type, level);
 
             GameObject.Find("GameController").GetComponent<UICtrl>().UpdateItemInformation(type);
-            GameObject.Find("GameController").GetComponent<ItemsCtrl>().SurvivorExitItems(
-                Item.GetComponent<ItemCtrl>().ItemsNum);
+            GameObject.Find("GameController").GetComponent<ItemsCtrl>().SurvivorExitItems(Item.GetComponent<ItemCtrl>().GetItemNum());
 
             Destroy(Item);
         }
     }
 
-    public void ItemPick(int type, int level)
+    void ItemPick(int type, int level)
     {
         if (type == 1)
         {
@@ -35,7 +34,7 @@ public class SurvivorItem : MonoBehaviour
                     ItemPut(type);
 
             ItemHat[level - 1] = true;
-            GameObject.Find("Bip001 Head").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
+            GameObject.Find("ItemHat").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
         }
         else if (type == 2)
         {
@@ -44,7 +43,7 @@ public class SurvivorItem : MonoBehaviour
                     ItemPut(type);
 
             ItemClothes[level - 1] = true;
-            GameObject.Find("SurvivorModel").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
+            GameObject.Find("ItemClothes").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
         }
         else if (type == 3)
         {
@@ -53,7 +52,7 @@ public class SurvivorItem : MonoBehaviour
                     ItemPut(type);
 
             ItemBag[level - 1] = true;
-            GameObject.Find("Bip001 Spine1").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
+            GameObject.Find("ItemBag").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
         }
     }
 
@@ -69,7 +68,7 @@ public class SurvivorItem : MonoBehaviour
                     this.GetComponent<SurvivorCtrl>().SetAnimation("isPickItem");
 
                     int level = i + 1;
-                    GameObject.Find("Bip001 Head").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
+                    GameObject.Find("ItemHat").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
                     GameObject.Find("GameController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
 
                     break;
@@ -86,7 +85,7 @@ public class SurvivorItem : MonoBehaviour
                     this.GetComponent<SurvivorCtrl>().SetAnimation("isPickItem");
 
                     int level = i + 1;
-                    GameObject.Find("SurvivorModel").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
+                    GameObject.Find("ItemClothes").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
                     GameObject.Find("GameController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
 
                     break;
@@ -103,7 +102,7 @@ public class SurvivorItem : MonoBehaviour
                     this.GetComponent<SurvivorCtrl>().SetAnimation("isPickItem");
 
                     int level = i + 1;
-                    GameObject.Find("Bip001 Spine1").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
+                    GameObject.Find("ItemBag").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
                     GameObject.Find("GameController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
 
                     break;
