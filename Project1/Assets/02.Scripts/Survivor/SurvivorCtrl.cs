@@ -11,20 +11,24 @@ public class SurvivorCtrl : MonoBehaviour
     int trModelNum = 1;
 
     //
-    private int Character;
+    public int Character = 0;
     private int State;
 
     private int Life = 2;
     private float Hp = 100f;
     private float Power = 10f;
     private float Stamina = 4f;
-    public float maxStamina;
     private float MoveSpeed = 4f;
-    private int WorkSpeed = 10;
+    private float WorkSpeed = 10f;
+
+    public float maxStamina;
+    private float saveStamina;
+    private float saveWorkSpeed;
 
     float AttackTime = 0.5f;
+    float PrisonTime = 5f;
 
-    private bool Prison = false;
+    public bool Prison = false;
     private bool PrisonTP = false;
 
     //
@@ -48,7 +52,6 @@ public class SurvivorCtrl : MonoBehaviour
         trModel = GameObject.Find("SurvivorModel").GetComponent<Transform>();
         ani = GameObject.Find("SurvivorModel").gameObject.GetComponent<Animator>();
 
-        Character = Cha_Default;
         State = State_Idle;
 
         if (Character == Cha_Stamina)
@@ -57,16 +60,19 @@ public class SurvivorCtrl : MonoBehaviour
         }
         else if (Character == Cha_WorkSpeed)
         {
-            WorkSpeed = 15;
+            WorkSpeed = 7f;
         }
         else if (Character == Cha_Damage)
         {
-            Power = 15;
+            Power = 15f;
         }
 
         maxStamina = Stamina;
-        GameObject.Find("GameController").GetComponent<UICtrl>().DispHP(Hp);
-        GameObject.Find("GameController").GetComponent<UICtrl>().DispStamina(Stamina);
+        saveStamina = Stamina;
+        saveWorkSpeed = WorkSpeed;
+
+        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispHP(Hp);
+        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
     }
 
     void Update()
@@ -133,10 +139,10 @@ public class SurvivorCtrl : MonoBehaviour
         }
 
         // Movement
-        Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h * 0.5f);
+        Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
 
         if (State == State_Run || State == State_SlowRun)
-            tr.Translate(moveDir * Time.deltaTime * MoveSpeed, Space.Self);
+            tr.Translate(moveDir.normalized * Time.deltaTime * MoveSpeed, Space.Self);
 
         if (State == State_Idle || State == State_Run || State == State_SlowRun)
             tr.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
@@ -145,30 +151,74 @@ public class SurvivorCtrl : MonoBehaviour
         {
             if (h != 0 || v != 0)
             {
-                if (v > 0 && trModelNum != 1)
-                {
-                    float angle = -trModelRot[trModelNum - 1] + trModelRot[0];
-                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                    trModelNum = 1;
-                }
-                else if (v < 0 && trModelNum != 2)
-                {
-                    float angle = -trModelRot[trModelNum - 1] + trModelRot[1];
-                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                    trModelNum = 2;
-                }
-                else if (v == 0 && h > 0 && trModelNum != 3)
-                {
-                    float angle = -trModelRot[trModelNum - 1] + trModelRot[2];
-                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                    trModelNum = 3;
-                }
-                else if (v == 0 && h < 0 && trModelNum != 4)
-                {
-                    float angle = -trModelRot[trModelNum - 1] + trModelRot[3];
-                    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                    trModelNum = 4;
-                }
+                Vector3 dir = new Vector3(h, 0, v);
+
+                Quaternion newRot = Quaternion.LookRotation(dir.normalized);
+
+                trModel.rotation = Quaternion.Slerp(trModel.rotation, newRot, Time.deltaTime * 5.0f);
+            }
+
+            if (h != 0 || v != 0)
+            {
+                //if (v > 0 && trModelNum != 1)
+                //{
+                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[0];
+                //    Quaternion newRot = Quaternion.Euler(0, trModel.rotation.y, 0);
+
+                //    trModel.rotation = Quaternion.Slerp(trModel.rotation, newRot, Time.deltaTime * 5.0f);
+                //    trModelNum = 1;
+                //}
+                //else if (v < 0 && trModelNum != 2)
+                //{
+                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[1];
+                //    Quaternion newRot = Quaternion.Euler(0, trModel.rotation.y + 180, 0);
+
+                //    trModel.rotation = Quaternion.Slerp(trModel.rotation, newRot, Time.deltaTime * 5.0f);
+                //    trModelNum = 2;
+                //}
+                //else if (v == 0 && h > 0 && trModelNum != 3)
+                //{
+                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[2];
+                //    Quaternion newRot = Quaternion.Euler(0, angle, 0);
+
+                //    trModel.rotation = Quaternion.Slerp(trModel.rotation, newRot, Time.deltaTime * 5.0f);
+                //    trModelNum = 3;
+                //}
+                //else if (v == 0 && h < 0 && trModelNum != 4)
+                //{
+                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[3];
+                //    Quaternion newRot = Quaternion.Euler(0, angle, 0);
+
+                //    trModel.rotation = Quaternion.Slerp(trModel.rotation, newRot, Time.deltaTime * 5.0f);
+                //    trModelNum = 4;
+                //}
+
+
+
+                //if (v > 0 && trModelNum != 1)
+                //{
+                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[0];
+                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                //    trModelNum = 1;
+                //}
+                //else if (v < 0 && trModelNum != 2)
+                //{
+                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[1];
+                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                //    trModelNum = 2;
+                //}
+                //else if (v == 0 && h > 0 && trModelNum != 3)
+                //{
+                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[2];
+                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                //    trModelNum = 3;
+                //}
+                //else if (v == 0 && h < 0 && trModelNum != 4)
+                //{
+                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[3];
+                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
+                //    trModelNum = 4;
+                //}
                 //else if (v > 0 && h < 0 && trModelNum != 5)
                 //{
                 //    float angle = -trModelRot[trModelNum - 1] + trModelRot[4];
@@ -231,7 +281,7 @@ public class SurvivorCtrl : MonoBehaviour
                     if (Stamina < 0)
                         Stamina = 0;
 
-                    GameObject.Find("GameController").GetComponent<UICtrl>().DispStamina(Stamina);
+                    GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
                 }
                 else
                 {
@@ -245,7 +295,7 @@ public class SurvivorCtrl : MonoBehaviour
                 if (Stamina < maxStamina)
                 {
                     Stamina += 0.1f * Time.deltaTime;
-                    GameObject.Find("GameController").GetComponent<UICtrl>().DispStamina(Stamina);
+                    GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
                 }
             }
         }
@@ -254,8 +304,27 @@ public class SurvivorCtrl : MonoBehaviour
             if (Stamina < maxStamina)
             {
                 Stamina += 0.1f * Time.deltaTime;
-                GameObject.Find("GameController").GetComponent<UICtrl>().DispStamina(Stamina);
+                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
             }
+        }
+    }
+
+    public void SetStatus(string name, float num)
+    {
+        if (name == "WorkSpeed")
+        {
+            WorkSpeed = saveWorkSpeed;
+            WorkSpeed += num;
+        }
+        else if (name == "Stamina")
+        {
+            maxStamina = saveStamina;
+            maxStamina += num;
+
+            if (Stamina > maxStamina)
+                Stamina = maxStamina;
+
+            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
         }
     }
 
@@ -289,23 +358,47 @@ public class SurvivorCtrl : MonoBehaviour
             State = State_Hit;
             ani.SetTrigger("isHit");
             Hp = 50f;
-            GameObject.Find("GameController").GetComponent<UICtrl>().DispHP(Hp);
+            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispHP(Hp);
         }
         else if (Hp == 50f)
         {
             Prison = true;
             Life -= 1;
-            GameObject.Find("GameController").GetComponent<UICtrl>().DispLife(Life);
+            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispLife(Life);
+            GameObject.Find("Prison").GetComponent<PrisonCtrl>().SurvivorEnter(this.gameObject);
         }
 
         if (Life == 0)
             Dead();
     }
 
+    public void PrisonStay(GameObject prison)
+    {
+        if (GetComponent<SurvivorItem>().ItemGet(5) == 1)
+        {
+            if (Input.GetKey(KeyCode.R))
+            {
+                PrisonTime -= Time.deltaTime;
+
+                if (PrisonTime < 0)
+                {
+                    GetComponent<SurvivorItem>().ItemSet(5, 0);
+
+                    prison.GetComponent<PrisonCtrl>().OpenDoor();
+                    PrisonTime = 5f;
+                }
+            }
+            else
+            {
+                PrisonTime = 5f;
+            }
+        }
+    }
+
     void PrisonTrue()
     {
         Hp -= 0.5f * Time.deltaTime;
-        GameObject.Find("GameController").GetComponent<UICtrl>().DispHP(Hp);
+        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispHP(Hp);
 
         if (Hp <= 0)
             Dead();
@@ -315,30 +408,36 @@ public class SurvivorCtrl : MonoBehaviour
             PrisonTP = true;
 
             GameObject[] respawns = GameObject.FindGameObjectsWithTag("Prison");
-            Transform minTransform = transform;
+            Transform minTransform = null;
             float minDist = 10000f;
 
             foreach (GameObject respawn in respawns)
             {
-                float dist = Vector3.Distance(transform.position, respawn.transform.position);
-
-                if (dist < minDist)
+                if (respawn.GetComponent<PrisonCtrl>().isOpen == false)
                 {
-                    minDist = dist;
-                    minTransform = respawn.transform;
+                    float dist = Vector3.Distance(transform.position, respawn.transform.position);
+
+                    if (dist < minDist)
+                    {
+                        minDist = dist;
+                        minTransform = respawn.transform;
+                    }
                 }
             }
 
-            transform.position = minTransform.position;
+            if (minTransform != null)
+                transform.position = minTransform.position;
+            else
+                Dead();
         }
     }
 
-    void PrisonFalse()
+    public void PrisonFalse()
     {
         Prison = false;
         PrisonTP = false;
         Hp = 100;
-        GameObject.Find("GameController").GetComponent<UICtrl>().DispHP(Hp);
+        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispHP(Hp);
     }
 
     void Dead()

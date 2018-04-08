@@ -14,6 +14,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1f1</UnityVersion>
@@ -284,12 +285,13 @@
   <ItemGroup>
     <Compile Include="Assets\02.Scripts\Item\ItemCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Item\ItemsCtrl.cs" />
+    <Compile Include="Assets\02.Scripts\Map\PrisonCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Murderer\MurdererCamera.cs" />
     <Compile Include="Assets\02.Scripts\Murderer\MurdererCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorCamera.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorItem.cs" />
-    <Compile Include="Assets\02.Scripts\UI\UICtrl.cs" />
+    <Compile Include="Assets\02.Scripts\Survivor\SurvivorUICtrl.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

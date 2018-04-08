@@ -12,6 +12,8 @@ public class ItemsCtrl : MonoBehaviour
     public GameObject ItemClothes3;
     public GameObject ItemBag1;
     public GameObject ItemBag2;
+    public GameObject ItemKey;
+    public GameObject ItemGadget;
 
     GameObject[] Items = new GameObject[100];
     int numItem = 0;
@@ -23,7 +25,7 @@ public class ItemsCtrl : MonoBehaviour
             for (int i = 00; i < 100; ++i)
                 if (Items[i] != null)
                 {
-                    GameObject.Find("GameController").GetComponent<UICtrl>().DispItemHUD(
+                    GetComponent<SurvivorUICtrl>().DispItemHUD(
                         Items[i].transform.position,
                         Items[i].GetComponent<ItemCtrl>().ItemType,
                         Items[i].GetComponent<ItemCtrl>().ItemLevel);
@@ -34,8 +36,8 @@ public class ItemsCtrl : MonoBehaviour
         }
         else if (numItem == 0)
         {
-            if (GameObject.Find("GameController").GetComponent<UICtrl>().HUDItem.activeSelf)
-                GameObject.Find("GameController").GetComponent<UICtrl>().HUDItem.SetActive(false);
+            if (GetComponent<SurvivorUICtrl>().HUDItem.activeSelf)
+                GetComponent<SurvivorUICtrl>().HUDItem.SetActive(false);
         }
     }
 
@@ -53,11 +55,11 @@ public class ItemsCtrl : MonoBehaviour
         else if (type == 2)
         {
             if (level == 1)
-                Instantiate(ItemClothes1, position, Quaternion.Euler(0, 0, 180));
+                Instantiate(ItemClothes1, position, Quaternion.identity);
             else if (level == 2)
-                Instantiate(ItemClothes2, position, Quaternion.Euler(0, 0, 180));
+                Instantiate(ItemClothes2, position, Quaternion.identity);
             else if (level == 3)
-                Instantiate(ItemClothes3, position, Quaternion.Euler(0, 0, 180));
+                Instantiate(ItemClothes3, position, Quaternion.identity);
         }
         else if (type == 3)
         {
@@ -65,6 +67,10 @@ public class ItemsCtrl : MonoBehaviour
                 Instantiate(ItemBag1, position, Quaternion.identity);
             else if (level == 2)
                 Instantiate(ItemBag2, position, Quaternion.identity);
+        }
+        else if (type == 4)
+        {
+            Instantiate(ItemGadget, position, Quaternion.Euler(-90, 0, 0));
         }
     }
 
