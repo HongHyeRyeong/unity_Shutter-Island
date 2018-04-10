@@ -4,11 +4,8 @@ using System.Collections;
 public class SurvivorCtrl : MonoBehaviour
 {
     private Transform tr;
-    private Animator ani;
-
     private Transform trModel;
-    float[] trModelRot = new float[8] { 0, 180, 90, -90, -45, 45, 135, -135 };
-    int trModelNum = 1;
+    private Animator ani;
 
     //
     public int Character = 0;
@@ -142,109 +139,32 @@ public class SurvivorCtrl : MonoBehaviour
         Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
 
         if (State == State_Run || State == State_SlowRun)
+        {
+            // 이동
             tr.Translate(moveDir.normalized * Time.deltaTime * MoveSpeed, Space.Self);
 
+            // 이동하면서 회전
+            float angle = 0;
+
+            if (v > 0 && h == 0) angle = 0;
+            else if (v < 0 && h == 0) angle = 180;
+            else if (v == 0 && h > 0) angle = 90;
+            else if (v == 0 && h < 0) angle = -90;
+            else if (v > 0 && h < 0) angle = -45;
+            else if (v > 0 && h > 0) angle = 45;
+            else if (v < 0 && h > 0) angle = 135;
+            else if (v < 0 && h < 0) angle = -135;
+
+            angle += tr.eulerAngles.y;
+
+            Quaternion rot = Quaternion.Euler(0, angle, 0);
+
+            trModel.rotation = Quaternion.Slerp(trModel.rotation, rot, Time.deltaTime * 10f);
+        }
+
+        // 마우스 회전
         if (State == State_Idle || State == State_Run || State == State_SlowRun)
             tr.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
-
-        if (State == State_Run || State == State_SlowRun)
-        {
-            if (h != 0 || v != 0)
-            {
-                Vector3 dir = new Vector3(h, 0, v);
-
-                Quaternion newRot = Quaternion.LookRotation(dir.normalized);
-
-                trModel.rotation = Quaternion.Slerp(trModel.rotation, newRot, Time.deltaTime * 5.0f);
-            }
-
-            if (h != 0 || v != 0)
-            {
-                //if (v > 0 && trModelNum != 1)
-                //{
-                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[0];
-                //    Quaternion newRot = Quaternion.Euler(0, trModel.rotation.y, 0);
-
-                //    trModel.rotation = Quaternion.Slerp(trModel.rotation, newRot, Time.deltaTime * 5.0f);
-                //    trModelNum = 1;
-                //}
-                //else if (v < 0 && trModelNum != 2)
-                //{
-                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[1];
-                //    Quaternion newRot = Quaternion.Euler(0, trModel.rotation.y + 180, 0);
-
-                //    trModel.rotation = Quaternion.Slerp(trModel.rotation, newRot, Time.deltaTime * 5.0f);
-                //    trModelNum = 2;
-                //}
-                //else if (v == 0 && h > 0 && trModelNum != 3)
-                //{
-                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[2];
-                //    Quaternion newRot = Quaternion.Euler(0, angle, 0);
-
-                //    trModel.rotation = Quaternion.Slerp(trModel.rotation, newRot, Time.deltaTime * 5.0f);
-                //    trModelNum = 3;
-                //}
-                //else if (v == 0 && h < 0 && trModelNum != 4)
-                //{
-                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[3];
-                //    Quaternion newRot = Quaternion.Euler(0, angle, 0);
-
-                //    trModel.rotation = Quaternion.Slerp(trModel.rotation, newRot, Time.deltaTime * 5.0f);
-                //    trModelNum = 4;
-                //}
-
-
-
-                //if (v > 0 && trModelNum != 1)
-                //{
-                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[0];
-                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                //    trModelNum = 1;
-                //}
-                //else if (v < 0 && trModelNum != 2)
-                //{
-                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[1];
-                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                //    trModelNum = 2;
-                //}
-                //else if (v == 0 && h > 0 && trModelNum != 3)
-                //{
-                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[2];
-                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                //    trModelNum = 3;
-                //}
-                //else if (v == 0 && h < 0 && trModelNum != 4)
-                //{
-                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[3];
-                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                //    trModelNum = 4;
-                //}
-                //else if (v > 0 && h < 0 && trModelNum != 5)
-                //{
-                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[4];
-                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                //    trModelNum = 5;
-                //}
-                //else if (v > 0 && h > 0 && trModelNum != 6)
-                //{
-                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[5];
-                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                //    trModelNum = 6;
-                //}
-                //else if (v < 0 && h > 0 && trModelNum != 7)
-                //{
-                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[6];
-                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                //    trModelNum = 7;
-                //}
-                //else if (v < 0 && h < 0 && trModelNum != 8)
-                //{
-                //    float angle = -trModelRot[trModelNum - 1] + trModelRot[7];
-                //    trModel.RotateAround(tr.position, Vector3.up * Time.deltaTime, angle);
-                //    trModelNum = 8;
-                //}
-            }
-        }
 
         if (Prison)
             PrisonTrue();
@@ -255,6 +175,8 @@ public class SurvivorCtrl : MonoBehaviour
     public void InputGet()
     {
         // Stamina
+        float FillStaminaSpeed = 0.15f;
+
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             MoveSpeed = 4f;
@@ -294,7 +216,7 @@ public class SurvivorCtrl : MonoBehaviour
             {
                 if (Stamina < maxStamina)
                 {
-                    Stamina += 0.1f * Time.deltaTime;
+                    Stamina += FillStaminaSpeed * Time.deltaTime;
                     GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
                 }
             }
@@ -303,7 +225,7 @@ public class SurvivorCtrl : MonoBehaviour
         {
             if (Stamina < maxStamina)
             {
-                Stamina += 0.1f * Time.deltaTime;
+                Stamina += FillStaminaSpeed * Time.deltaTime;
                 GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
             }
         }

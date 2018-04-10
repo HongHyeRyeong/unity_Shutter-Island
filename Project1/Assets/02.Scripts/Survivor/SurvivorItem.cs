@@ -10,7 +10,7 @@ public class SurvivorItem : MonoBehaviour
     bool[] ItemBag = new bool[2] { false, false };
     int ItemGadget = 0;
     int ItemMaxGadget = 2;
-    int ItemKey = 1;
+    int ItemKey = 0;
 
     void SurvivorByItem(int type, int level)
     {

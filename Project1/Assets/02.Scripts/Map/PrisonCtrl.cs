@@ -11,7 +11,7 @@ public class PrisonCtrl : MonoBehaviour
     public bool isOpen = false;
 
     GameObject[] Survivors = new GameObject[4];
-    public int SurvivorNum = 0;
+    int SurvivorNum = 0;
 
     void Start()
     {
@@ -21,14 +21,14 @@ public class PrisonCtrl : MonoBehaviour
     void Update()
     {
         if (SurvivorNum != 0)
+        {
             GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisPrison(transform.position, PrisonNum);
+        }
 
         if (isOpen)
         {
             if (ani.GetCurrentAnimatorStateInfo(0).IsName("PrisonOpen") && ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
-            {
                 isOpen = false;
-            }
         }
     }
 

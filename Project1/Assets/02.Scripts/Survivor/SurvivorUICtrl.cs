@@ -206,9 +206,9 @@ public class SurvivorUICtrl : MonoBehaviour
 
         pos.y += 5;
 
-        Vector2 view = Cam.WorldToViewportPoint(pos);
+        Vector3 view = Cam.WorldToViewportPoint(pos);
 
-        if (!(-0.5 < view.x && view.x < 1.5))
+        if (!(-0.5 < view.x && view.x < 1.5) || view.z < 0)
         {
             Prisons[num].SetActive(false);
             return;
