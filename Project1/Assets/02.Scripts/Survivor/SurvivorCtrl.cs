@@ -82,7 +82,7 @@ public class SurvivorCtrl : MonoBehaviour
             ani.GetCurrentAnimatorStateInfo(0).IsName("AttackL") ||
             ani.GetCurrentAnimatorStateInfo(0).IsName("Hit") ||
             ani.GetCurrentAnimatorStateInfo(0).IsName("PickItem")) &&
-            ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
+            ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
             State = State_Idle;
         }
@@ -229,6 +229,11 @@ public class SurvivorCtrl : MonoBehaviour
                 GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
             }
         }
+    }
+
+    public int GetState()
+    {
+        return State;
     }
 
     public void SetStatus(string name, float num)

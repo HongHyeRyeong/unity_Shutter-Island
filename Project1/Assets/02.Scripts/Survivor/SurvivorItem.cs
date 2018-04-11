@@ -60,7 +60,10 @@ public class SurvivorItem : MonoBehaviour
 
     public void SurvivorEnterItem(GameObject Item)
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        int state = GetComponent<SurvivorCtrl>().GetState();
+
+        if (Input.GetKeyDown(KeyCode.F) &&
+            (state == 0 || state == 1 || state == 2))
         {
             int type = Item.GetComponent<ItemCtrl>().ItemType;
             int level = Item.GetComponent<ItemCtrl>().ItemLevel;
