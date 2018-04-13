@@ -285,6 +285,8 @@
   <ItemGroup>
     <Compile Include="Assets\02.Scripts\Item\ItemCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Item\ItemsCtrl.cs" />
+    <Compile Include="Assets\02.Scripts\Map\MachineCtrl.cs" />
+    <Compile Include="Assets\02.Scripts\Map\MachineRangeCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Map\PrisonCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Murderer\MurdererCamera.cs" />
     <Compile Include="Assets\02.Scripts\Murderer\MurdererCtrl.cs" />

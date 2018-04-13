@@ -9,6 +9,7 @@ TagManager:
   - Survivor
   - Item
   - ItemPut
+  - Machine
   layers:
   - Default
   - TransparentFX

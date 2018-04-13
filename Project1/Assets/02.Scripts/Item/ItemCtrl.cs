@@ -7,11 +7,11 @@ public class ItemCtrl : MonoBehaviour
     public int ItemType;
     public int ItemLevel;
 
-    int ItemNum;
+    public int includeNum;
 
     private void Start()
     {
-        ItemNum = -1;
+        includeNum = -1;
 
         GameObject items;
         items = GameObject.Find("Items");
@@ -22,7 +22,7 @@ public class ItemCtrl : MonoBehaviour
     {
         if (other.gameObject.tag == "Survivor")
         {
-            ItemNum = GameObject.Find("GameController").GetComponent<ItemsCtrl>().SurvivorEnterItems(this.gameObject);
+            includeNum = GameObject.Find("GameController").GetComponent<ItemsCtrl>().SurvivorEnterItems(this.gameObject);
         }
     }
 
@@ -30,13 +30,8 @@ public class ItemCtrl : MonoBehaviour
     {
         if (other.gameObject.tag == "Survivor")
         {
-            GameObject.Find("GameController").GetComponent<ItemsCtrl>().SurvivorExitItems(ItemNum);
-            ItemNum = -1;
+            GameObject.Find("GameController").GetComponent<ItemsCtrl>().SurvivorExitItems(includeNum);
+            includeNum = -1;
         }
-    }
-
-    public int GetItemNum()
-    {
-        return ItemNum;
     }
 }

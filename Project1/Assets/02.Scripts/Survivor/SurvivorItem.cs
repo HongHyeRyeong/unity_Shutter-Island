@@ -8,7 +8,7 @@ public class SurvivorItem : MonoBehaviour
     bool[] ItemHat = new bool[3] { false, false, false };
     bool[] ItemClothes = new bool[3] { false, false, false };
     bool[] ItemBag = new bool[2] { false, false };
-    int ItemGadget = 0;
+    int ItemGadget = 2;
     int ItemMaxGadget = 2;
     int ItemKey = 0;
 
@@ -19,11 +19,11 @@ public class SurvivorItem : MonoBehaviour
             if (level == 0)
                 GetComponent<SurvivorCtrl>().SetStatus("WorkSpeed", 0);
             else if (level == 1)
-                GetComponent<SurvivorCtrl>().SetStatus("WorkSpeed", -2);
+                GetComponent<SurvivorCtrl>().SetStatus("WorkSpeed", 0.1f);
             else if (level == 2)
-                GetComponent<SurvivorCtrl>().SetStatus("WorkSpeed", -3);
+                GetComponent<SurvivorCtrl>().SetStatus("WorkSpeed", 0.2f);
             else if (level == 3)
-                GetComponent<SurvivorCtrl>().SetStatus("WorkSpeed", -4);
+                GetComponent<SurvivorCtrl>().SetStatus("WorkSpeed", 0.3f);
         }
         else if (type == 2)
         {
@@ -88,7 +88,7 @@ public class SurvivorItem : MonoBehaviour
             GetComponent<SurvivorCtrl>().SetAnimation("isPickItem");
             ItemPick(type, level);
 
-            GameObject.Find("GameController").GetComponent<ItemsCtrl>().SurvivorExitItems(Item.GetComponent<ItemCtrl>().GetItemNum());
+            GameObject.Find("GameController").GetComponent<ItemsCtrl>().SurvivorExitItems(Item.GetComponent<ItemCtrl>().includeNum);
 
             Destroy(Item);
         }
@@ -218,6 +218,10 @@ public class SurvivorItem : MonoBehaviour
                 if (ItemBag[i])
                     return i + 1;
         }
+        else if (type == 4)
+        {
+            return ItemGadget;
+        }
         else if (type == 5)
         {
             return ItemKey;
@@ -228,7 +232,19 @@ public class SurvivorItem : MonoBehaviour
 
     public void ItemSet(int type, int num)
     {
-        if (type == 5)
+        if (type == 4)
+        {
+            ItemGadget = num;
+            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisGadget(ItemGadget);
+        }
+        else if (type == 5)
+        {
             ItemKey = num;
+
+            if(ItemKey == 0)
+                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisKey(false);
+            else
+                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisKey(true);
+        }
     }
 }

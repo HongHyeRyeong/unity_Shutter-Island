@@ -8,7 +8,7 @@ public class PrisonCtrl : MonoBehaviour
     public Transform SpawnPoint;
 
     public int PrisonNum;
-    public bool isOpen = false;
+    public bool isOpen;
 
     GameObject[] Survivors = new GameObject[4];
     int SurvivorNum = 0;
@@ -16,6 +16,7 @@ public class PrisonCtrl : MonoBehaviour
     void Start()
     {
         ani = GetComponent<Animator>();
+        isOpen = false;
     }
 
     void Update()

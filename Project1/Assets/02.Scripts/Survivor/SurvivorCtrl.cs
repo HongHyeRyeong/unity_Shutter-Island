@@ -16,17 +16,19 @@ public class SurvivorCtrl : MonoBehaviour
     private float Power = 10f;
     private float Stamina = 4f;
     private float MoveSpeed = 4f;
-    private float WorkSpeed = 10f;
+    private float WorkSpeed = 1f;
 
-    public float maxStamina;
-    private float saveStamina;
-    private float saveWorkSpeed;
+    float maxStamina;
+    float saveStamina;
+    float saveWorkSpeed;
+
+    int WorkMachine = 0;
 
     float AttackTime = 0.5f;
     float PrisonTime = 5f;
 
-    public bool Prison = false;
-    private bool PrisonTP = false;
+    bool Prison = false;
+    bool PrisonTP = false;
 
     //
     const int Cha_Default = 0;
@@ -40,6 +42,7 @@ public class SurvivorCtrl : MonoBehaviour
     const int State_Hit = 3;
     const int State_ParryToMurderer = 4;
     const int State_PickItem = 5;
+    const int State_Repair = 6;
     const int State_AttackW = 10;
     const int State_AttackL = 11;
 
@@ -57,7 +60,7 @@ public class SurvivorCtrl : MonoBehaviour
         }
         else if (Character == Cha_WorkSpeed)
         {
-            WorkSpeed = 7f;
+            WorkSpeed = 1.1f;
         }
         else if (Character == Cha_Damage)
         {
@@ -365,6 +368,75 @@ public class SurvivorCtrl : MonoBehaviour
         PrisonTP = false;
         Hp = 100;
         GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispHP(Hp);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Machine")
+        {
+            GameObject machine = other.gameObject.GetComponent<MachineRangeCtrl>().Machine;
+
+            if (machine.gameObject.GetComponent<MachineCtrl>().Complete)
+                return;
+
+            if (other.gameObject.GetComponent<MachineRangeCtrl>().Use)
+            {
+                if (WorkMachine == machine.gameObject.GetComponent<MachineCtrl>().MachineNum)
+                {
+                    if (Input.GetKey(KeyCode.R))
+                    {
+                        if (State != State_Repair)
+                        {
+                            State = State_Repair;
+                            ani.SetTrigger("isRepair");
+                            ani.SetBool("isIdle", false);
+                        }
+                        else
+                        {
+                            tr.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
+                            trModel.rotation = Quaternion.Euler(other.transform.eulerAngles);
+                        }
+
+
+                        bool complete = machine.gameObject.GetComponent<MachineCtrl>().Install(Time.deltaTime * WorkSpeed);
+
+                        if (complete)
+                        {
+                            State = State_Idle;
+                            ani.SetBool("isIdle", true);
+
+                            other.gameObject.GetComponent<MachineRangeCtrl>().Use = false;
+                        }
+                    }
+                    else
+                    {
+                        State = State_Idle;
+                        ani.SetBool("isIdle", true);
+                    }
+                }
+            }
+            else
+            {
+                if (machine.gameObject.GetComponent<MachineCtrl>().GadgetUse)
+                {
+                    if (Input.GetKey(KeyCode.R))
+                    {
+                        other.gameObject.GetComponent<MachineRangeCtrl>().Use = true;
+                        WorkMachine = machine.gameObject.GetComponent<MachineCtrl>().MachineNum;
+                    }
+                }
+                else
+                {
+                    int GadgetNum = GetComponent<SurvivorItem>().ItemGet(4);
+
+                    if (Input.GetKeyDown(KeyCode.T) && GadgetNum > 0)
+                    {
+                        machine.gameObject.GetComponent<MachineCtrl>().GadgetUse = true;
+                        GetComponent<SurvivorItem>().ItemSet(4, GadgetNum - 1);
+                    }
+                }
+            }
+        }
     }
 
     void Dead()
