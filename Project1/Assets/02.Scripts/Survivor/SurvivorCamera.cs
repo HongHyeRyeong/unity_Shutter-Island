@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class SurvivorCamera : MonoBehaviour
 {
     private Transform tr;
-    public Transform target;
+    Transform target;
 
     float dist = 5.0f;
     float height = 2.5f;
@@ -32,6 +33,17 @@ public class SurvivorCamera : MonoBehaviour
                 Time.deltaTime * 20.0f);
 
             tr.LookAt(pos);
+        }
+        else
+        {
+            try
+            {
+                target = GameObject.Find("SurvivorCamPivot").transform;
+            }
+            catch (NullReferenceException ex)
+            {
+                print("NullReferenceException");
+            }
         }
     }
 }
