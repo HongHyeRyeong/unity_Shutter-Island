@@ -308,10 +308,16 @@ public class SurvivorCtrl : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.R))
             {
+                if (GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.activeSelf)
+                    GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.SetActive(false);
+                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisTime(PrisonTime, 5);
+
                 PrisonTime -= Time.deltaTime;
 
                 if (PrisonTime < 0)
                 {
+                    GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Time.SetActive(false);
+
                     GetComponent<SurvivorItem>().ItemSet(5, 0);
 
                     prison.GetComponent<PrisonCtrl>().OpenDoor();
@@ -320,6 +326,12 @@ public class SurvivorCtrl : MonoBehaviour
             }
             else
             {
+                if (!GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.activeSelf)
+                    GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisMessage(3);
+
+                if (GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Time.activeSelf)
+                    GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Time.SetActive(false);
+
                 PrisonTime = 5f;
             }
         }
@@ -379,6 +391,8 @@ public class SurvivorCtrl : MonoBehaviour
             if (machine.gameObject.GetComponent<MachineCtrl>().Complete)
                 return;
 
+            machine.GetComponent<MachineCtrl>().DisHUD(tr.position);
+
             if (other.gameObject.GetComponent<MachineRangeCtrl>().Use)
             {
                 if (WorkMachine == machine.gameObject.GetComponent<MachineCtrl>().MachineNum)
@@ -404,6 +418,7 @@ public class SurvivorCtrl : MonoBehaviour
                         {
                             State = State_Idle;
                             ani.SetBool("isIdle", true);
+                            WorkMachine = 0;
 
                             other.gameObject.GetComponent<MachineRangeCtrl>().Use = false;
                         }
@@ -412,6 +427,9 @@ public class SurvivorCtrl : MonoBehaviour
                     {
                         State = State_Idle;
                         ani.SetBool("isIdle", true);
+                        WorkMachine = 0;
+
+                        other.gameObject.GetComponent<MachineRangeCtrl>().Use = false;
                     }
                 }
             }
@@ -419,8 +437,12 @@ public class SurvivorCtrl : MonoBehaviour
             {
                 if (machine.gameObject.GetComponent<MachineCtrl>().GadgetUse)
                 {
+                    if (!GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.activeSelf)
+                        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisMessage(2);
+
                     if (Input.GetKey(KeyCode.R))
                     {
+                        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.SetActive(false);
                         other.gameObject.GetComponent<MachineRangeCtrl>().Use = true;
                         WorkMachine = machine.gameObject.GetComponent<MachineCtrl>().MachineNum;
                     }
@@ -429,13 +451,32 @@ public class SurvivorCtrl : MonoBehaviour
                 {
                     int GadgetNum = GetComponent<SurvivorItem>().ItemGet(4);
 
-                    if (Input.GetKeyDown(KeyCode.T) && GadgetNum > 0)
+                    if (GadgetNum > 0)
                     {
-                        machine.gameObject.GetComponent<MachineCtrl>().GadgetUse = true;
-                        GetComponent<SurvivorItem>().ItemSet(4, GadgetNum - 1);
+                        if (!GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.activeSelf)
+                            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisMessage(1);
+
+                        if (Input.GetKeyDown(KeyCode.T))
+                        {
+                            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.SetActive(false);
+                            machine.gameObject.GetComponent<MachineCtrl>().GadgetUse = true;
+                            GetComponent<SurvivorItem>().ItemSet(4, GadgetNum - 1);
+                        }
                     }
                 }
             }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Machine")
+        {
+            if (GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.activeSelf)
+                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.SetActive(false);
+
+            other.gameObject.GetComponent<MachineRangeCtrl>().
+                Machine.GetComponent<MachineCtrl>().HUD.SetActive(false);
         }
     }
 

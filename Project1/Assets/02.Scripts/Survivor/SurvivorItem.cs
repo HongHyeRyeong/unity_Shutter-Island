@@ -8,7 +8,7 @@ public class SurvivorItem : MonoBehaviour
     bool[] ItemHat = new bool[3] { false, false, false };
     bool[] ItemClothes = new bool[3] { false, false, false };
     bool[] ItemBag = new bool[2] { false, false };
-    int ItemGadget = 2;
+    int ItemGadget = 0;
     int ItemMaxGadget = 2;
     int ItemKey = 0;
 

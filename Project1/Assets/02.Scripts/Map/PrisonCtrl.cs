@@ -11,7 +11,7 @@ public class PrisonCtrl : MonoBehaviour
     public bool isOpen;
 
     GameObject[] Survivors = new GameObject[4];
-    int SurvivorNum = 0;
+    int SurvivorNum = 1;
 
     void Start()
     {
@@ -38,6 +38,18 @@ public class PrisonCtrl : MonoBehaviour
         if (other.tag == "Survivor" && SurvivorNum != 0)
         {
             other.gameObject.GetComponent<SurvivorCtrl>().PrisonStay(this.gameObject);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Survivor")
+        {
+            if (GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.activeSelf)
+                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.SetActive(false);
+
+            if (GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Time.activeSelf)
+                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Time.SetActive(false);
         }
     }
 

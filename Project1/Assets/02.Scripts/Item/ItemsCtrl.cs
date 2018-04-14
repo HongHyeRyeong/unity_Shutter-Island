@@ -12,8 +12,8 @@ public class ItemsCtrl : MonoBehaviour
     public GameObject ItemClothes3;
     public GameObject ItemBag1;
     public GameObject ItemBag2;
-    public GameObject ItemKey;
     public GameObject ItemGadget;
+    public GameObject ItemKey;
 
     GameObject[] Items = new GameObject[100];
     int numItem = 0;
@@ -70,7 +70,7 @@ public class ItemsCtrl : MonoBehaviour
         }
         else if (type == 4)
         {
-            Instantiate(ItemGadget, position, Quaternion.Euler(-90, 0, 0));
+            Instantiate(ItemGadget, position, Quaternion.identity);
         }
     }
 

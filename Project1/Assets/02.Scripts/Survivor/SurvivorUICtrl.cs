@@ -5,6 +5,25 @@ using UnityEngine.UI;
 
 public class SurvivorUICtrl : MonoBehaviour
 {
+    // ui
+    public GameObject Message;
+    public Text txtMessage;
+    public Text txtKeyInput;
+
+    public GameObject Time;
+    public Image imgTime;
+    public Text txtTime;
+
+    public Image imgLife;
+    public Sprite spriteLife1;
+    public Sprite spriteLife2;
+
+    public Image imgHP;
+    public Text txtHP;
+
+    public Image imgStamina;
+    public Text txtStamina;
+
     public GameObject Inven;
     bool isInven = false;
 
@@ -14,23 +33,14 @@ public class SurvivorUICtrl : MonoBehaviour
     public GameObject Key;
     public Text txtGadget;
 
-    public GameObject HUDItem;
-    public Text txtHUDItem;
-
-    public Image imgLife;
-    public Sprite spLife1;
-    public Sprite spLife2;
-
-    public Image imgHP;
-    public Text txtHP;
-
-    public Image imgStamina;
-    public Text txtStamina;
-
     public Camera Cam;
     public RectTransform rtPrison;
     public GameObject[] Prisons = new GameObject[3];
     public Text[] txtPrisons = new Text[3];
+
+    // world ui
+    public GameObject HUDItem;
+    public Text txtHUDItem;
 
     void Start()
     {
@@ -64,6 +74,59 @@ public class SurvivorUICtrl : MonoBehaviour
 
             ItemInfor.transform.position = pos;
         }
+    }
+
+    public void DisMessage(int type)
+    {
+        Message.SetActive(true);
+
+        if (type == 1)
+        {
+            txtKeyInput.text = "T";
+            txtMessage.text = "장치에 부품 설치하기";
+        }
+        else if (type == 2)
+        {
+            txtKeyInput.text = "R";
+            txtMessage.text = "장치 고치기";
+        }
+        else if (type == 3)
+        {
+            txtKeyInput.text = "R";
+            txtMessage.text = "감옥 문 열기";
+        }
+    }
+
+    public void DisTime(float time, float totalTime)
+    {
+        Time.SetActive(true);
+
+        txtTime.text = time.ToString("N2");
+        imgTime.fillAmount = time / totalTime;
+    }
+
+    public void DispLife(int life)
+    {
+        if (life == 1)
+        {
+            imgLife.sprite = spriteLife1;
+        }
+        else if (life == 2)
+        {
+            imgLife.sprite = spriteLife2;
+        }
+    }
+
+    public void DispHP(float hp)
+    {
+        txtHP.text = hp.ToString("N2");
+        imgHP.fillAmount = hp / 100;
+    }
+
+    public void DispStamina(float stamina, float maxStamina)
+    {
+        txtStamina.text = stamina.ToString("N2");
+        imgStamina.fillAmount = stamina / maxStamina;
     }
 
     public void OnClickInventory(int type)
@@ -119,79 +182,14 @@ public class SurvivorUICtrl : MonoBehaviour
         }
     }
 
-    public void DispItemHUD(Vector3 pos, int type, int level)
-    {
-        HUDItem.SetActive(true);
-        pos.y += 1;
-        HUDItem.transform.position = pos;
-
-        if (type == 1)
-        {
-            if (level == 1)
-                txtHUDItem.text = "모자 1단계";
-            else if (level == 2)
-                txtHUDItem.text = "모자 2단계";
-            else if (level == 3)
-                txtHUDItem.text = "모자 3단계";
-        }
-        else if (type == 2)
-        {
-            if (level == 1)
-                txtHUDItem.text = "옷 1단계";
-            else if (level == 2)
-                txtHUDItem.text = "옷 2단계";
-            else if (level == 3)
-                txtHUDItem.text = "옷 3단계";
-        }
-        else if (type == 3)
-        {
-            if (level == 1)
-                txtHUDItem.text = "가방 1단계";
-            else if (level == 2)
-                txtHUDItem.text = "가방 2단계";
-        }
-        else if (type == 4)
-        {
-            txtHUDItem.text = "장치 부품";
-        }
-        else if (type == 5)
-        {
-            txtHUDItem.text = "열쇠";
-        }
-    }
-
-    public void DisKey(bool b)
-    {
-        Key.SetActive(b);
-    }
-
     public void DisGadget(int num)
     {
         txtGadget.text = num.ToString();
     }
 
-    public void DispLife(int life)
+    public void DisKey(bool b)
     {
-        if (life == 1)
-        {
-            imgLife.sprite = spLife1;
-        }
-        else if (life == 2)
-        {
-            imgLife.sprite = spLife2;
-        }
-    }
-
-    public void DispHP(float hp)
-    {
-        txtHP.text = hp.ToString("N2");
-        imgHP.fillAmount = hp / 100;
-    }
-
-    public void DispStamina(float stamina, float maxStamina)
-    {
-        txtStamina.text = stamina.ToString("N2");
-        imgStamina.fillAmount = stamina / maxStamina;
+        Key.SetActive(b);
     }
 
     public void DisPrison(Vector3 pos, int num)
@@ -230,5 +228,54 @@ public class SurvivorUICtrl : MonoBehaviour
 
         Prisons[num].GetComponent<RectTransform>().anchoredPosition = screen;
         txtPrisons[num].text = dist.ToString("N1") + " m";
+    }
+
+    public void DispItemHUD(Vector3 pos, int type, int level)
+    {
+        HUDItem.SetActive(true);
+        pos.y += 2.5f;
+        HUDItem.transform.position = pos;
+
+        Vector3 survivorPos = GameObject.Find("Survivor").transform.position;
+
+        survivorPos.y = HUDItem.transform.position.y;
+        Vector3 vec = survivorPos - HUDItem.transform.position;
+        vec.Normalize();
+
+        HUDItem.transform.rotation = Quaternion.LookRotation(vec);
+
+        if (type == 1)
+        {
+            if (level == 1)
+                txtHUDItem.text = "모자 1단계";
+            else if (level == 2)
+                txtHUDItem.text = "모자 2단계";
+            else if (level == 3)
+                txtHUDItem.text = "모자 3단계";
+        }
+        else if (type == 2)
+        {
+            if (level == 1)
+                txtHUDItem.text = "옷 1단계";
+            else if (level == 2)
+                txtHUDItem.text = "옷 2단계";
+            else if (level == 3)
+                txtHUDItem.text = "옷 3단계";
+        }
+        else if (type == 3)
+        {
+            if (level == 1)
+                txtHUDItem.text = "가방 1단계";
+            else if (level == 2)
+                txtHUDItem.text = "가방 2단계";
+        }
+        else if (type == 4)
+        {
+            txtHUDItem.text = "장치 부품";
+        }
+        else if (type == 5)
+        {
+            txtHUDItem.text = "열쇠";
+        }
     }
 }
