@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/01.Scene/Survivor.unity
+- path: Assets/01.Scene/Murderer.unity
   isLoaded: 1
   isActive: 1
