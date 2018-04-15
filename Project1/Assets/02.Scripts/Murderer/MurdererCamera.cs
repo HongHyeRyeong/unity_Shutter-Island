@@ -1,36 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class MurdererCamera : MonoBehaviour
 {
-    private float x;
-    private float y;
-
-    float xSpeed = 100.0f;
-    float ySpeed = 100.0f;
-
-    float yMinLimit = -20f;
-    float yMaxLimit = 40f;
+    private Transform tr;
+    Transform targetMurderer;
+    Transform targetCam;
+    
+    private float MouseY;
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        tr = GetComponent<Transform>();
 
-        Vector3 angles = transform.eulerAngles;
-        x = angles.y;
-        y = angles.x;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
-    void Update()
+    void LateUpdate()
     {
-        x += Input.GetAxis("Mouse X") * xSpeed * 0.015f;
-        y -= Input.GetAxis("Mouse Y") * ySpeed * 0.015f;
+        if (targetMurderer)
+        {
+            if (targetMurderer.GetComponent<MurdererCtrl>().GetState() == 2)
+            {
+                tr.transform.position = targetCam.transform.position;
+                tr.rotation = Quaternion.Euler(
+                    targetCam.transform.eulerAngles.x, targetMurderer.transform.eulerAngles.y, 0);
+            }
+            else
+            {
+                tr.transform.position = new Vector3(
+                    targetCam.transform.position.x, targetMurderer.transform.position.y + 2, targetCam.transform.position.z);
 
-        y = ClampAngle(y, yMinLimit, yMaxLimit);
+                MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;
+                MouseY = ClampAngle(MouseY, -30, 40);
 
-        Quaternion rotation = Quaternion.Euler(y, x, 0);
-        transform.rotation = rotation;
+                tr.rotation = Quaternion.Euler(MouseY, targetMurderer.eulerAngles.y, 0);
+            }
+        }
+        else
+        {
+            try
+            {
+                targetMurderer = GameObject.Find("Murderer").transform;
+                targetCam = GameObject.Find("MurdererCamPivot").transform;
+            }
+            catch (NullReferenceException ex)
+            {
+                print(ex);
+            }
+        }
     }
 
     float ClampAngle(float angle, float min, float max)

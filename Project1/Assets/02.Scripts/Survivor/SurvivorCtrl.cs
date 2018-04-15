@@ -118,6 +118,8 @@ public class SurvivorCtrl : MonoBehaviour
                     {
                         State = State_ParryToMurderer;
                         ani.SetTrigger("isAttackW");
+                        ani.SetBool("isSlowRun", false);
+                        ani.SetBool("isRun", false);
                         GameObject.Find("Murderer").GetComponent<MurdererCtrl>().DamageByPlayer(Power);
                     }
                 }
@@ -129,6 +131,8 @@ public class SurvivorCtrl : MonoBehaviour
                     {
                         State = State_ParryToMurderer;
                         ani.SetTrigger("isAttackL");
+                        ani.SetBool("isSlowRun", false);
+                        ani.SetBool("isRun", false);
                         GameObject.Find("Murderer").GetComponent<MurdererCtrl>().DamageByPlayer(Power);
                     }
 
@@ -282,6 +286,8 @@ public class SurvivorCtrl : MonoBehaviour
     void DamageByMurderer()
     {
         State = State_Idle;
+        ani.SetBool("isSlowRun", false);
+        ani.SetBool("isRun", false);
 
         if (Hp == 100f)
         {
@@ -295,7 +301,6 @@ public class SurvivorCtrl : MonoBehaviour
             Prison = true;
             Life -= 1;
             GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispLife(Life);
-            GameObject.Find("Prison").GetComponent<PrisonCtrl>().SurvivorEnter(this.gameObject);
         }
 
         if (Life == 0)
@@ -337,6 +342,11 @@ public class SurvivorCtrl : MonoBehaviour
         }
     }
 
+    public void PrisonExit()
+    {
+        PrisonTime = 5f;
+    }
+
     void PrisonTrue()
     {
         Hp -= 0.5f * Time.deltaTime;
@@ -350,7 +360,7 @@ public class SurvivorCtrl : MonoBehaviour
             PrisonTP = true;
 
             GameObject[] respawns = GameObject.FindGameObjectsWithTag("Prison");
-            Transform minTransform = null;
+            GameObject minObject = null;
             float minDist = 10000f;
 
             foreach (GameObject respawn in respawns)
@@ -362,13 +372,16 @@ public class SurvivorCtrl : MonoBehaviour
                     if (dist < minDist)
                     {
                         minDist = dist;
-                        minTransform = respawn.transform;
+                        minObject = respawn;
                     }
                 }
             }
 
-            if (minTransform != null)
-                transform.position = minTransform.position;
+            if (minObject != null)
+            {
+                minObject.GetComponent<PrisonCtrl>().SurvivorEnter(this.gameObject);
+                transform.position = minObject.transform.position;
+            }
             else
                 Dead();
         }

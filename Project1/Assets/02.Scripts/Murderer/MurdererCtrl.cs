@@ -6,14 +6,12 @@ public class MurdererCtrl : MonoBehaviour
 {
     private Animator ani;
 
-    private int State;
+    private int State = 0;
     private float Hp = 200f;
-    float MoveSpeed = 4.5f;
-    bool isAttack = false;
+    private float MoveSpeed = 4.5f;
+    private bool isAttack = false;
 
-    // 카메라
-    private float x;
-    float xSpeed = 100.0f;
+    private float MouseX;
 
     //
     const int State_Idle = 0;
@@ -24,9 +22,7 @@ public class MurdererCtrl : MonoBehaviour
 
     void Start()
     {
-        ani = GameObject.Find("MurdererModel").gameObject.GetComponent<Animator>();
-
-        State = State_Idle;
+        ani = GetComponent<Animator>();
     }
 
     void Update()
@@ -34,12 +30,11 @@ public class MurdererCtrl : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-
         // State
         if ((ani.GetCurrentAnimatorStateInfo(0).IsName("AttackW") ||
             ani.GetCurrentAnimatorStateInfo(0).IsName("AttackL") ||
             ani.GetCurrentAnimatorStateInfo(0).IsName("Parry")) &&
-            ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
+            ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
         {
             State = State_Idle;
         }
@@ -49,12 +44,23 @@ public class MurdererCtrl : MonoBehaviour
             if (v != 0 || h != 0)
             {
                 State = State_Run;
-                ani.SetBool("isRun", true);
+
+                if (v < 0)
+                {
+                    ani.SetBool("isBackRun", true);
+                    ani.SetBool("isRun", false);
+                }
+                else
+                {
+                    ani.SetBool("isRun", true);
+                    ani.SetBool("isBackRun", false);
+                }
             }
             else
             {
                 State = State_Idle;
                 ani.SetBool("isRun", false);
+                ani.SetBool("isBackRun", false);
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -72,16 +78,20 @@ public class MurdererCtrl : MonoBehaviour
         }
 
         // Movement
-        x += Input.GetAxis("Mouse X") * xSpeed * 0.015f;
-
         if (State == State_Run)
             transform.Translate(new Vector3(h, 0, v) * MoveSpeed * Time.deltaTime);
 
-
         if (State != State_Parry)
         {
-            Quaternion rotation = Quaternion.Euler(0, x, 0);
-            transform.rotation = rotation;
+            MouseX += Input.GetAxis("Mouse X") * Time.deltaTime * 100;
+            transform.rotation = Quaternion.Euler(0, MouseX, 0);
+        }
+
+        // 
+        if(Input.GetKey(KeyCode.E) && State != State_Parry)
+        {
+            State = State_Parry;
+            ani.SetTrigger("isParry");
         }
     }
 
@@ -90,7 +100,7 @@ public class MurdererCtrl : MonoBehaviour
         if (other.tag == "Survivor" && isAttack)
         {
             isAttack = false;
-            other.gameObject.GetComponent<SurvivorCtrl>().AttackByMurderer(State);
+            other.gameObject.GetComponent<test>().AttackByMurderer(State);
         }
     }
 
@@ -99,5 +109,10 @@ public class MurdererCtrl : MonoBehaviour
         State = State_Parry;
         ani.SetTrigger("isParry");
         Hp -= Power;
+    }
+
+    public int GetState()
+    {
+        return State;
     }
 }

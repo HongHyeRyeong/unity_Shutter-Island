@@ -42,7 +42,7 @@ public class SurvivorCamera : MonoBehaviour
             }
             catch (NullReferenceException ex)
             {
-                print("NullReferenceException");
+                print(ex);
             }
         }
     }

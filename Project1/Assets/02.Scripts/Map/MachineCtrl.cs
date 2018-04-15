@@ -42,10 +42,11 @@ public class MachineCtrl : MonoBehaviour
 
             MachineGauge = 10 * GadgetNum;
 
-            if (MachineGauge > 50f)
+            if (MachineGauge == 50f)
             {
                 Complete = true;
                 CompleteLight.SetActive(true);
+                HUD.SetActive(false);
                 Ani.SetTrigger("Complete");
             }
             else

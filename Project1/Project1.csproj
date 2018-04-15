@@ -294,6 +294,7 @@
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorItem.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorUICtrl.cs" />
+    <Compile Include="Assets\02.Scripts\test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\06.Shader" />
