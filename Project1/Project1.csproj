@@ -283,18 +283,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\02.Scripts\CameraCtrl.cs" />
+    <Compile Include="Assets\02.Scripts\GameCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Item\ItemCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Item\ItemsCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Map\MachineCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Map\MachineRangeCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Map\PrisonCtrl.cs" />
-    <Compile Include="Assets\02.Scripts\Murderer\MurdererCamera.cs" />
+    <Compile Include="Assets\02.Scripts\Murderer\MurdererAnimCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Murderer\MurdererCtrl.cs" />
-    <Compile Include="Assets\02.Scripts\Survivor\SurvivorCamera.cs" />
+    <Compile Include="Assets\02.Scripts\Murderer\MurdererUICtrl.cs" />
+    <Compile Include="Assets\02.Scripts\Survivor\SurvivorAnimCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorCtrl.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorItem.cs" />
     <Compile Include="Assets\02.Scripts\Survivor\SurvivorUICtrl.cs" />
-    <Compile Include="Assets\02.Scripts\test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\06.Shader" />

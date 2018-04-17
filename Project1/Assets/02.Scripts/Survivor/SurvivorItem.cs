@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class SurvivorItem : MonoBehaviour
 {
+    GameObject Hat;
+    GameObject Clothes;
+    GameObject Bag;
+
     // type 1~5 순서
     bool[] ItemHat = new bool[3] { false, false, false };
     bool[] ItemClothes = new bool[3] { false, false, false };
@@ -11,6 +15,13 @@ public class SurvivorItem : MonoBehaviour
     int ItemGadget = 0;
     int ItemMaxGadget = 2;
     int ItemKey = 0;
+
+    private void Start()
+    {
+        Hat = this.gameObject.transform.Find("SurvivorModel/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/ItemHat").gameObject;
+        Clothes = this.gameObject.transform.Find("SurvivorModel/ItemClothes").gameObject;
+        Bag = this.gameObject.transform.Find("SurvivorModel/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/ItemBag").gameObject;
+    }
 
     void SurvivorByItem(int type, int level)
     {
@@ -50,11 +61,11 @@ public class SurvivorItem : MonoBehaviour
                 while (ItemGadget > ItemMaxGadget)
                 {
                     ItemGadget--;
-                    GameObject.Find("GameController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, 4, 0);
+                    GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, 4, 0);
                 }
             }
 
-            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisGadget(ItemGadget);
+            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisGadget(ItemGadget);
         }
     }
 
@@ -62,8 +73,7 @@ public class SurvivorItem : MonoBehaviour
     {
         int state = GetComponent<SurvivorCtrl>().GetState();
 
-        if (Input.GetKeyDown(KeyCode.F) &&
-            (state == 0 || state == 1 || state == 2))
+        if (Input.GetKeyDown(KeyCode.F) && (state == 0 || state == 1 || state == 2))
         {
             int type = Item.GetComponent<ItemCtrl>().ItemType;
             int level = Item.GetComponent<ItemCtrl>().ItemLevel;
@@ -85,10 +95,10 @@ public class SurvivorItem : MonoBehaviour
                 }
             }
 
-            GetComponent<SurvivorCtrl>().SetAnimation("isPickItem");
+            GetComponent<SurvivorCtrl>().SetState(4);
             ItemPick(type, level);
 
-            GameObject.Find("GameController").GetComponent<ItemsCtrl>().SurvivorExitItems(Item.GetComponent<ItemCtrl>().includeNum);
+            GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().SurvivorExitItems(Item.GetComponent<ItemCtrl>().GetincludeNum());
 
             Destroy(Item);
         }
@@ -104,8 +114,9 @@ public class SurvivorItem : MonoBehaviour
 
             ItemHat[level - 1] = true;
             SurvivorByItem(type, level);
-            GameObject.Find("ItemHat").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
-            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().UpdateItemInformation(type);
+
+            Hat.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
+            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().UpdateItemInformation(type);
         }
         else if (type == 2)
         {
@@ -115,8 +126,9 @@ public class SurvivorItem : MonoBehaviour
 
             ItemClothes[level - 1] = true;
             SurvivorByItem(type, level);
-            GameObject.Find("ItemClothes").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
-            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().UpdateItemInformation(type);
+
+            Clothes.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
+            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().UpdateItemInformation(type);
         }
         else if (type == 3)
         {
@@ -126,18 +138,19 @@ public class SurvivorItem : MonoBehaviour
 
             ItemBag[level - 1] = true;
             SurvivorByItem(type, level);
-            GameObject.Find("ItemBag").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
-            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().UpdateItemInformation(type);
+
+            Bag.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
+            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().UpdateItemInformation(type);
         }
         else if (type == 4)
         {
             ItemGadget++;
-            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisGadget(ItemGadget);
+            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisGadget(ItemGadget);
         }
         else if (type == 5)
         {
             ItemKey++;
-            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisKey(true);
+            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisKey(true);
         }
     }
 
@@ -150,11 +163,11 @@ public class SurvivorItem : MonoBehaviour
                 if (ItemHat[i])
                 {
                     ItemHat[i] = false;
-                    GetComponent<SurvivorCtrl>().SetAnimation("isPickItem");
+                    GetComponent<SurvivorCtrl>().SetState(4);
 
                     int level = i + 1;
-                    GameObject.Find("ItemHat").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-                    GameObject.Find("GameController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
+                    Hat.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
+                    GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
 
                     break;
                 }
@@ -167,11 +180,11 @@ public class SurvivorItem : MonoBehaviour
                 if (ItemClothes[i])
                 {
                     ItemClothes[i] = false;
-                    GetComponent<SurvivorCtrl>().SetAnimation("isPickItem");
+                    GetComponent<SurvivorCtrl>().SetState(4);
 
                     int level = i + 1;
-                    GameObject.Find("ItemClothes").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-                    GameObject.Find("GameController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
+                    Clothes.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
+                    GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
 
                     break;
                 }
@@ -184,11 +197,11 @@ public class SurvivorItem : MonoBehaviour
                 if (ItemBag[i])
                 {
                     ItemBag[i] = false;
-                    GetComponent<SurvivorCtrl>().SetAnimation("isPickItem");
+                    GetComponent<SurvivorCtrl>().SetState(4);
 
                     int level = i + 1;
-                    GameObject.Find("ItemBag").transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-                    GameObject.Find("GameController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
+                    Bag.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
+                    GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
 
                     break;
                 }
@@ -235,16 +248,16 @@ public class SurvivorItem : MonoBehaviour
         if (type == 4)
         {
             ItemGadget = num;
-            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisGadget(ItemGadget);
+            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisGadget(ItemGadget);
         }
         else if (type == 5)
         {
             ItemKey = num;
 
-            if(ItemKey == 0)
-                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisKey(false);
+            if (ItemKey == 0)
+                GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisKey(false);
             else
-                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisKey(true);
+                GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisKey(true);
         }
     }
 }

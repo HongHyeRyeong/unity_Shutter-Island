@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MurdererCtrl : MonoBehaviour
 {
-    private Animator ani;
+    private Animator Ani;
+
+    MurdererUICtrl MurdererUI;
 
     private int State = 0;
     private float Hp = 200f;
@@ -22,7 +24,15 @@ public class MurdererCtrl : MonoBehaviour
 
     void Start()
     {
-        ani = GetComponent<Animator>();
+        GameObject.Find("GameController").GetComponent<GameCtrl>().SetGame(2, null, this.gameObject);
+
+        //
+        Ani = GetComponent<Animator>();
+        MurdererUI = GameObject.Find("MurdererController").GetComponent<MurdererUICtrl>();
+
+        GameObject.Find("MainCamera").GetComponent<CameraCtrl>().targetMurderer = this.gameObject.transform;
+        GameObject.Find("MainCamera").GetComponent<CameraCtrl>().targetMurdererCamPivot =
+            this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/MurdererCamPivot").transform;
     }
 
     void Update()
@@ -31,14 +41,6 @@ public class MurdererCtrl : MonoBehaviour
         float v = Input.GetAxis("Vertical");
 
         // State
-        if ((ani.GetCurrentAnimatorStateInfo(0).IsName("AttackW") ||
-            ani.GetCurrentAnimatorStateInfo(0).IsName("AttackL") ||
-            ani.GetCurrentAnimatorStateInfo(0).IsName("Parry")) &&
-            ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
-        {
-            State = State_Idle;
-        }
-
         if (State == State_Idle || State == State_Run)
         {
             if (v != 0 || h != 0)
@@ -47,33 +49,43 @@ public class MurdererCtrl : MonoBehaviour
 
                 if (v < 0)
                 {
-                    ani.SetBool("isBackRun", true);
-                    ani.SetBool("isRun", false);
+                    MoveSpeed = 3f;
+                    Ani.SetBool("isBackRun", true);
+                    Ani.SetBool("isRun", false);
                 }
                 else
                 {
-                    ani.SetBool("isRun", true);
-                    ani.SetBool("isBackRun", false);
+                    MoveSpeed = 4.5f;
+                    Ani.SetBool("isRun", true);
+                    Ani.SetBool("isBackRun", false);
                 }
             }
             else
             {
                 State = State_Idle;
-                ani.SetBool("isRun", false);
-                ani.SetBool("isBackRun", false);
+                Ani.SetBool("isRun", false);
+                Ani.SetBool("isBackRun", false);
             }
 
             if (Input.GetMouseButtonDown(0))
             {
                 State = State_AttackW;
-                ani.SetTrigger("isAttackW");
+                Ani.SetTrigger("trAttackW");
+                Ani.SetBool("isRun", false);
+                Ani.SetBool("isBackRun", false);
+
                 isAttack = true;
+                MurdererUI.DisAttackBack(0, true);
             }
             else if (Input.GetMouseButtonDown(1))
             {
                 State = State_AttackL;
-                ani.SetTrigger("isAttackL");
+                Ani.SetTrigger("trAttackL");
+                Ani.SetBool("isRun", false);
+                Ani.SetBool("isBackRun", false);
+
                 isAttack = true;
+                MurdererUI.DisAttackBack(1, true);
             }
         }
 
@@ -87,12 +99,8 @@ public class MurdererCtrl : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, MouseX, 0);
         }
 
-        // 
-        if(Input.GetKey(KeyCode.E) && State != State_Parry)
-        {
-            State = State_Parry;
-            ani.SetTrigger("isParry");
-        }
+        if (Hp < 0)
+            Dead();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -100,19 +108,44 @@ public class MurdererCtrl : MonoBehaviour
         if (other.tag == "Survivor" && isAttack)
         {
             isAttack = false;
-            other.gameObject.GetComponent<test>().AttackByMurderer(State);
+            other.gameObject.GetComponent<SurvivorCtrl>().AttackByMurderer(this.gameObject, State);
         }
     }
 
     public void DamageByPlayer(float Power)
     {
         State = State_Parry;
-        ani.SetTrigger("isParry");
+        Ani.SetTrigger("trParry");
+        Ani.SetBool("isRun", false);
+        Ani.SetBool("isBackRun", false);
+
         Hp -= Power;
+        MurdererUI.DispHP(Hp);
+    }
+
+    public void DamageByMachine(float Power)
+    {
+        Hp -= Power;
+        MurdererUI.DispHP(Hp);
+    }
+
+    void Dead()
+    {
+        gameObject.SetActive(false);
     }
 
     public int GetState()
     {
         return State;
+    }
+
+    public void SetState(int s)
+    {
+        State = s;
+        Ani.SetBool("isRun", false);
+        Ani.SetBool("isBackRun", false);
+
+        MurdererUI.DisAttackBack(0, false);
+        MurdererUI.DisAttackBack(1, false);
     }
 }

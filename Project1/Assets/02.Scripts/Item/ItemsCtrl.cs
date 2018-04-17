@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ItemsCtrl : MonoBehaviour
 {
+    GameObject Survivor;
+
     public GameObject ItemHat1;
     public GameObject ItemHat2;
     public GameObject ItemHat3;
@@ -29,7 +31,7 @@ public class ItemsCtrl : MonoBehaviour
                         Items[i].transform.position,
                         Items[i].GetComponent<ItemCtrl>().ItemType,
                         Items[i].GetComponent<ItemCtrl>().ItemLevel);
-                    GameObject.Find("Survivor").GetComponent<SurvivorItem>().SurvivorEnterItem(Items[i]);
+                    Survivor.GetComponent<SurvivorItem>().SurvivorEnterItem(Items[i]);
 
                     break;
                 }
@@ -74,9 +76,9 @@ public class ItemsCtrl : MonoBehaviour
         }
     }
 
-    public int SurvivorEnterItems(GameObject Item)
+    public int SurvivorEnterItems(GameObject item)
     {
-        Items[numItem++] = Item;
+        Items[numItem++] = item;
         return numItem - 1;
     }
 
@@ -84,5 +86,10 @@ public class ItemsCtrl : MonoBehaviour
     {
         Items[ItemsNum] = null;
         numItem--;
+    }
+
+    public void SetSurvivor(GameObject survivor)
+    {
+        Survivor = survivor;
     }
 }

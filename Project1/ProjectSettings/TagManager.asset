@@ -8,7 +8,6 @@ TagManager:
   - Murderer
   - Survivor
   - Item
-  - ItemPut
   - Machine
   layers:
   - Default

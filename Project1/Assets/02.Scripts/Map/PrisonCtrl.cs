@@ -4,29 +4,30 @@ using UnityEngine;
 
 public class PrisonCtrl : MonoBehaviour
 {
-    private Animator ani;
-    public Transform SpawnPoint;
+    private Animator Ani;
+    Vector3 SpawnPoint;
 
     public int PrisonNum;
-    public bool isOpen;
+    bool isOpen = false;
 
     GameObject[] Survivors = new GameObject[4];
     int SurvivorNum = 0;
 
     void Start()
     {
-        ani = GetComponent<Animator>();
-        isOpen = false;
+        Ani = GetComponent<Animator>();
+        SpawnPoint = this.gameObject.transform.Find("PrisonSpawnPoint").transform.position;
     }
 
     void Update()
     {
         if (SurvivorNum != 0)
-            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisPrison(transform.position, PrisonNum);
+            GameObject.Find("GameController").GetComponent<GameCtrl>().DisPrison(transform.position, PrisonNum);
 
         if (isOpen)
         {
-            if (ani.GetCurrentAnimatorStateInfo(0).IsName("PrisonOpen") && ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
+            if (Ani.GetCurrentAnimatorStateInfo(0).IsName("PrisonOpen") &&
+                Ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
                 isOpen = false;
         }
     }
@@ -43,12 +44,6 @@ public class PrisonCtrl : MonoBehaviour
     {
         if (other.tag == "Survivor" && SurvivorNum != 0)
         {
-            if (GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.activeSelf)
-                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.SetActive(false);
-
-            if (GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Time.activeSelf)
-                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Time.SetActive(false);
-
             other.gameObject.GetComponent<SurvivorCtrl>().PrisonExit();
         }
     }
@@ -60,17 +55,22 @@ public class PrisonCtrl : MonoBehaviour
 
     public void OpenDoor()
     {
-        ani.SetTrigger("Open");
+        Ani.SetTrigger("Open");
         isOpen = true;
 
         for (int i = 0; i < SurvivorNum; ++i)
         {
-            Survivors[i].transform.position = SpawnPoint.position;
+            Survivors[i].transform.position = SpawnPoint;
             Survivors[i].GetComponent<SurvivorCtrl>().PrisonFalse();
             Survivors[i] = null;
         }
         SurvivorNum = 0;
 
-        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Prisons[PrisonNum].SetActive(false);
+        GameObject.Find("GameController").GetComponent<GameCtrl>().SetPrisons(PrisonNum, false);
+    }
+
+    public bool GetOpen()
+    {
+        return isOpen;
     }
 }

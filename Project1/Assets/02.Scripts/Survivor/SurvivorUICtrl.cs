@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class SurvivorUICtrl : MonoBehaviour
 {
+    GameObject Survivor;
+
     // ui
     public GameObject Message;
     public Text txtMessage;
@@ -24,6 +26,9 @@ public class SurvivorUICtrl : MonoBehaviour
     public Image imgStamina;
     public Text txtStamina;
 
+    public Image[] imgAttack = new Image[2];
+    public Image[] imgAttackR = new Image[2];
+
     public GameObject Inven;
     bool isInven = false;
 
@@ -32,6 +37,8 @@ public class SurvivorUICtrl : MonoBehaviour
 
     public GameObject Key;
     public Text txtGadget;
+
+    public Text txtMachine;
 
     public Camera Cam;
     public RectTransform rtPrison;
@@ -129,9 +136,22 @@ public class SurvivorUICtrl : MonoBehaviour
         imgStamina.fillAmount = stamina / maxStamina;
     }
 
+    public void DisAttackBack(int i, bool attack)
+    {
+        Color c = imgAttack[i].color;
+
+        if (attack)
+            c.a = 0.2f;
+        else
+            c.a = 0.8f;
+
+        imgAttack[i].color = c;
+        imgAttackR[i].color = c;
+    }
+
     public void OnClickInventory(int type)
     {
-        GameObject.Find("Survivor").GetComponent<SurvivorItem>().ItemPut(type);
+        Survivor.GetComponent<SurvivorItem>().ItemPut(type);
         UpdateItemInformation(type);
     }
 
@@ -148,7 +168,7 @@ public class SurvivorUICtrl : MonoBehaviour
 
     public void UpdateItemInformation(int type)
     {
-        int level = GameObject.Find("Survivor").GetComponent<SurvivorItem>().ItemGet(type);
+        int level = Survivor.GetComponent<SurvivorItem>().ItemGet(type);
 
         if (level == 0)
             txtItemInfor.text = "장착된 아이템이 없습니다.";
@@ -157,27 +177,27 @@ public class SurvivorUICtrl : MonoBehaviour
             if (type == 1)
             {
                 if (level == 1)
-                    txtItemInfor.text = "모자 1단계(장치 속도 2초 감소)";
+                    txtItemInfor.text = "모자 1단계";
                 else if (level == 2)
-                    txtItemInfor.text = "모자 2단계(장치 속도 3초 감소)";
+                    txtItemInfor.text = "모자 2단계";
                 else if (level == 3)
-                    txtItemInfor.text = "모자 3단계(장치 속도 4초 감소)";
+                    txtItemInfor.text = "모자 3단계";
             }
             else if (type == 2)
             {
                 if (level == 1)
-                    txtItemInfor.text = "옷 1단계(스테미너 50 증가)";
+                    txtItemInfor.text = "옷 1단계";
                 else if (level == 2)
-                    txtItemInfor.text = "옷 2단계(스테미너 100 증가)";
+                    txtItemInfor.text = "옷 2단계";
                 else if (level == 3)
-                    txtItemInfor.text = "옷 3단계(스테미너 200 증가)";
+                    txtItemInfor.text = "옷 3단계";
             }
             else if (type == 3)
             {
                 if (level == 1)
-                    txtItemInfor.text = "가방 1단계(장치 부품 1개 추가 가능)";
+                    txtItemInfor.text = "가방 1단계";
                 else if (level == 2)
-                    txtItemInfor.text = "가방 2단계(장치 부품 2개 추가 가능)";
+                    txtItemInfor.text = "가방 2단계";
             }
         }
     }
@@ -192,12 +212,17 @@ public class SurvivorUICtrl : MonoBehaviour
         Key.SetActive(b);
     }
 
+    public void DisMachine(int num)
+    {
+        txtMachine.text = num.ToString();
+    }
+
     public void DisPrison(Vector3 pos, int num)
     {
         if (!Prisons[num].activeSelf)
             Prisons[num].SetActive(true);
 
-        float dist = Vector3.Distance(pos, GameObject.Find("Survivor").transform.position) - 5.5f;
+        float dist = Vector3.Distance(pos, Survivor.transform.position) - 5.5f;
 
         if (dist < 0)
             dist = 0;
@@ -230,13 +255,18 @@ public class SurvivorUICtrl : MonoBehaviour
         txtPrisons[num].text = dist.ToString("N1") + " m";
     }
 
+    public void SetPrisons(int num, bool b)
+    {
+        Prisons[num].SetActive(b);
+    }
+
     public void DispItemHUD(Vector3 pos, int type, int level)
     {
         HUDItem.SetActive(true);
         pos.y += 2.5f;
         HUDItem.transform.position = pos;
 
-        Vector3 survivorPos = GameObject.Find("Survivor").transform.position;
+        Vector3 survivorPos = Survivor.transform.position;
 
         survivorPos.y = HUDItem.transform.position.y;
         Vector3 vec = survivorPos - HUDItem.transform.position;
@@ -277,5 +307,10 @@ public class SurvivorUICtrl : MonoBehaviour
         {
             txtHUDItem.text = "열쇠";
         }
+    }
+
+    public void SetSurvivor(GameObject survivor)
+    {
+        Survivor = survivor;
     }
 }

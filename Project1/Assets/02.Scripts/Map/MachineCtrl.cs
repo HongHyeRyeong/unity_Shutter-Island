@@ -7,26 +7,27 @@ public class MachineCtrl : MonoBehaviour
 {
     private Animator Ani;
 
-    public GameObject HUD;
-    public Image imgHUD;
-    public Text txtHUD;
+    GameObject HUD;
+    Image imgHUD;
+    Text txtHUD;
 
-    public GameObject CompleteLight;
+    GameObject CompleteLight;
 
     public int MachineNum;
     float MachineGauge = 0;
-    public bool Complete;
+    bool Complete = false;
 
-    public bool GadgetUse;
+    bool GadgetUse = false;
     float GadgetGauge = 10f;
     int GadgetNum = 0;
 
     void Start()
     {
         Ani = GetComponent<Animator>();
-
-        Complete = false;
-        GadgetUse = false;
+        HUD = this.gameObject.transform.Find("HUDMachine").gameObject;
+        imgHUD = HUD.transform.Find("imgHUDMachine").GetComponent<Image>();
+        txtHUD = HUD.transform.Find("txtHUDMachine").GetComponent<Text>();
+        CompleteLight = this.gameObject.transform.Find("Completelight").gameObject;
     }
 
     public bool Install(float work)
@@ -48,6 +49,7 @@ public class MachineCtrl : MonoBehaviour
                 CompleteLight.SetActive(true);
                 HUD.SetActive(false);
                 Ani.SetTrigger("Complete");
+                GameObject.Find("GameController").GetComponent<GameCtrl>().MachineComplete();
             }
             else
                 Ani.SetTrigger("Install");
@@ -70,5 +72,25 @@ public class MachineCtrl : MonoBehaviour
 
         txtHUD.text = MachineGauge.ToString("N2");
         imgHUD.fillAmount = MachineGauge / 50;
+    }
+
+    public bool GetComplete()
+    {
+        return Complete;
+    }
+
+    public void SetGadgetUse(bool b)
+    {
+        GadgetUse = b;
+    }
+
+    public bool GetGadgetUse()
+    {
+        return GadgetUse;
+    }
+
+    public void SetHUD(bool b)
+    {
+        HUD.SetActive(b);
     }
 }

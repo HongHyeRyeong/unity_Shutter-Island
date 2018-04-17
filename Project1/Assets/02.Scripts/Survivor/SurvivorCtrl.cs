@@ -3,13 +3,15 @@ using System.Collections;
 
 public class SurvivorCtrl : MonoBehaviour
 {
-    private Transform tr;
+    private Animator Ani;
     private Transform trModel;
-    private Animator ani;
+
+    SurvivorUICtrl SurvivorUI;
+    GameObject Murderer;
 
     //
-    public int Character = 0;
-    private int State;
+    public int Type;
+    private int State = 0;
 
     private int Life = 2;
     private float Hp = 100f;
@@ -22,6 +24,7 @@ public class SurvivorCtrl : MonoBehaviour
     float saveStamina;
     float saveWorkSpeed;
 
+    int Attack = 0;
     int WorkMachine = 0;
 
     float AttackTime = 0.5f;
@@ -40,29 +43,34 @@ public class SurvivorCtrl : MonoBehaviour
     const int State_SlowRun = 1;
     const int State_Run = 2;
     const int State_Hit = 3;
-    const int State_ParryToMurderer = 4;
-    const int State_PickItem = 5;
-    const int State_Repair = 6;
+    const int State_PickItem = 4;
+    const int State_Repair = 5;
     const int State_AttackW = 10;
     const int State_AttackL = 11;
+    const int State_ParryToMurdererW = 12;
+    const int State_ParryToMurdererL = 13;
 
     void Start()
     {
-        tr = GetComponent<Transform>();
-        trModel = GameObject.Find("SurvivorModel").GetComponent<Transform>();
-        ani = GameObject.Find("SurvivorModel").gameObject.GetComponent<Animator>();
+        //GameObject.Find("GameController").GetComponent<GameCtrl>().SetGame(1, this.gameObject, null);
 
-        State = State_Idle;
+        //
+        trModel = this.gameObject.transform.Find("SurvivorModel").GetComponent<Transform>();
+        Ani = this.gameObject.transform.Find("SurvivorModel").GetComponent<Animator>();
+        SurvivorUI = GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>();
 
-        if (Character == Cha_Stamina)
+        GameObject.Find("MainCamera").GetComponent<CameraCtrl>().targetSurvivorComPivot =
+            this.gameObject.transform.Find("SurvivorCamPivot");
+
+        if (Type == Cha_Stamina)
         {
             Stamina = 6f;
         }
-        else if (Character == Cha_WorkSpeed)
+        else if (Type == Cha_WorkSpeed)
         {
             WorkSpeed = 1.1f;
         }
-        else if (Character == Cha_Damage)
+        else if (Type == Cha_Damage)
         {
             Power = 15f;
         }
@@ -71,8 +79,8 @@ public class SurvivorCtrl : MonoBehaviour
         saveStamina = Stamina;
         saveWorkSpeed = WorkSpeed;
 
-        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispHP(Hp);
-        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
+        SurvivorUI.DispHP(Hp);
+        SurvivorUI.DispStamina(Stamina, maxStamina);
     }
 
     void Update()
@@ -81,76 +89,49 @@ public class SurvivorCtrl : MonoBehaviour
         float v = Input.GetAxis("Vertical");
 
         // State
-        if ((ani.GetCurrentAnimatorStateInfo(0).IsName("AttackW") ||
-            ani.GetCurrentAnimatorStateInfo(0).IsName("AttackL") ||
-            ani.GetCurrentAnimatorStateInfo(0).IsName("Hit") ||
-            ani.GetCurrentAnimatorStateInfo(0).IsName("PickItem")) &&
-            ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-        {
-            State = State_Idle;
-        }
-
         if (State == State_Idle || State == State_SlowRun || State == State_Run)
         {
             if (v != 0 || h != 0)
             {
                 State = State_SlowRun;
-                ani.SetBool("isSlowRun", true);
+                Ani.SetBool("isSlowRun", true);
             }
             else
             {
                 State = State_Idle;
-                ani.SetBool("isSlowRun", false);
-                ani.SetBool("isRun", false);
+                Ani.SetBool("isSlowRun", false);
+                Ani.SetBool("isRun", false);
             }
-        }
-        else if (State == State_AttackW || State == State_AttackL)
-        {
-            AttackTime -= Time.deltaTime;
 
-            if (AttackTime > 0)
+            if (!SurvivorUI.Inven.activeSelf)
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if (State == State_AttackL)
-                        DamageByMurderer();
-                    else
-                    {
-                        State = State_ParryToMurderer;
-                        ani.SetTrigger("isAttackW");
-                        ani.SetBool("isSlowRun", false);
-                        ani.SetBool("isRun", false);
-                        GameObject.Find("Murderer").GetComponent<MurdererCtrl>().DamageByPlayer(Power);
-                    }
+                    State = State_AttackW;
+                    Ani.SetTrigger("trAttackW");
+                    Ani.SetBool("isSlowRun", false);
+                    Ani.SetBool("isRun", false);
+
+                    SurvivorUI.DisAttackBack(0, true);
                 }
                 else if (Input.GetMouseButtonDown(1))
                 {
-                    if (State == State_AttackW)
-                        DamageByMurderer();
-                    else
-                    {
-                        State = State_ParryToMurderer;
-                        ani.SetTrigger("isAttackL");
-                        ani.SetBool("isSlowRun", false);
-                        ani.SetBool("isRun", false);
-                        GameObject.Find("Murderer").GetComponent<MurdererCtrl>().DamageByPlayer(Power);
-                    }
+                    State = State_AttackL;
+                    Ani.SetTrigger("trAttackL");
+                    Ani.SetBool("isSlowRun", false);
+                    Ani.SetBool("isRun", false);
 
+                    SurvivorUI.DisAttackBack(1, true);
                 }
             }
-            else
-                DamageByMurderer();
         }
 
         // Movement
         Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
 
         if (State == State_Run || State == State_SlowRun)
-        {
-            // 이동
-            tr.Translate(moveDir.normalized * Time.deltaTime * MoveSpeed, Space.Self);
+        {transform.Translate(moveDir.normalized * Time.deltaTime * MoveSpeed, Space.Self);
 
-            // 이동하면서 회전
             float angle = 0;
 
             if (v > 0 && h == 0) angle = 0;
@@ -162,16 +143,14 @@ public class SurvivorCtrl : MonoBehaviour
             else if (v < 0 && h > 0) angle = 135;
             else if (v < 0 && h < 0) angle = -135;
 
-            angle += tr.eulerAngles.y;
+            angle += transform.eulerAngles.y;
 
             Quaternion rot = Quaternion.Euler(0, angle, 0);
-
             trModel.rotation = Quaternion.Slerp(trModel.rotation, rot, Time.deltaTime * 10f);
         }
 
-        // 마우스 회전
         if (State == State_Idle || State == State_Run || State == State_SlowRun)
-            tr.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
+            transform.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
 
         if (Prison)
             PrisonTrue();
@@ -187,7 +166,7 @@ public class SurvivorCtrl : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             MoveSpeed = 4f;
-            ani.SetBool("isRun", false);
+            Ani.SetBool("isRun", false);
 
             if (State == State_Run)
             {
@@ -202,7 +181,7 @@ public class SurvivorCtrl : MonoBehaviour
                 if (Stamina > 0)
                 {
                     State = State_Run;
-                    ani.SetBool("isRun", true);
+                    Ani.SetBool("isRun", true);
 
                     MoveSpeed = 6f;
                     Stamina -= Time.deltaTime;
@@ -210,12 +189,12 @@ public class SurvivorCtrl : MonoBehaviour
                     if (Stamina < 0)
                         Stamina = 0;
 
-                    GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
+                    SurvivorUI.DispStamina(Stamina, maxStamina);
                 }
                 else
                 {
                     State = State_SlowRun;
-                    ani.SetBool("isRun", false);
+                    Ani.SetBool("isRun", false);
                     MoveSpeed = 4f;
                 }
             }
@@ -224,7 +203,7 @@ public class SurvivorCtrl : MonoBehaviour
                 if (Stamina < maxStamina)
                 {
                     Stamina += FillStaminaSpeed * Time.deltaTime;
-                    GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
+                    SurvivorUI.DispStamina(Stamina, maxStamina);
                 }
             }
         }
@@ -233,74 +212,113 @@ public class SurvivorCtrl : MonoBehaviour
             if (Stamina < maxStamina)
             {
                 Stamina += FillStaminaSpeed * Time.deltaTime;
-                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
+                SurvivorUI.DispStamina(Stamina, maxStamina);
             }
         }
-    }
 
-    public int GetState()
-    {
-        return State;
-    }
-
-    public void SetStatus(string name, float num)
-    {
-        if (name == "WorkSpeed")
+        // Attack
+        if (Attack != 0)
         {
-            WorkSpeed = saveWorkSpeed;
-            WorkSpeed += num;
-        }
-        else if (name == "Stamina")
-        {
-            maxStamina = saveStamina;
-            maxStamina += num;
+            AttackTime -= Time.deltaTime;
 
-            if (Stamina > maxStamina)
-                Stamina = maxStamina;
+            if (AttackTime > 0)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (Attack == State_AttackL)
+                        DamageByMurderer();
+                    else
+                    {
+                        State = State_ParryToMurdererW;
+                        Ani.SetTrigger("trParryW");
+                        Ani.SetBool("isSlowRun", false);
+                        Ani.SetBool("isRun", false);
 
-            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispStamina(Stamina, maxStamina);
+                        Attack = 0;
+                        Murderer.GetComponent<MurdererCtrl>().DamageByPlayer(Power);
+                    }
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    if (Attack == State_AttackW)
+                        DamageByMurderer();
+                    else
+                    {
+                        State = State_ParryToMurdererL;
+                        Ani.SetTrigger("trParryL");
+                        Ani.SetBool("isSlowRun", false);
+                        Ani.SetBool("isRun", false);
+
+                        Attack = 0;
+                        Murderer.GetComponent<MurdererCtrl>().DamageByPlayer(Power);
+                    }
+
+                }
+            }
+            else
+                DamageByMurderer();
         }
     }
 
-    public void SetAnimation(string name)
-    {
-        if (name == "isPickItem")
-        {
-            State = State_PickItem;
-            ani.SetBool("isSlowRun", false);
-            ani.SetBool("isRun", false);
-        }
-
-        ani.SetTrigger(name);
-    }
-
-    public void AttackByMurderer(int MurdererState)
+    public void AttackByMurderer(GameObject m, int MurdererAttack)
     {
         if (!Prison)
         {
-            State = MurdererState;
-            AttackTime = 0.5f;
+            if (Murderer == null)
+                Murderer = m;
+
+            if (State == State_AttackW || State == State_AttackL)
+            {
+                if (State == MurdererAttack)
+                {
+                    if (State == State_AttackW)
+                    {
+                        State = State_ParryToMurdererW;
+                        Ani.SetTrigger("isAttackW");
+                    }
+                    else
+                    {
+                        State = State_ParryToMurdererL;
+                        Ani.SetTrigger("isAttackL");
+                    }
+                    Ani.SetBool("isSlowRun", false);
+                    Ani.SetBool("isRun", false);
+
+                    Murderer.GetComponent<MurdererCtrl>().DamageByPlayer(Power);
+                }
+                else
+                {
+                    DamageByMurderer();
+                }
+            }
+            else
+            {
+                Attack = MurdererAttack;
+                AttackTime = 0.5f;
+            }
         }
     }
 
     void DamageByMurderer()
     {
         State = State_Idle;
-        ani.SetBool("isSlowRun", false);
-        ani.SetBool("isRun", false);
+        Ani.SetBool("isSlowRun", false);
+        Ani.SetBool("isRun", false);
+        Attack = 0;
 
         if (Hp == 100f)
         {
             State = State_Hit;
-            ani.SetTrigger("isHit");
+            Ani.SetTrigger("isHit");
+
             Hp = 50f;
-            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispHP(Hp);
+            SurvivorUI.DispHP(Hp);
         }
         else if (Hp == 50f)
         {
             Prison = true;
             Life -= 1;
-            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispLife(Life);
+            SurvivorUI.DispLife(Life);
         }
 
         if (Life == 0)
@@ -313,15 +331,15 @@ public class SurvivorCtrl : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.R))
             {
-                if (GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.activeSelf)
-                    GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.SetActive(false);
-                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisTime(PrisonTime, 5);
+                if (SurvivorUI.Message.activeSelf)
+                    SurvivorUI.Message.SetActive(false);
+                SurvivorUI.DisTime(PrisonTime, 5);
 
                 PrisonTime -= Time.deltaTime;
 
                 if (PrisonTime < 0)
                 {
-                    GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Time.SetActive(false);
+                    SurvivorUI.Time.SetActive(false);
 
                     GetComponent<SurvivorItem>().ItemSet(5, 0);
 
@@ -331,11 +349,11 @@ public class SurvivorCtrl : MonoBehaviour
             }
             else
             {
-                if (!GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.activeSelf)
-                    GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisMessage(3);
+                if (!SurvivorUI.Message.activeSelf)
+                    SurvivorUI.DisMessage(3);
 
-                if (GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Time.activeSelf)
-                    GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Time.SetActive(false);
+                if (SurvivorUI.Time.activeSelf)
+                    SurvivorUI.Time.SetActive(false);
 
                 PrisonTime = 5f;
             }
@@ -345,12 +363,14 @@ public class SurvivorCtrl : MonoBehaviour
     public void PrisonExit()
     {
         PrisonTime = 5f;
+        SurvivorUI.Message.SetActive(false);
+        SurvivorUI.Time.SetActive(false);
     }
 
     void PrisonTrue()
     {
         Hp -= 0.5f * Time.deltaTime;
-        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispHP(Hp);
+        SurvivorUI.DispHP(Hp);
 
         if (Hp <= 0)
             Dead();
@@ -365,7 +385,7 @@ public class SurvivorCtrl : MonoBehaviour
 
             foreach (GameObject respawn in respawns)
             {
-                if (respawn.GetComponent<PrisonCtrl>().isOpen == false)
+                if (respawn.GetComponent<PrisonCtrl>().GetOpen() == false)
                 {
                     float dist = Vector3.Distance(transform.position, respawn.transform.position);
 
@@ -391,8 +411,9 @@ public class SurvivorCtrl : MonoBehaviour
     {
         Prison = false;
         PrisonTP = false;
+
         Hp = 100;
-        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DispHP(Hp);
+        SurvivorUI.DispHP(Hp);
     }
 
     private void OnTriggerStay(Collider other)
@@ -401,12 +422,12 @@ public class SurvivorCtrl : MonoBehaviour
         {
             GameObject machine = other.gameObject.GetComponent<MachineRangeCtrl>().Machine;
 
-            if (machine.gameObject.GetComponent<MachineCtrl>().Complete)
+            if (machine.gameObject.GetComponent<MachineCtrl>().GetComplete())
                 return;
 
-            machine.GetComponent<MachineCtrl>().DisHUD(tr.position);
+            machine.GetComponent<MachineCtrl>().DisHUD(transform.position);
 
-            if (other.gameObject.GetComponent<MachineRangeCtrl>().Use)
+            if (other.gameObject.GetComponent<MachineRangeCtrl>().GetMachineUse())
             {
                 if (WorkMachine == machine.gameObject.GetComponent<MachineCtrl>().MachineNum)
                 {
@@ -415,48 +436,48 @@ public class SurvivorCtrl : MonoBehaviour
                         if (State != State_Repair)
                         {
                             State = State_Repair;
-                            ani.SetTrigger("isRepair");
-                            ani.SetBool("isIdle", false);
+                            Ani.SetBool("isRepair", true);
+                            Ani.SetBool("isSlowRun", false);
+                            Ani.SetBool("isRun", false);
                         }
                         else
                         {
-                            tr.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
+                            transform.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
                             trModel.rotation = Quaternion.Euler(other.transform.eulerAngles);
                         }
-
 
                         bool complete = machine.gameObject.GetComponent<MachineCtrl>().Install(Time.deltaTime * WorkSpeed);
 
                         if (complete)
                         {
                             State = State_Idle;
-                            ani.SetBool("isIdle", true);
+                            Ani.SetBool("isRepair", false);
                             WorkMachine = 0;
 
-                            other.gameObject.GetComponent<MachineRangeCtrl>().Use = false;
+                            other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(false);
                         }
                     }
                     else
                     {
                         State = State_Idle;
-                        ani.SetBool("isIdle", true);
+                        Ani.SetBool("isRepair", false);
                         WorkMachine = 0;
 
-                        other.gameObject.GetComponent<MachineRangeCtrl>().Use = false;
+                        other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(false);
                     }
                 }
             }
             else
             {
-                if (machine.gameObject.GetComponent<MachineCtrl>().GadgetUse)
+                if (machine.gameObject.GetComponent<MachineCtrl>().GetGadgetUse())
                 {
-                    if (!GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.activeSelf)
-                        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisMessage(2);
+                    if (!SurvivorUI.Message.activeSelf)
+                        SurvivorUI.DisMessage(2);
 
                     if (Input.GetKey(KeyCode.R))
                     {
-                        GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.SetActive(false);
-                        other.gameObject.GetComponent<MachineRangeCtrl>().Use = true;
+                        SurvivorUI.Message.SetActive(false);
+                        other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(true);
                         WorkMachine = machine.gameObject.GetComponent<MachineCtrl>().MachineNum;
                     }
                 }
@@ -466,13 +487,13 @@ public class SurvivorCtrl : MonoBehaviour
 
                     if (GadgetNum > 0)
                     {
-                        if (!GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.activeSelf)
-                            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().DisMessage(1);
+                        if (!SurvivorUI.Message.activeSelf)
+                            SurvivorUI.DisMessage(1);
 
                         if (Input.GetKeyDown(KeyCode.T))
                         {
-                            GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.SetActive(false);
-                            machine.gameObject.GetComponent<MachineCtrl>().GadgetUse = true;
+                            SurvivorUI.Message.SetActive(false);
+                            machine.gameObject.GetComponent<MachineCtrl>().SetGadgetUse(true);
                             GetComponent<SurvivorItem>().ItemSet(4, GadgetNum - 1);
                         }
                     }
@@ -485,16 +506,55 @@ public class SurvivorCtrl : MonoBehaviour
     {
         if (other.tag == "Machine")
         {
-            if (GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.activeSelf)
-                GameObject.Find("GameController").GetComponent<SurvivorUICtrl>().Message.SetActive(false);
+            if (SurvivorUI.Message.activeSelf)
+                SurvivorUI.Message.SetActive(false);
 
-            other.gameObject.GetComponent<MachineRangeCtrl>().
-                Machine.GetComponent<MachineCtrl>().HUD.SetActive(false);
+            other.gameObject.GetComponent<MachineRangeCtrl>().Machine.GetComponent<MachineCtrl>().SetHUD(false);
         }
     }
 
     void Dead()
     {
         gameObject.SetActive(false);
+    }
+
+    public void SetState(int s)
+    {
+        State = s;
+        Ani.SetBool("isSlowRun", false);
+        Ani.SetBool("isRun", false);
+
+        SurvivorUI.DisAttackBack(0, false);
+        SurvivorUI.DisAttackBack(1, false);
+
+        if (State == State_PickItem)
+        {
+            State = State_PickItem;
+            Ani.SetTrigger("trPickItem");
+        }
+    }
+
+    public int GetState()
+    {
+        return State;
+    }
+
+    public void SetStatus(string name, float num)
+    {
+        if (name == "WorkSpeed")
+        {
+            WorkSpeed = saveWorkSpeed;
+            WorkSpeed += num;
+        }
+        else if (name == "Stamina")
+        {
+            maxStamina = saveStamina;
+            maxStamina += num;
+
+            if (Stamina > maxStamina)
+                Stamina = maxStamina;
+
+            SurvivorUI.DispStamina(Stamina, maxStamina);
+        }
     }
 }
