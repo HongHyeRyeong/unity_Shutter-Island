@@ -8,15 +8,15 @@ public class MurdererAnimCtrl : StateMachineBehaviour
     {
         GameObject Murderer = animator.gameObject;
 
-        if (stateInfo.IsName("AttackW"))
+        if (stateInfo.IsName("AttackW") && Murderer.GetComponent<MurdererCtrl>().GetState() == 10)
         {
             Murderer.GetComponent<MurdererCtrl>().SetState(0);
         }
-        else if (stateInfo.IsName("AttackL"))
+        else if (stateInfo.IsName("AttackL") && Murderer.GetComponent<MurdererCtrl>().GetState() == 11)
         {
             Murderer.GetComponent<MurdererCtrl>().SetState(0);
         }
-        else if (stateInfo.IsName("Parry"))
+        else if (stateInfo.IsName("Parry") && Murderer.GetComponent<MurdererCtrl>().GetState() == 2)
         {
             Murderer.GetComponent<MurdererCtrl>().SetState(0);
         }

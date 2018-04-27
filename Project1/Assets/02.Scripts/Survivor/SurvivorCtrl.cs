@@ -52,7 +52,7 @@ public class SurvivorCtrl : MonoBehaviour
 
     void Start()
     {
-        //GameObject.Find("GameController").GetComponent<GameCtrl>().SetGame(1, this.gameObject, null);
+        GameObject.Find("GameController").GetComponent<GameCtrl>().SetGame(1, this.gameObject, null);
 
         //
         trModel = this.gameObject.transform.Find("SurvivorModel").GetComponent<Transform>();
@@ -130,7 +130,8 @@ public class SurvivorCtrl : MonoBehaviour
         Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
 
         if (State == State_Run || State == State_SlowRun)
-        {transform.Translate(moveDir.normalized * Time.deltaTime * MoveSpeed, Space.Self);
+        {
+            transform.Translate(moveDir.normalized * Time.deltaTime * MoveSpeed, Space.Self);
 
             float angle = 0;
 
@@ -309,7 +310,7 @@ public class SurvivorCtrl : MonoBehaviour
         if (Hp == 100f)
         {
             State = State_Hit;
-            Ani.SetTrigger("isHit");
+            Ani.SetTrigger("trHit");
 
             Hp = 50f;
             SurvivorUI.DispHP(Hp);

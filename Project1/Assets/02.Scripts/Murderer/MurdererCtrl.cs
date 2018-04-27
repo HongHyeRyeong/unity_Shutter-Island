@@ -32,7 +32,7 @@ public class MurdererCtrl : MonoBehaviour
 
         GameObject.Find("MainCamera").GetComponent<CameraCtrl>().targetMurderer = this.gameObject.transform;
         GameObject.Find("MainCamera").GetComponent<CameraCtrl>().targetMurdererCamPivot =
-            this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/MurdererCamPivot").transform;
+            this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head/MurdererCamPivot").transform;
     }
 
     void Update()
