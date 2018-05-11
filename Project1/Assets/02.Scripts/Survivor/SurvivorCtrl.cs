@@ -34,8 +34,8 @@ public class SurvivorCtrl : MonoBehaviour
     int Attack = 0;
     int WorkMachine = 0;
 
-    float AttackTime = 5f;
-    float PrisonTime = 5f;
+    float AttackTime = 0.1f;
+    float PrisonTime = 3f;
 
     bool Prison = false;
     bool PrisonTP = false;
@@ -82,9 +82,11 @@ public class SurvivorCtrl : MonoBehaviour
             GameObject.Find("MainCamera").GetComponent<CameraCtrl>().targetSurvivorComPivot =
                 this.gameObject.transform.Find("SurvivorCamPivot");
 
+            Type = Cha_Stamina;  // Demo
+
             if (Type == Cha_Stamina)
             {
-                Stamina = 6f;
+                Stamina = 10f;  // Demo 6
             }
             else if (Type == Cha_WorkSpeed)
             {
@@ -340,7 +342,7 @@ public class SurvivorCtrl : MonoBehaviour
             else
             {
                 Attack = MurdererAttack;
-                AttackTime = 5f;
+                AttackTime = 0.1f;
             }
         }
     }
@@ -388,7 +390,7 @@ public class SurvivorCtrl : MonoBehaviour
             {
                 if (SurvivorUI.Message.activeSelf)
                     SurvivorUI.Message.SetActive(false);
-                SurvivorUI.DisTime(PrisonTime, 5);
+                SurvivorUI.DisTime(PrisonTime, 3);
 
                 PrisonTime -= Time.deltaTime;
 
@@ -399,7 +401,7 @@ public class SurvivorCtrl : MonoBehaviour
                     GetComponent<SurvivorItem>().ItemSet(5, 0);
 
                     prison.GetComponent<PrisonCtrl>().OpenDoor();
-                    PrisonTime = 5f;
+                    PrisonTime = 3f;
                 }
             }
             else
@@ -413,14 +415,14 @@ public class SurvivorCtrl : MonoBehaviour
                         SurvivorUI.Time.SetActive(false);
                 }
 
-                PrisonTime = 5f;
+                PrisonTime = 3f;
             }
         }
     }
 
     public void PrisonExit()
     {
-        PrisonTime = 5f;
+        PrisonTime = 3f;
 
         SurvivorUI.Message.SetActive(false);
         SurvivorUI.Time.SetActive(false);
@@ -429,7 +431,7 @@ public class SurvivorCtrl : MonoBehaviour
     [PunRPC]
     void PrisonTrue()
     {
-        Hp -= 0.5f * Time.deltaTime;
+        Hp -= 1.0f * Time.deltaTime;    // Demo
 
         if(pv.isMine)
             SurvivorUI.DispHP(Hp);

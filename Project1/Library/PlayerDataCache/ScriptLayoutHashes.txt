@@ -125,6 +125,7 @@ c2d15b04283157b00cbdbfaf16c18482 Assembly-CSharp.dll:.PickupItemSyncer
 1de5b0589e6fb98c8b8d7fcded724e3b Assembly-CSharp.dll:.CullArea
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PunPlayerScores
 d7c3cc9e6aeec9a00634f6abffbe35e2 Assembly-CSharp.dll:.ConnectAndJoinRandom
+322cb40e1e282f28af980cbef7922a90 UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsEventTracker
 dc07d7ad69b399a46e92c483bf1c04ca UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsTracker
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInput
@@ -191,4 +192,3 @@ b2dc25029b6f083ffbbdf9df269f825a Assembly-CSharp.dll:.InRoomChat
 5238219c1a6108ec56bda42e6ab52fc2 Assembly-CSharp.dll:.SurvivorUICtrl
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.MurdererAnimCtrl
 1e6cf47e2d659fd73a075a154dc9ca82 Assembly-CSharp.dll:.PrisonCtrl
-322cb40e1e282f28af980cbef7922a90 UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsEventTracker

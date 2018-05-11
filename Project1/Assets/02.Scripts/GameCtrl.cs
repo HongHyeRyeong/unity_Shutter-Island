@@ -27,18 +27,14 @@ public class GameCtrl : MonoBehaviour
 
     void CreateSurvivor()
     {
-        // 생존자 동적생성 위치 -> 나중에 변경할 것
-        float pos = Random.Range(-3.0f, 3.0f);
-        Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(pos, 0.0f, pos), Quaternion.identity, 0);
+        Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(-48, 0.0f, -60), Quaternion.identity, 0);
 
         SetGame(1, Survivor, null);
     }
 
     void CreateMurderer()
     {
-        // 살인마 동적생성 위치 -> 나중에 변경할 것
-        float pos = Random.Range(-3.0f, 3.0f);
-        Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(pos, 0.0f, pos), Quaternion.identity, 0);
+        Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(14, 0.0f, 85), Quaternion.identity, 0);
 
         SetGame(2, null, Murderer);
     }
