@@ -47,7 +47,7 @@ public class MachineCtrl : MonoBehaviour
         {
             pv.RPC("MachineOneComplete", PhotonTargets.All);
 
-            if (MachineGauge == 20f)    // Demo
+            if (MachineGauge == 30f)    // Demo
             {
                 pv.RPC("MachineComplete", PhotonTargets.All);
                 GameObject.Find("GameController").GetComponent<GameCtrl>().MachineComplete();

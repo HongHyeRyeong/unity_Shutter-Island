@@ -34,7 +34,7 @@ public class SurvivorCtrl : MonoBehaviour
     int Attack = 0;
     int WorkMachine = 0;
 
-    float AttackTime = 0.1f;
+    float AttackTime = 5f;
     float PrisonTime = 3f;
 
     bool Prison = false;
@@ -342,7 +342,7 @@ public class SurvivorCtrl : MonoBehaviour
             else
             {
                 Attack = MurdererAttack;
-                AttackTime = 0.1f;
+                AttackTime = 5f;
             }
         }
     }

@@ -86,13 +86,13 @@ public class MurdererUICtrl : MonoBehaviour
             ((view.x * rtPrison.sizeDelta.x) - (rtPrison.sizeDelta.x * 0.5f)),
             ((view.y * rtPrison.sizeDelta.y) - (rtPrison.sizeDelta.y * 0.5f)));
 
-        if (screen.x > 850)
-            screen.x = 850;
-        else if (screen.x < -850)
-            screen.x = -850;
+        if (screen.x > 930)
+            screen.x = 930;
+        else if (screen.x < -930)
+            screen.x = -930;
 
-        if (screen.y > 350)
-            screen.y = 350;
+        if (screen.y > 300)
+            screen.y = 300;
         else if (screen.y < -350)
             screen.y = -350;
 
