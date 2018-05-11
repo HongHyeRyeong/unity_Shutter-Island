@@ -91,10 +91,10 @@ public class MurdererUICtrl : MonoBehaviour
         else if (screen.x < -930)
             screen.x = -930;
 
-        if (screen.y > 300)
-            screen.y = 300;
-        else if (screen.y < -350)
-            screen.y = -350;
+        if (screen.y > 350)
+            screen.y = 350;
+        else if (screen.y < -330)
+            screen.y = -330;
 
         Prisons[num].GetComponent<RectTransform>().anchoredPosition = screen;
         txtPrisons[num].text = dist.ToString("N1") + " m";
