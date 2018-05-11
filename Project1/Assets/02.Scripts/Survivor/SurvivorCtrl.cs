@@ -431,7 +431,7 @@ public class SurvivorCtrl : MonoBehaviour
     [PunRPC]
     void PrisonTrue()
     {
-        Hp -= 2.0f * Time.deltaTime;    // Demo
+        Hp -= 1.5f * Time.deltaTime;    // Demo
 
         if(pv.isMine)
             SurvivorUI.DispHP(Hp);
@@ -478,7 +478,7 @@ public class SurvivorCtrl : MonoBehaviour
         Prison = false;
         PrisonTP = false;
 
-        Hp = 100;
+        Hp = 50;
         SurvivorUI.DispHP(Hp);
     }
 
