@@ -34,7 +34,7 @@ public class SurvivorCtrl : MonoBehaviour
     int Attack = 0;
     int WorkMachine = 0;
 
-    float AttackTime = 5f;
+    float AttackTime = 1f;
     float PrisonTime = 3f;
 
     bool Prison = false;
@@ -342,7 +342,7 @@ public class SurvivorCtrl : MonoBehaviour
             else
             {
                 Attack = MurdererAttack;
-                AttackTime = 5f;
+                AttackTime = 1f;
             }
         }
     }
@@ -431,7 +431,7 @@ public class SurvivorCtrl : MonoBehaviour
     [PunRPC]
     void PrisonTrue()
     {
-        Hp -= 1.0f * Time.deltaTime;    // Demo
+        Hp -= 2.0f * Time.deltaTime;    // Demo
 
         if(pv.isMine)
             SurvivorUI.DispHP(Hp);
