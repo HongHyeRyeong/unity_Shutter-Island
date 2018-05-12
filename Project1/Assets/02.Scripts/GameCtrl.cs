@@ -15,6 +15,10 @@ public class GameCtrl : MonoBehaviour
     int MachineCompleteNum = 0;
     int PrisonSurNum = 0;
 
+    //
+    float deltaTime = 0.0f;
+    float fps;
+
     private void Start()
     {
         if (CharacterSelect.SelSur == true)
@@ -23,6 +27,24 @@ public class GameCtrl : MonoBehaviour
             CreateMurderer();
 
         PhotonNetwork.isMessageQueueRunning = true;
+
+        Application.targetFrameRate = 60;
+    }
+
+    void Update()
+    {
+        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+        fps = 1.0f / deltaTime;
+
+        DisFPS();
+    }
+
+    void DisFPS()
+    {
+        if (Character == 1)
+            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisFPS(fps);
+        else if (Character == 2)
+            GameObject.Find("MurdererController").GetComponent<MurdererUICtrl>().DisFPS(fps);
     }
 
     void CreateSurvivor()
@@ -72,6 +94,7 @@ public class GameCtrl : MonoBehaviour
             GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisMachine(MachineCompleteNum);
         else if (Character == 2)
         {
+            print("장치 가동");
             Murderer.GetComponent<MurdererCtrl>().DamageByMachine(40);
             GameObject.Find("MurdererController").GetComponent<MurdererUICtrl>().DisMachine(MachineCompleteNum);
         }

@@ -50,7 +50,6 @@ public class MachineCtrl : MonoBehaviour
             if (MachineGauge == 20f)    // Demo
             {
                 pv.RPC("MachineComplete", PhotonTargets.All);
-                GameObject.Find("GameController").GetComponent<GameCtrl>().MachineComplete();
             }
             else
                 pv.RPC("MachineInstallAnim", PhotonTargets.All);
@@ -92,6 +91,7 @@ public class MachineCtrl : MonoBehaviour
         CompleteLight.SetActive(true);
 
         Ani.SetTrigger("Complete");
+        GameObject.Find("GameController").GetComponent<GameCtrl>().MachineComplete();
     }
 
     public void DisHUD(Vector3 pos)

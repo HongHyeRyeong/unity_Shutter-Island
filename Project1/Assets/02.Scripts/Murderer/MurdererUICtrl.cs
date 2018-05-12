@@ -7,6 +7,11 @@ public class MurdererUICtrl : MonoBehaviour
 {
     GameObject Murderer;
 
+    int ScreenW;
+    int ScreenH;
+
+    public Text txtFPS;
+
     public Image imgLife;
     public Sprite spriteLife1;
 
@@ -24,6 +29,14 @@ public class MurdererUICtrl : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+
+        ScreenW = Screen.width;
+        ScreenH = Screen.height;
+    }
+
+    public void DisFPS(float fps)
+    {
+        txtFPS.text = fps.ToString("F1");
     }
 
     void DispLife(int life)
@@ -86,15 +99,20 @@ public class MurdererUICtrl : MonoBehaviour
             ((view.x * rtPrison.sizeDelta.x) - (rtPrison.sizeDelta.x * 0.5f)),
             ((view.y * rtPrison.sizeDelta.y) - (rtPrison.sizeDelta.y * 0.5f)));
 
-        if (screen.x > 930)
-            screen.x = 930;
-        else if (screen.x < -930)
-            screen.x = -930;
+        int Minx = ScreenW / 2 - 80;
+        int MaXx = ScreenW / 2 - 80;
+        int Miny = ScreenH / 2 - 150;
+        int MaXy = ScreenH / 2 - 250;
 
-        if (screen.y > 350)
-            screen.y = 350;
-        else if (screen.y < -330)
-            screen.y = -330;
+        if (screen.x > Minx)
+            screen.x = Minx;
+        else if (screen.x < -MaXx)
+            screen.x = -MaXx;
+
+        if (screen.y > Miny)
+            screen.y = Miny;
+        else if (screen.y < -MaXy)
+            screen.y = -MaXy;
 
         Prisons[num].GetComponent<RectTransform>().anchoredPosition = screen;
         txtPrisons[num].text = dist.ToString("N1") + " m";

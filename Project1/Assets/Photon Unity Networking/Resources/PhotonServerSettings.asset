@@ -79,4 +79,5 @@ MonoBehaviour:
   - ParryWAnim
   - DamageToMurderer
   - MurdererHP
+  - RPCisAttack
   DisableAutoOpenWizard: 1

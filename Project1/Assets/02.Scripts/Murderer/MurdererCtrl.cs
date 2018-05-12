@@ -132,7 +132,6 @@ public class MurdererCtrl : MonoBehaviour
         if (other.tag == "Survivor" && isAttack)
         {
             isAttack = false;
-            print(State);
             other.GetComponent<SurvivorCtrl>().AttackByMurderer(this.gameObject, State);
         }
     }
@@ -161,7 +160,7 @@ public class MurdererCtrl : MonoBehaviour
         Hp -= Power;
 
         MurdererUI.DispHP(Hp);
-        //GameObject.Find("GameController").GetComponent<GameCtrl>().DisMurHP(Hp);
+        GameObject.Find("GameController").GetComponent<GameCtrl>().DisMurHP(Hp);
     }
 
     public int GetState()
