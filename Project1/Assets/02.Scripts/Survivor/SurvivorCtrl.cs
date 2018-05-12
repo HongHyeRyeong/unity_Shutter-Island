@@ -358,20 +358,20 @@ public class SurvivorCtrl : MonoBehaviour
         if (Hp == 100f)
         {
             Hp = 50f;
-
-            if(pv.isMine)
-            {
-                State = State_Hit;
-                SurvivorUI.DispHP(Hp);
-            }
-
+            State = State_Hit;
             pv.RPC("HitAnim", PhotonTargets.All);
+
+            if (pv.isMine)
+                SurvivorUI.DispHP(Hp);
+
         }
         else if (Hp == 50f)
         {
             Prison = true;
             Life -= 1;
-            SurvivorUI.DispLife(Life);
+
+            if (pv.isMine)
+                SurvivorUI.DispLife(Life);
         }
 
         if (Life == 0)
