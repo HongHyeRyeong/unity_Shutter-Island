@@ -5,6 +5,8 @@ using UnityEngine;
 public class PrisonCtrl : MonoBehaviour
 {
     private PhotonView pv = null;
+    GameObject curSur;
+
     private Animator Ani;
     Vector3 SpawnPoint;
 
@@ -12,7 +14,7 @@ public class PrisonCtrl : MonoBehaviour
     bool isOpen = false;
 
     GameObject[] Survivors = new GameObject[4];
-    int SurvivorNum = 0;
+    bool isSurvivor = false;
 
     void Start()
     {
@@ -23,7 +25,7 @@ public class PrisonCtrl : MonoBehaviour
 
     void Update()
     {
-        if (SurvivorNum != 0)
+        if (isSurvivor)
             GameObject.Find("GameController").GetComponent<GameCtrl>().DisPrison(transform.position, PrisonNum);
 
         if (isOpen)
@@ -36,7 +38,7 @@ public class PrisonCtrl : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Survivor" && SurvivorNum != 0)
+        if (other.tag == "Survivor" && isSurvivor)
         {
             other.gameObject.GetComponent<SurvivorCtrl>().PrisonStay(this.gameObject);
         }
@@ -44,7 +46,7 @@ public class PrisonCtrl : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Survivor" && SurvivorNum != 0)
+        if (other.tag == "Survivor" && isSurvivor)
         {
             other.gameObject.GetComponent<SurvivorCtrl>().PrisonExit();
         }
@@ -52,24 +54,62 @@ public class PrisonCtrl : MonoBehaviour
 
     public void SurvivorEnter(GameObject survivor)
     {
-        Survivors[SurvivorNum++] = survivor;
+        for (int i = 0; i < 4; ++i)
+            if (Survivors[i] == null)
+            {
+                Survivors[i] = survivor;
+                isSurvivor = true;
+                break;
+            }
         GameObject.Find("GameController").GetComponent<GameCtrl>().DisSurPrison(1);
+    }
+
+    public void SurvivorExit(GameObject survivor)
+    {
+        curSur = survivor;
+        pv.RPC("RPCSurvivorExit", PhotonTargets.All);
+    }
+
+    [PunRPC]
+    public void RPCSurvivorExit()
+    {
+        for (int i = 0; i < 4; ++i)
+            if (Survivors[i] == curSur)
+            {
+                Survivors[i] = null;
+                break;
+            }
+
+        int num = GetSurvivorNum();
+
+        if (num == 0)
+            isSurvivor = false;
+
+        GameObject.Find("GameController").GetComponent<GameCtrl>().SetPrisons(PrisonNum, false, 1);
     }
 
     public void OpenDoor()
     {
-        pv.RPC("OpenDoorAnim", PhotonTargets.All);
+        pv.RPC("RPCOpenDoor", PhotonTargets.All);
+    }
+
+    [PunRPC]
+    public void RPCOpenDoor()
+    {
+        Ani.SetTrigger("Open");
         isOpen = true;
+        GameObject.Find("GameController").GetComponent<GameCtrl>().SetPrisons(PrisonNum, false, GetSurvivorNum());
 
-        for (int i = 0; i < SurvivorNum; ++i)
+        for (int i = 0; i < 4; ++i)
         {
-            Survivors[i].transform.position = SpawnPoint;
-            Survivors[i].GetComponent<DemoSurvivorCtrl>().PrisonFalse();    // Demo
-            Survivors[i] = null;
+            if (Survivors[i] != null)
+            {
+                Survivors[i].transform.position = SpawnPoint;
+                Survivors[i].GetComponent<DemoSurvivorCtrl>().PrisonFalse();    // Demo
+                Survivors[i] = null;
+            }
         }
-        SurvivorNum = 0;
-
-        GameObject.Find("GameController").GetComponent<GameCtrl>().SetPrisons(PrisonNum, false, SurvivorNum);
+        isSurvivor = false;
     }
 
     public bool GetOpen()
@@ -77,9 +117,14 @@ public class PrisonCtrl : MonoBehaviour
         return isOpen;
     }
 
-    [PunRPC]
-    public void OpenDoorAnim()
+    int GetSurvivorNum()
     {
-        Ani.SetTrigger("Open");
+        int num = 0;
+
+        for (int i = 0; i < 4; ++i)
+            if (Survivors[i] != null)
+                num++;
+
+        return num;
     }
 }

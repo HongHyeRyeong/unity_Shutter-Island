@@ -39,6 +39,7 @@ public class SurvivorCtrl : MonoBehaviour
 
     bool Prison = false;
     bool PrisonTP = false;
+    GameObject inPrison = null;
 
     //
     const int Cha_Default = 0;
@@ -375,7 +376,10 @@ public class SurvivorCtrl : MonoBehaviour
         }
 
         if (Life == 0)
+        {
+            inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
             pv.RPC("DieAnim", PhotonTargets.All);
+        }
     }
 
     public void PrisonStay(GameObject prison)
@@ -427,13 +431,17 @@ public class SurvivorCtrl : MonoBehaviour
     [PunRPC]
     void PrisonTrue()
     {
-        Hp -= 1.5f * Time.deltaTime;    // Demo
+        Hp -= 3.0f * Time.deltaTime;    // Demo
 
         if(pv.isMine)
             SurvivorUI.DispHP(Hp);
 
         if (Hp <= 0)
+        {
+            inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
             pv.RPC("DieAnim", PhotonTargets.All);
+            Prison = false;
+        }
 
         if (PrisonTP == false)
         {
@@ -459,13 +467,17 @@ public class SurvivorCtrl : MonoBehaviour
 
             if (minObject != null)
             {
+                inPrison = minObject;
                 minObject.GetComponent<PrisonCtrl>().SurvivorEnter(this.gameObject);
                 transform.position = minObject.transform.position;
 
                 currPos = transform.position;
             }
             else
+            {
+                inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
                 pv.RPC("DieAnim", PhotonTargets.All);
+            }
         }
     }
 

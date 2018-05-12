@@ -80,4 +80,6 @@ MonoBehaviour:
   - DamageToMurderer
   - MurdererHP
   - RPCisAttack
+  - RPCOpenDoor
+  - RPCSurvivorExit
   DisableAutoOpenWizard: 1
