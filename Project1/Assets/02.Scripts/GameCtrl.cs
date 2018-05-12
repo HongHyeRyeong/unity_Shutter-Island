@@ -34,7 +34,7 @@ public class GameCtrl : MonoBehaviour
 
     void CreateMurderer()
     {
-        Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(14, 0.0f, 85), Quaternion.identity, 0);
+        Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(-48, 0.0f, -60), Quaternion.identity, 0);
 
         SetGame(2, null, Murderer);
     }
@@ -108,6 +108,10 @@ public class GameCtrl : MonoBehaviour
     public void DisMurHP(float hp)
     {
         if (Character == 1)
+        {
             GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisMurHP(hp);
+
+            print("gamectrl " + hp);
+        }
     }
 }

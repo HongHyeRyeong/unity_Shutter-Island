@@ -57,70 +57,70 @@ public class MurdererCtrl : MonoBehaviour
 
     void Update()
     {
-        if (!pv.isMine)
+        if (pv.isMine)
         {
-            transform.position = Vector3.Lerp(transform.position, currPos, Time.deltaTime * 3.0f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, currRot, Time.deltaTime * 3.0f);
-            return;
-        }
+            float h = Input.GetAxis("Horizontal");
+            float v = Input.GetAxis("Vertical");
 
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-
-        // State
-        if (State == State_Idle || State == State_Run)
-        {
-            if (v != 0 || h != 0)
+            // State
+            if (State == State_Idle || State == State_Run)
             {
-                State = State_Run;
-
-                if (v < 0)
+                if (v != 0 || h != 0)
                 {
-                    MoveSpeed = 3f;
-                    Ani.SetBool("isBackRun", true);
-                    Ani.SetBool("isRun", false);
+                    State = State_Run;
+
+                    if (v < 0)
+                    {
+                        MoveSpeed = 3f;
+                        Ani.SetBool("isBackRun", true);
+                        Ani.SetBool("isRun", false);
+                    }
+                    else
+                    {
+                        MoveSpeed = 4.5f;
+                        Ani.SetBool("isRun", true);
+                        Ani.SetBool("isBackRun", false);
+                    }
                 }
                 else
                 {
-                    MoveSpeed = 4.5f;
-                    Ani.SetBool("isRun", true);
+                    State = State_Idle;
+                    Ani.SetBool("isRun", false);
                     Ani.SetBool("isBackRun", false);
                 }
-            }
-            else
-            {
-                State = State_Idle;
-                Ani.SetBool("isRun", false);
-                Ani.SetBool("isBackRun", false);
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    pv.RPC("AttackWAnim", PhotonTargets.All);
+                    Ani.SetBool("isRun", false);
+                    Ani.SetBool("isBackRun", false);
+
+                    pv.RPC("AttackWTrue", PhotonTargets.All);
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    pv.RPC("AttackLAnim", PhotonTargets.All);
+                    Ani.SetBool("isRun", false);
+                    Ani.SetBool("isBackRun", false);
+
+                    pv.RPC("AttackLTrue", PhotonTargets.All);
+                }
             }
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                
-                pv.RPC("AttackWAnim", PhotonTargets.All);
-                Ani.SetBool("isRun", false);
-                Ani.SetBool("isBackRun", false);
+            // Movement
+            if (State == State_Run)
+                transform.Translate(new Vector3(h, 0, v) * MoveSpeed * Time.deltaTime);
 
-                pv.RPC("AttackWTrue", PhotonTargets.All);
-            }
-            else if (Input.GetMouseButtonDown(1))
+            if (State != State_Parry)
             {
-                pv.RPC("AttackLAnim", PhotonTargets.All);
-                Ani.SetBool("isRun", false);
-                Ani.SetBool("isBackRun", false);
-
-                pv.RPC("AttackLTrue", PhotonTargets.All);
+                MouseX += Input.GetAxis("Mouse X") * Time.deltaTime * 100;
+                transform.rotation = Quaternion.Euler(0, MouseX, 0);
             }
         }
-
-        // Movement
-        if (State == State_Run)
-            transform.Translate(new Vector3(h, 0, v) * MoveSpeed * Time.deltaTime);
-
-        if (State != State_Parry)
+        else
         {
-            MouseX += Input.GetAxis("Mouse X") * Time.deltaTime * 100;
-            transform.rotation = Quaternion.Euler(0, MouseX, 0);
+            transform.position = Vector3.Lerp(transform.position, currPos, Time.deltaTime * 3.0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, currRot, Time.deltaTime * 3.0f);
         }
 
         if (Hp < 0)
@@ -139,21 +139,29 @@ public class MurdererCtrl : MonoBehaviour
 
     public void DamageByPlayer(float Power)
     {
-        State = State_Parry;
-        pv.RPC("ParryAnim", PhotonTargets.All);
-        Ani.SetBool("isRun", false);
-        Ani.SetBool("isBackRun", false);
-
         Hp -= Power;
-        
-        if(pv.isMine)
+
+        if (pv.isMine)
+        {
+            State = State_Parry;
+
+            pv.RPC("ParryAnim", PhotonTargets.All);
+            Ani.SetBool("isRun", false);
+            Ani.SetBool("isBackRun", false);
+
             MurdererUI.DispHP(Hp);
+        }
+
+        GameObject.Find("GameController").GetComponent<GameCtrl>().DisMurHP(Hp);
+        print("murdererctrl " + Hp);
     }
 
     public void DamageByMachine(float Power)
     {
         Hp -= Power;
+
         MurdererUI.DispHP(Hp);
+        //GameObject.Find("GameController").GetComponent<GameCtrl>().DisMurHP(Hp);
     }
 
     public int GetState()

@@ -173,6 +173,8 @@ public class SurvivorCtrl : MonoBehaviour
 
             if (State == State_Idle || State == State_Run || State == State_SlowRun)
                 transform.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
+
+            InputGet();
         }
         else
         {
@@ -182,8 +184,6 @@ public class SurvivorCtrl : MonoBehaviour
 
         if (Prison)
             pv.RPC("PrisonTrue", PhotonTargets.All);
-
-        InputGet();
     }
 
     public void InputGet()
@@ -259,14 +259,13 @@ public class SurvivorCtrl : MonoBehaviour
                     }
                     else
                     {
-                        print("반격");
                         State = State_ParryToMurdererW;
-                        Ani.SetTrigger("trParryW");
+                        pv.RPC("ParryWAnim", PhotonTargets.All);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
 
                         pv.RPC("AttackEnd", PhotonTargets.All);
-                        Murderer.GetComponent<MurdererCtrl>().DamageByPlayer(Power);
+                        pv.RPC("DamageToMurderer", PhotonTargets.All);
                     }
                 }
                 else if (Input.GetMouseButtonDown(1))
@@ -278,12 +277,12 @@ public class SurvivorCtrl : MonoBehaviour
                     else
                     {
                         State = State_ParryToMurdererL;
-                        Ani.SetTrigger("trParryL");
+                        pv.RPC("ParryLAnim", PhotonTargets.All);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
 
                         pv.RPC("AttackEnd", PhotonTargets.All);
-                        Murderer.GetComponent<MurdererCtrl>().DamageByPlayer(Power);
+                        pv.RPC("DamageToMurderer", PhotonTargets.All);
                     }
 
                 }
@@ -302,10 +301,14 @@ public class SurvivorCtrl : MonoBehaviour
         Attack = 0;
     }
 
+    [PunRPC]
+    public void DamageToMurderer()
+    {
+        Murderer.GetComponent<MurdererCtrl>().DamageByPlayer(Power);
+    }
+
     public void AttackByMurderer(GameObject m, int MurdererAttack)
     {
-        print(MurdererAttack);
-
         if (!Prison)
         {
             if (Murderer == null)
@@ -319,20 +322,18 @@ public class SurvivorCtrl : MonoBehaviour
                 {
                     if (State == State_AttackW)
                     {
-                        print("AttackW");
                         State = State_ParryToMurdererW;
                         Ani.SetTrigger("trAttackW");
                     }
                     else
                     {
-                        print("AttackL");
                         State = State_ParryToMurdererL;
                         Ani.SetTrigger("trAttackL");
                     }
                     Ani.SetBool("isSlowRun", false);
                     Ani.SetBool("isRun", false);
 
-                    Murderer.GetComponent<MurdererCtrl>().DamageByPlayer(Power);
+                    pv.RPC("DamageToMurderer", PhotonTargets.All);
                 }
                 else
                 {
@@ -356,13 +357,15 @@ public class SurvivorCtrl : MonoBehaviour
 
         if (Hp == 100f)
         {
-            State = State_Hit;
-            pv.RPC("HitAnim", PhotonTargets.All);
-
             Hp = 50f;
 
             if(pv.isMine)
+            {
+                State = State_Hit;
                 SurvivorUI.DispHP(Hp);
+            }
+
+            pv.RPC("HitAnim", PhotonTargets.All);
         }
         else if (Hp == 50f)
         {
@@ -373,13 +376,6 @@ public class SurvivorCtrl : MonoBehaviour
 
         if (Life == 0)
             pv.RPC("DieAnim", PhotonTargets.All);
-    }
-
-    [PunRPC]
-    public void HitAnim()
-    {
-        print("hit");
-        Ani.SetTrigger("trHit");
     }
 
     public void PrisonStay(GameObject prison)
@@ -631,6 +627,24 @@ public class SurvivorCtrl : MonoBehaviour
             currPos = (Vector3)stream.ReceiveNext();
             currRot = (Quaternion)stream.ReceiveNext();
         }
+    }
+
+    [PunRPC]
+    public void ParryWAnim()
+    {
+        Ani.SetTrigger("trParryW");
+    }
+
+    [PunRPC]
+    public void ParryLAnim()
+    {
+        Ani.SetTrigger("trParryL");
+    }
+
+    [PunRPC]
+    public void HitAnim()
+    {
+        Ani.SetTrigger("trHit");
     }
 
     [PunRPC]

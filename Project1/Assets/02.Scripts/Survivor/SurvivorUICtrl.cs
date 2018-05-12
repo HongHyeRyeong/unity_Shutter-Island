@@ -294,6 +294,8 @@ public class SurvivorUICtrl : MonoBehaviour
 
     public void DisMurHP(float hp)
     {
-        imgMurHP.fillAmount = hp / 100;
+        imgMurHP.fillAmount = hp / 200;
+
+        print("survivorui " + hp);
     }
 }
