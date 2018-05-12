@@ -91,7 +91,7 @@ public class SurvivorItem : MonoBehaviour
     {
         int state = GetComponent<SurvivorCtrl>().GetState();
 
-        if (pv.isMine && Input.GetKeyDown(KeyCode.F) && (state == 0 || state == 1 || state == 2))
+        if (/*pv.isMine && */Input.GetKeyDown(KeyCode.F) && (state == 0 || state == 1 || state == 2))
         {
             int type = Item.GetComponent<ItemCtrl>().ItemType;
             int level = Item.GetComponent<ItemCtrl>().ItemLevel;
