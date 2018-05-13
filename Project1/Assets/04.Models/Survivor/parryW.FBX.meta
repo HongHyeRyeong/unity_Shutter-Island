@@ -172,7 +172,7 @@ ModelImporter:
     - serializedVersion: 16
       name: ParryW
       takeName: Take 001
-      firstFrame: 33
+      firstFrame: 40
       lastFrame: 100
       wrapMode: 0
       orientationOffsetY: 0
@@ -213,8 +213,6 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

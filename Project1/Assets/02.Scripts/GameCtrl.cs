@@ -49,14 +49,14 @@ public class GameCtrl : MonoBehaviour
 
     void CreateSurvivor()
     {
-        Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(-48, 0.0f, -60), Quaternion.identity, 0);
+        Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(-37, 0.0f, 36), Quaternion.identity, 0);
 
         SetGame(1, Survivor, null);
     }
 
     void CreateMurderer()
     {
-        Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(-48, 0.0f, -60), Quaternion.identity, 0);
+        Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(10, 0.0f, 67), Quaternion.identity, 0);
 
         SetGame(2, null, Murderer);
     }

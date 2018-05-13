@@ -1073,7 +1073,7 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ParryL
-  m_Speed: 1.2
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101355234386825076}
