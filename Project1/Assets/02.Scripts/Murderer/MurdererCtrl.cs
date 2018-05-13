@@ -18,7 +18,7 @@ public class MurdererCtrl : MonoBehaviour
 
     private int State = 0;
     private float Hp = 200f;
-    private float MoveSpeed = 4.5f;
+    private float MoveSpeed = 6f;
     private bool isAttack = false;
 
     private float MouseX;
@@ -77,7 +77,7 @@ public class MurdererCtrl : MonoBehaviour
                     }
                     else
                     {
-                        MoveSpeed = 4.5f;
+                        MoveSpeed = 6f;    // demo
                         Ani.SetBool("isRun", true);
                         Ani.SetBool("isBackRun", false);
                     }
