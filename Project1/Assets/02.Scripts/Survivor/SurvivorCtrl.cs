@@ -433,6 +433,8 @@ public class SurvivorCtrl : MonoBehaviour
     {
         Hp -= 3.0f * Time.deltaTime;    // Demo
 
+        print(Hp);
+
         if(pv.isMine)
             SurvivorUI.DispHP(Hp);
 

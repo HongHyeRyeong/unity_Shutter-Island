@@ -82,4 +82,11 @@ MonoBehaviour:
   - RPCisAttack
   - RPCOpenDoor
   - RPCSurvivorExit
+  - BagEquip
+  - ClothesEquip
+  - HatEquip
+  - BagTakeOff
+  - ClothesTakeOff
+  - HatTakeOff
+  - ItemDestroy
   DisableAutoOpenWizard: 1

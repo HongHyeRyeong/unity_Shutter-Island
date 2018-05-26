@@ -19,11 +19,8 @@ public class SurvivorItem : MonoBehaviour
     bool ItemKey = false;
 
     int currhattype = 1;
-    int currhatlevel = 1;
     int currclothestype = 2;
-    int currclotheslevel = 1;
     int currbagtype = 3;
-    int currbaglevel = 1;
 
     private void Start()
     {
@@ -91,7 +88,7 @@ public class SurvivorItem : MonoBehaviour
     {
         int state = GetComponent<SurvivorCtrl>().GetState();
 
-        if (/*pv.isMine && */Input.GetKeyDown(KeyCode.F) && (state == 0 || state == 1 || state == 2))
+        if (Input.GetKeyDown(KeyCode.F) && (state == 0 || state == 1 || state == 2))
         {
             int type = Item.GetComponent<ItemCtrl>().ItemType;
             int level = Item.GetComponent<ItemCtrl>().ItemLevel;
@@ -133,9 +130,7 @@ public class SurvivorItem : MonoBehaviour
             ItemHat[level - 1] = true;
             SurvivorByItem(type, level);
 
-            currhatlevel = level;
-
-            Hat.transform.Find("Item" + currhattype.ToString() + currhatlevel.ToString()).gameObject.SetActive(true);
+            pv.RPC("HatEquip", PhotonTargets.AllBuffered, type, level);
             GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().UpdateItemInformation(type);
         }
         else if (type == 2)
@@ -147,9 +142,7 @@ public class SurvivorItem : MonoBehaviour
             ItemClothes[level - 1] = true;
             SurvivorByItem(type, level);
 
-            currclotheslevel = level;
-
-            Clothes.transform.Find("Item" + currclothestype.ToString() + currclotheslevel.ToString()).gameObject.SetActive(true);
+            pv.RPC("ClothesEquip", PhotonTargets.AllBuffered, type, level);
             GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().UpdateItemInformation(type);
         }
         else if (type == 3)
@@ -161,9 +154,7 @@ public class SurvivorItem : MonoBehaviour
             ItemBag[level - 1] = true;
             SurvivorByItem(type, level);
 
-            currbaglevel = level;
-
-            Bag.transform.Find("Item" + currbagtype.ToString() + currbaglevel.ToString()).gameObject.SetActive(true);
+            pv.RPC("BagEquip", PhotonTargets.AllBuffered, type, level);
             GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().UpdateItemInformation(type);
         }
         else if (type == 4)
@@ -176,27 +167,7 @@ public class SurvivorItem : MonoBehaviour
             ItemKey = true;
             GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisKey(true);
         }
-
-        // pv.RPC("ItemEquip", PhotonTargets.AllBuffered);
     }
-
-    [PunRPC]
-    public void ItemEquip()
-    {
-        if (currhattype == 1)
-        {
-            Hat.transform.Find("Item" + currhattype.ToString() + currhatlevel.ToString()).gameObject.SetActive(true);
-        }
-        if (currclothestype == 2)
-        {
-            Clothes.transform.Find("Item" + currclothestype.ToString() + currclotheslevel.ToString()).gameObject.SetActive(true);
-        }
-        if (currbagtype == 3)
-        {
-            Bag.transform.Find("Item" + currbagtype.ToString() + currbaglevel.ToString()).gameObject.SetActive(true);
-        }
-    }
-
 
     public void ItemPut(int type)
     {
@@ -210,8 +181,7 @@ public class SurvivorItem : MonoBehaviour
                     GetComponent<SurvivorCtrl>().SetState(4);
 
                     int level = i + 1;
-                    Hat.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-                    GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
+                    pv.RPC("HatTakeOff", PhotonTargets.AllBuffered, type, level);
 
                     break;
                 }
@@ -227,8 +197,7 @@ public class SurvivorItem : MonoBehaviour
                     GetComponent<SurvivorCtrl>().SetState(4);
 
                     int level = i + 1;
-                    Clothes.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-                    GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
+                    pv.RPC("ClothesTakeOff", PhotonTargets.AllBuffered, type, level);
 
                     break;
                 }
@@ -244,8 +213,7 @@ public class SurvivorItem : MonoBehaviour
                     GetComponent<SurvivorCtrl>().SetState(4);
 
                     int level = i + 1;
-                    Bag.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-                    GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
+                    pv.RPC("BagTakeOff", PhotonTargets.AllBuffered, type, level);
 
                     break;
                 }
@@ -305,5 +273,44 @@ public class SurvivorItem : MonoBehaviour
                 ItemKey = false;
             GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisKey(ItemKey);
         }
+    }
+
+    [PunRPC]
+    public void HatEquip(int type, int level)
+    {
+        Hat.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    public void ClothesEquip(int type, int level)
+    {
+        Clothes.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    public void BagEquip(int type, int level)
+    {
+        Bag.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    public void HatTakeOff(int type, int level)
+    {
+        Hat.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
+        GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
+    }
+
+    [PunRPC]
+    public void ClothesTakeOff(int type, int level)
+    {
+        Clothes.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
+        GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
+    }
+
+    [PunRPC]
+    public void BagTakeOff(int type, int level)
+    {
+        Bag.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
+        GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
     }
 }
