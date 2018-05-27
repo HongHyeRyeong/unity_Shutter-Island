@@ -8,7 +8,6 @@ public class CharacterSelect : MonoBehaviour {
     public GameObject murderer;
 
     static public bool SelSur = false;
-    static public bool SelMur = false;
 
 	public void OnClickSurvivor()
     {
@@ -23,6 +22,6 @@ public class CharacterSelect : MonoBehaviour {
         survivor.gameObject.SetActive(false);
         murderer.gameObject.SetActive(true);
 
-        SelMur = true;
+        SelSur = false;
     }
 }

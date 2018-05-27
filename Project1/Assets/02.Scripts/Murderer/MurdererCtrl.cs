@@ -77,7 +77,7 @@ public class MurdererCtrl : MonoBehaviour
                     }
                     else
                     {
-                        MoveSpeed = 6f;    // demo
+                        MoveSpeed = 4.5f;
                         Ani.SetBool("isRun", true);
                         Ani.SetBool("isBackRun", false);
                     }
@@ -105,6 +105,11 @@ public class MurdererCtrl : MonoBehaviour
 
                     pv.RPC("AttackLTrue", PhotonTargets.All);
                 }
+            }
+            else if (State == State_AttackW || State == State_AttackL)
+            {
+                if (Ani.GetCurrentAnimatorStateInfo(0).IsName("AttackWRun") || Ani.GetCurrentAnimatorStateInfo(0).IsName("AttackLRun"))
+                    transform.Translate(new Vector3(0, 0, 1) * Time.deltaTime);
             }
 
             // Movement

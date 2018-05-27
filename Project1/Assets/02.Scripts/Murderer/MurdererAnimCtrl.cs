@@ -30,6 +30,7 @@ public class MurdererAnimCtrl : StateMachineBehaviour
         }
         else if (stateInfo.IsName("Die"))
         {
+            Murderer.SetActive(false);
             Murderer.GetComponent<MurdererCtrl>().SetState(-1);
         }
     }

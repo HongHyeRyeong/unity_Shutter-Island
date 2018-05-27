@@ -11,7 +11,7 @@ public class CameraCtrl : MonoBehaviour
     public Transform targetSurvivorComPivot;
 
     float dist = 5.0f;
-    float height = 2.5f;
+    float height = 3f;
 
     //Murderer
     public Transform targetMurderer;
@@ -28,10 +28,13 @@ public class CameraCtrl : MonoBehaviour
                 dist -= 0.5f * Input.mouseScrollDelta.y;
 
                 if (dist < 4) dist = 4;
-                else if (dist >= 9) dist = 9;
+                else if (dist >= 7) dist = 7;
 
                 Vector3 pos = targetSurvivorComPivot.position;
                 pos.y += 1.5f;
+
+                height -= Input.GetAxis("Mouse Y") * Time.deltaTime * 10;
+                height = ClampAngle(height, 0, 4);
 
                 transform.position = Vector3.Lerp(transform.position,
                     pos - (targetSurvivorComPivot.forward * dist) + (Vector3.up * height),
@@ -46,13 +49,13 @@ public class CameraCtrl : MonoBehaviour
             {
                 if (targetMurderer.GetComponent<MurdererCtrl>().GetState() == 2)
                 {
-                    transform.transform.position = targetMurdererCamPivot.transform.position;
+                    transform.position = targetMurdererCamPivot.transform.position;
                     transform.rotation = Quaternion.Euler(
                         targetMurdererCamPivot.transform.eulerAngles.x, targetMurderer.transform.eulerAngles.y, 0);
                 }
                 else
                 {
-                    transform.transform.position = new Vector3(
+                    transform.position = new Vector3(
                         targetMurdererCamPivot.transform.position.x, targetMurderer.transform.position.y + 2, targetMurdererCamPivot.transform.position.z);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;

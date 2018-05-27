@@ -34,6 +34,7 @@ public class SurvivorAnimCtrl : StateMachineBehaviour
         }
         else if (stateInfo.IsName("Die"))
         {
+            survivor.SetActive(false);
             survivor.GetComponent<SurvivorCtrl>().SetState(-1);
         }
     }
