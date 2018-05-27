@@ -16,6 +16,14 @@ public class MurdererAnimCtrl : StateMachineBehaviour
         {
             Murderer.GetComponent<MurdererCtrl>().SetState(0);
         }
+        else if (stateInfo.IsName("AttackWRun") && Murderer.GetComponent<MurdererCtrl>().GetState() == 10)
+        {
+            Murderer.GetComponent<MurdererCtrl>().SetState(0);
+        }
+        else if (stateInfo.IsName("AttackLRun") && Murderer.GetComponent<MurdererCtrl>().GetState() == 11)
+        {
+            Murderer.GetComponent<MurdererCtrl>().SetState(0);
+        }
         else if (stateInfo.IsName("Parry") && Murderer.GetComponent<MurdererCtrl>().GetState() == 2)
         {
             Murderer.GetComponent<MurdererCtrl>().SetState(0);

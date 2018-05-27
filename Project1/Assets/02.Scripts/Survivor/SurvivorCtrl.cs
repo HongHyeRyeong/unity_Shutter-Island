@@ -597,6 +597,10 @@ public class SurvivorCtrl : MonoBehaviour
 
     public void SetState(int s)
     {
+        if (s == State_PickItem)
+            if (Ani.GetCurrentAnimatorStateInfo(0).IsName("PickItem"))
+                return;
+
         State = s;
         Ani.SetBool("isSlowRun", false);
         Ani.SetBool("isRun", false);

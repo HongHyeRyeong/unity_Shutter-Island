@@ -171,11 +171,12 @@ public class MurdererCtrl : MonoBehaviour
     public void SetState(int s)
     {
         State = s;
-        Ani.SetBool("isRun", false);
-        Ani.SetBool("isBackRun", false);
 
         if (State == State_Die)
             gameObject.SetActive(false);
+
+        Ani.SetBool("isRun", false);
+        Ani.SetBool("isBackRun", false);
     }
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -196,13 +197,19 @@ public class MurdererCtrl : MonoBehaviour
     [PunRPC]
     public void AttackWAnim()
     {
-        Ani.SetTrigger("trAttackW");
+        if(State == State_Run && Ani.GetBool("isRun"))
+            Ani.SetTrigger("trAttackWRun");
+        else
+            Ani.SetTrigger("trAttackW");
     }
 
     [PunRPC]
     public void AttackLAnim()
     {
-        Ani.SetTrigger("trAttackL");
+        if (State == State_Run && Ani.GetBool("isRun"))
+            Ani.SetTrigger("trAttackLRun");
+        else
+            Ani.SetTrigger("trAttackL");
     }
 
     [PunRPC]
