@@ -214,6 +214,7 @@ public class SurvivorCtrl : MonoBehaviour
 
                     MoveSpeed = 6f;
                     Stamina -= Time.deltaTime;
+                    GameObject.Find("GameController").GetComponent<EffectCtrl>().UseFootPrint(this.transform.position);
 
                     if (Stamina < 0)
                         Stamina = 0;

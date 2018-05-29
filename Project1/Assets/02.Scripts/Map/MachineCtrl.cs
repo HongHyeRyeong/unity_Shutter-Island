@@ -18,6 +18,7 @@ public class MachineCtrl : MonoBehaviour
     Text txtHUD;
 
     GameObject CompleteLight;
+    GameObject Flare;
 
     public int MachineNum;
     float MachineGauge = 0;
@@ -36,6 +37,7 @@ public class MachineCtrl : MonoBehaviour
         imgHUD = HUD.transform.Find("imgHUDMachine").GetComponent<Image>();
         txtHUD = HUD.transform.Find("txtHUDMachine").GetComponent<Text>();
         CompleteLight = this.gameObject.transform.Find("Completelight").gameObject;
+        Flare = this.gameObject.transform.Find("Flare").gameObject;
     }
 
     public bool Install(float work)
@@ -89,6 +91,7 @@ public class MachineCtrl : MonoBehaviour
         Complete = true;
         HUD.SetActive(false);
         CompleteLight.SetActive(true);
+        Flare.SetActive(false);
 
         Ani.SetTrigger("Complete");
         GameObject.Find("GameController").GetComponent<GameCtrl>().MachineComplete();

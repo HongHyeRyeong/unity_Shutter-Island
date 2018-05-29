@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameCtrl : MonoBehaviour
 {
-    bool Loading = false;
     int Character;
 
     GameObject Survivor;
@@ -13,10 +12,6 @@ public class GameCtrl : MonoBehaviour
     public GameObject Camera;
     public GameObject GameController;
     public GameObject UI;
-    public GameObject Fog;
-
-    public Material SkyboxDay;
-    public Material SkyboxNight;
 
     int MachineCompleteNum = 0;
     int PrisonSurNum = 0;
@@ -34,15 +29,6 @@ public class GameCtrl : MonoBehaviour
             CreateSurvivor();
         else
             CreateMurderer();
-
-        int map = Random.Range(1, 3);
-
-        if (map == 1)
-            Camera.AddComponent<Skybox>().material = SkyboxDay;
-        else
-            Camera.AddComponent<Skybox>().material = SkyboxDay;
-
-        Loading = true;
     }
 
     void Update()
