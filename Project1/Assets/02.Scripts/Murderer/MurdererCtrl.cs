@@ -91,7 +91,11 @@ public class MurdererCtrl : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    pv.RPC("AttackWAnim", PhotonTargets.All);
+                    if (State == State_Run && Ani.GetBool("isRun"))
+                        pv.RPC("AttackWRunAnim", PhotonTargets.All);
+                    else
+                        pv.RPC("AttackWAnim", PhotonTargets.All);
+
                     Ani.SetBool("isRun", false);
                     Ani.SetBool("isBackRun", false);
 
@@ -99,7 +103,11 @@ public class MurdererCtrl : MonoBehaviour
                 }
                 else if (Input.GetMouseButtonDown(1))
                 {
-                    pv.RPC("AttackLAnim", PhotonTargets.All);
+                    if (State == State_Run && Ani.GetBool("isRun"))
+                        pv.RPC("AttackLRunAnim", PhotonTargets.All);
+                    else
+                        pv.RPC("AttackLAnim", PhotonTargets.All);
+
                     Ani.SetBool("isRun", false);
                     Ani.SetBool("isBackRun", false);
 
@@ -202,19 +210,25 @@ public class MurdererCtrl : MonoBehaviour
     [PunRPC]
     public void AttackWAnim()
     {
-        if(State == State_Run && Ani.GetBool("isRun"))
-            Ani.SetTrigger("trAttackWRun");
-        else
-            Ani.SetTrigger("trAttackW");
+        Ani.SetTrigger("trAttackW");
     }
 
     [PunRPC]
     public void AttackLAnim()
     {
-        if (State == State_Run && Ani.GetBool("isRun"))
-            Ani.SetTrigger("trAttackLRun");
-        else
-            Ani.SetTrigger("trAttackL");
+        Ani.SetTrigger("trAttackL");
+    }
+
+    [PunRPC]
+    public void AttackWRunAnim()
+    {
+        Ani.SetTrigger("trAttackWRun");
+    }
+
+    [PunRPC]
+    public void AttackLRunAnim()
+    {
+        Ani.SetTrigger("trAttackLRun");
     }
 
     [PunRPC]

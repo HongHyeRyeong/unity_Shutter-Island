@@ -89,4 +89,6 @@ MonoBehaviour:
   - ClothesTakeOff
   - HatTakeOff
   - ItemDestroy
+  - AttackLRunAnim
+  - AttackWRunAnim
   DisableAutoOpenWizard: 1
