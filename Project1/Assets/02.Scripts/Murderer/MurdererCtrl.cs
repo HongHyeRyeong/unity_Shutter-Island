@@ -137,7 +137,9 @@ public class MurdererCtrl : MonoBehaviour
         }
 
         if (Hp < 0)
+        {
             pv.RPC("DieAnim", PhotonTargets.All);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

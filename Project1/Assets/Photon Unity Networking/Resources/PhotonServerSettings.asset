@@ -91,4 +91,7 @@ MonoBehaviour:
   - ItemDestroy
   - AttackLRunAnim
   - AttackWRunAnim
+  - AttackScore
+  - KillScore
+  - PrisonScore
   DisableAutoOpenWizard: 1
