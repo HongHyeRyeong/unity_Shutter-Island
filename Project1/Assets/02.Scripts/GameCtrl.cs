@@ -72,7 +72,6 @@ public class GameCtrl : MonoBehaviour
             Survivor = survivor;
 
             GameController.transform.Find("SurvivorController").gameObject.SetActive(true);
-            GameController.transform.Find("SurvivorController").GetComponent<ItemsCtrl>().SetSurvivor(Survivor);
             GameController.transform.Find("SurvivorController").GetComponent<SurvivorUICtrl>().SetSurvivor(Survivor);
             UI.transform.Find("SurvivorUI").gameObject.SetActive(true);
         }

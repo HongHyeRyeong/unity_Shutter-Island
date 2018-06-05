@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class ItemsCtrl : MonoBehaviour
 {
-    GameObject Survivor;
-
     public GameObject ItemHat1;
     public GameObject ItemHat2;
     public GameObject ItemHat3;
@@ -17,79 +15,100 @@ public class ItemsCtrl : MonoBehaviour
     public GameObject ItemGadget;
     public GameObject ItemKey;
 
-    GameObject[] Items = new GameObject[100];
-    int numItem = 0;
+    int[] hat = new int[] { 10, 4, 2 };
+    int[] Clothes = new int[] { 10, 4, 2 };
+    int[] Bag = new int[] { 10, 4 };
+    int GadgetNum = 35;
+    int keyNum = 10;
 
-    private void Update()
+    private void Start()
     {
-        if (numItem > 0)
-        {
-            for (int i = 00; i < 100; ++i)
-                if (Items[i] != null)
-                {
-                    GetComponent<SurvivorUICtrl>().DispItemHUD(
-                        Items[i].transform.position,
-                        Items[i].GetComponent<ItemCtrl>().ItemType,
-                        Items[i].GetComponent<ItemCtrl>().ItemLevel);
-                    Survivor.GetComponent<SurvivorItem>().SurvivorEnterItem(Items[i]);
+        GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawn");
 
-                    break;
-                }
-        }
-        else if (numItem == 0)
+        int hatNum = hat[0] + hat[1] + hat[2];
+        int clothesNum = Clothes[0] + Clothes[1] + Clothes[2];
+        int bagNum = Bag[0] + Bag[1];
+        int itemnum = hatNum + clothesNum + bagNum;
+
+        for (int i = 0; i < itemnum; ++i)
         {
-            if (GetComponent<SurvivorUICtrl>().HUDItem.activeSelf)
-                GetComponent<SurvivorUICtrl>().HUDItem.SetActive(false);
+            int random = Random.Range(0, spawns.Length);
+
+            Vector3 pos = new Vector3(
+                spawns[random].transform.position.x + Random.Range(-3.0f, 3.0f),
+                spawns[random].transform.position.y,
+                spawns[random].transform.position.z + Random.Range(-3.0f, 3.0f));
+
+            if (i < hatNum)
+            {
+                if (i < hat[0])
+                    Instantiate(ItemHat1, pos, Quaternion.Euler(-90, 0, 0));
+                else if (hat[0] <= i && i < hat[0] + hat[1])
+                    Instantiate(ItemHat2, pos, Quaternion.Euler(-90, 0, 0));
+                else
+                    Instantiate(ItemHat3, pos, Quaternion.Euler(-90, 0, 0));
+            }
+            else if (hatNum <= i && i < hatNum + clothesNum)
+            {
+                if (i < hatNum + Clothes[0])
+                    Instantiate(ItemClothes1, pos, Quaternion.identity);
+                else if (hatNum + Clothes[0] <= i && i < hatNum + Clothes[0] + Clothes[1])
+                    Instantiate(ItemClothes2, pos, Quaternion.identity);
+                else
+                    Instantiate(ItemClothes3, pos, Quaternion.identity);
+            }
+            else
+            {
+                if (i < hatNum + clothesNum + Bag[0])
+                    Instantiate(ItemBag1, pos, Quaternion.identity);
+                else
+                    Instantiate(ItemBag2, pos, Quaternion.identity);
+            }
+        }
+
+        for (int i = 0; i < GadgetNum; ++i)
+        {
+            int random = Random.Range(0, spawns.Length);
+
+            Vector3 pos = new Vector3(
+                spawns[random].transform.position.x + Random.Range(-3.0f, 3.0f),
+                spawns[random].transform.position.y,
+                spawns[random].transform.position.z + Random.Range(-3.0f, 3.0f));
+
+            Instantiate(ItemGadget, pos, Quaternion.Euler(-90, 0, 0));
+        }
+
+        for (int i = 0; i < keyNum; ++i)
+        {
+            int random = Random.Range(0, spawns.Length);
+
+            Vector3 pos = new Vector3(
+                spawns[random].transform.position.x + Random.Range(-3.0f, 3.0f),
+                spawns[random].transform.position.y,
+                spawns[random].transform.position.z + Random.Range(-3.0f, 3.0f));
+
+            Instantiate(ItemKey, pos, Quaternion.identity);
         }
     }
 
-    public void CreateItem(Vector3 position, int type, int level)
+    public void SetItem(Vector3 position, int type, int level)
     {
-        if (type == 1)
-        {
-            if (level == 1)
-                Instantiate(ItemHat1, position, Quaternion.Euler(-90, 0, 0));
-            else if (level == 2)
-                Instantiate(ItemHat2, position, Quaternion.Euler(-90, 0, 0));
-            else if (level == 3)
-                Instantiate(ItemHat3, position, Quaternion.Euler(-90, 0, 0));
-        }
-        else if (type == 2)
-        {
-            if (level == 1)
-                Instantiate(ItemClothes1, position, Quaternion.identity);
-            else if (level == 2)
-                Instantiate(ItemClothes2, position, Quaternion.identity);
-            else if (level == 3)
-                Instantiate(ItemClothes3, position, Quaternion.identity);
-        }
-        else if (type == 3)
-        {
-            if (level == 1)
-                Instantiate(ItemBag1, position, Quaternion.identity);
-            else if (level == 2)
-                Instantiate(ItemBag2, position, Quaternion.identity);
-        }
-        else if (type == 4)
-        {
-            Instantiate(ItemGadget, position, Quaternion.identity);
-        }
-    }
+        int itemsCount = GameObject.Find("Items").transform.childCount;
 
-    public int SurvivorEnterItems(GameObject item)
-    {
-        Items[numItem++] = item;
-        return numItem - 1;
-    }
+        for (int i = 0; i < itemsCount; ++i)
+        {
+            GameObject item = GameObject.Find("Items").transform.GetChild(i).transform.gameObject;
 
-    public void SurvivorExitItems(int ItemsNum)
-    {
-        Items[ItemsNum] = null;
-        numItem--;
-    }
+            if (item.activeSelf)
+                continue;
 
-    public void SetSurvivor(GameObject survivor)
-    {
-        Survivor = survivor;
+            if (item.GetComponent<ItemCtrl>().ItemType == type &&
+                item.GetComponent<ItemCtrl>().ItemLevel == level)
+            {
+                item.transform.position = position;
+                item.SetActive(true);
+                break;
+            }
+        }
     }
 }

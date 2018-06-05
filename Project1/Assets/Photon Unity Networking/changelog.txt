@@ -202,7 +202,7 @@ Changed: Some variable and field names. PeerState is now ClientState.
 Renamed: mAppId is now simply AppId. mAppVersion is now AppVersion.
 Renamed: networkingPeer.server is now networkingPeer.Server (uppercase, being public).
 Replaced: Most checks of PhotonNetwork.connectionStateDetailed being PeerState.Joined (or not) with checking PhotonNetwork.inRoom.
-Added: Regions to the PhotonServerSettings: "sa" South America (Sao Paulo), "usw" USA West (San José) and "cae" Canada East (Montreal). If you're using the "Best Region" setting, make sure to include/exclude them as needed.
+Added: Regions to the PhotonServerSettings: "sa" South America (Sao Paulo), "usw" USA West (San Jos? and "cae" Canada East (Montreal). If you're using the "Best Region" setting, make sure to include/exclude them as needed.
 Fixed: NetworkingPeer:SendMonoMessage() null check before sendmessage to a GameObject that could be null.
 PunTurnManager API:
     Changed: GetRemainingSeconds() becomes .RemainingSecondsInTurn

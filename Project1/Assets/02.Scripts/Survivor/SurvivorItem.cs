@@ -29,13 +29,6 @@ public class SurvivorItem : MonoBehaviour
         Hat = this.gameObject.transform.Find("SurvivorModel/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/ItemHat").gameObject;
         Clothes = this.gameObject.transform.Find("SurvivorModel/ItemClothes").gameObject;
         Bag = this.gameObject.transform.Find("SurvivorModel/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/ItemBag").gameObject;
-
-        // Demo
-        if (pv.isMine)
-        {
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisGadget(ItemGadget);
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisKey(ItemKey);
-        }
     }
 
     void SurvivorByItem(int type, int level)
@@ -76,7 +69,7 @@ public class SurvivorItem : MonoBehaviour
                 while (ItemGadget > ItemMaxGadget)
                 {
                     ItemGadget--;
-                    GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, 4, 0);
+                    GameObject.Find("GameController").GetComponent<ItemsCtrl>().SetItem(this.transform.position, 4, 0);
                 }
             }
 
@@ -113,9 +106,9 @@ public class SurvivorItem : MonoBehaviour
             GetComponent<SurvivorCtrl>().SetState(4);
             ItemPick(type, level);
 
-            GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().SurvivorExitItems(Item.GetComponent<ItemCtrl>().GetincludeNum());
+            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().SurvivorExitItems(Item.GetComponent<ItemCtrl>().GetincludeNum());
 
-            Destroy(Item);
+            Item.SetActive(false);
         }
     }
 
@@ -297,20 +290,20 @@ public class SurvivorItem : MonoBehaviour
     public void HatTakeOff(int type, int level)
     {
         Hat.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-        GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
+        GameObject.Find("GameController").GetComponent<ItemsCtrl>().SetItem(this.transform.position, type, level);
     }
 
     [PunRPC]
     public void ClothesTakeOff(int type, int level)
     {
         Clothes.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-        GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
+        GameObject.Find("GameController").GetComponent<ItemsCtrl>().SetItem(this.transform.position, type, level);
     }
 
     [PunRPC]
     public void BagTakeOff(int type, int level)
     {
         Bag.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-        GameObject.Find("SurvivorController").GetComponent<ItemsCtrl>().CreateItem(this.transform.position, type, level);
+        GameObject.Find("GameController").GetComponent<ItemsCtrl>().SetItem(this.transform.position, type, level);
     }
 }

@@ -53,6 +53,9 @@ public class SurvivorUICtrl : MonoBehaviour
     public Text[] txtPrisons = new Text[3];
 
     // world ui
+    GameObject[] Items = new GameObject[100];
+    int numItem = 0;
+
     public GameObject HUDItem;
     public Text txtHUDItem;
 
@@ -74,6 +77,7 @@ public class SurvivorUICtrl : MonoBehaviour
 
     void Update()
     {
+        // Inven
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (Inven.activeSelf)
@@ -96,6 +100,27 @@ public class SurvivorUICtrl : MonoBehaviour
             pos.y -= 50;
 
             ItemInfor.transform.position = pos;
+        }
+
+        // Item HUD
+        if (numItem > 0)
+        {
+            for (int i = 00; i < 100; ++i)
+                if (Items[i] != null)
+                {
+                    DispItemHUD(
+                        Items[i].transform.position,
+                        Items[i].GetComponent<ItemCtrl>().ItemType,
+                        Items[i].GetComponent<ItemCtrl>().ItemLevel);
+                    Survivor.GetComponent<SurvivorItem>().SurvivorEnterItem(Items[i]);
+
+                    break;
+                }
+        }
+        else if (numItem == 0)
+        {
+            if (HUDItem.activeSelf)
+                HUDItem.SetActive(false);
         }
     }
 
@@ -293,9 +318,20 @@ public class SurvivorUICtrl : MonoBehaviour
             txtHUDItem.text = "Key";
     }
 
-    public void SetSurvivor(GameObject survivor)
+    public int SurvivorEnterItems(GameObject item)
     {
-        Survivor = survivor;
+        if (numItem < 100)
+        {
+            Items[numItem++] = item;
+            return numItem - 1;
+        }
+        return -100;
+    }
+
+    public void SurvivorExitItems(int ItemsNum)
+    {
+        Items[ItemsNum] = null;
+        numItem--;
     }
 
     public void DisMachine(int num)
@@ -316,7 +352,10 @@ public class SurvivorUICtrl : MonoBehaviour
     public void DisMurHP(float hp)
     {
         imgMurHP.fillAmount = hp / 200;
+    }
 
-        print("survivorui " + hp);
+    public void SetSurvivor(GameObject survivor)
+    {
+        Survivor = survivor;
     }
 }

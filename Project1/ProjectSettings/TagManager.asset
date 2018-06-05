@@ -11,6 +11,7 @@ TagManager:
   - Machine
   - ItemPut
   - Fire
+  - Spawn
   layers:
   - Default
   - TransparentFX
@@ -20,8 +21,8 @@ TagManager:
   - UI
   - 
   - 
-  - FootPrint
-  - 
+  - Map
+  - Item
   - 
   - 
   - 
