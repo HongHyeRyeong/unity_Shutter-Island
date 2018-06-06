@@ -23,6 +23,8 @@ public class MurdererCtrl : MonoBehaviour
 
     private float MouseX;
 
+    float AttackRunTime = 0;
+
     //
     const int State_Die = -1;
     const int State_Idle = 0;
@@ -117,7 +119,11 @@ public class MurdererCtrl : MonoBehaviour
             else if (State == State_AttackW || State == State_AttackL)
             {
                 if (Ani.GetCurrentAnimatorStateInfo(0).IsName("AttackWRun") || Ani.GetCurrentAnimatorStateInfo(0).IsName("AttackLRun"))
-                    transform.Translate(new Vector3(0, 0, 1) * Time.deltaTime);
+                {
+                    AttackRunTime += Time.deltaTime;
+                    float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.4f;
+                    transform.Translate(new Vector3(0, 0, 1) * newTime * newTime);
+                }
             }
 
             // Movement
@@ -186,6 +192,7 @@ public class MurdererCtrl : MonoBehaviour
     public void SetState(int s)
     {
         State = s;
+        AttackRunTime = 0;
 
         if (State == State_Die)
             gameObject.SetActive(false);

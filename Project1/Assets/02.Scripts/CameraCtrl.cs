@@ -47,21 +47,23 @@ public class CameraCtrl : MonoBehaviour
         {
             if (targetMurdererCamPivot)
             {
-                if (targetMurderer.GetComponent<MurdererCtrl>().GetState() == 2)
-                {
-                    transform.position = targetMurdererCamPivot.transform.position;
-                    transform.rotation = Quaternion.Euler(
-                        targetMurdererCamPivot.transform.eulerAngles.x, targetMurderer.transform.eulerAngles.y, 0);
-                }
-                else
+                if (targetMurderer.GetComponent<MurdererCtrl>().GetState() == 0 || targetMurderer.GetComponent<MurdererCtrl>().GetState() == 1)
                 {
                     transform.position = new Vector3(
-                        targetMurdererCamPivot.transform.position.x, targetMurderer.transform.position.y + 2, targetMurdererCamPivot.transform.position.z);
+                        targetMurdererCamPivot.transform.position.x, 
+                        targetMurderer.transform.position.y + 2.2f, 
+                        targetMurdererCamPivot.transform.position.z);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;
                     MouseY = ClampAngle(MouseY, -30, 40);
 
                     transform.rotation = Quaternion.Euler(MouseY, targetMurderer.eulerAngles.y, 0);
+                }
+                else
+                {
+                    transform.position = targetMurdererCamPivot.transform.position;
+                    transform.rotation = Quaternion.Euler(
+                        targetMurdererCamPivot.transform.eulerAngles.x, targetMurderer.transform.eulerAngles.y, 0);
                 }
             }
         }

@@ -54,7 +54,7 @@ public class SurvivorUICtrl : MonoBehaviour
 
     // world ui
     GameObject[] Items = new GameObject[100];
-    int numItem = 0;
+    int itemNum = 0;
 
     public GameObject HUDItem;
     public Text txtHUDItem;
@@ -103,9 +103,9 @@ public class SurvivorUICtrl : MonoBehaviour
         }
 
         // Item HUD
-        if (numItem > 0)
+        if (itemNum > 0)
         {
-            for (int i = 00; i < 100; ++i)
+            for (int i = 0; i < 100; ++i)
                 if (Items[i] != null)
                 {
                     DispItemHUD(
@@ -113,11 +113,10 @@ public class SurvivorUICtrl : MonoBehaviour
                         Items[i].GetComponent<ItemCtrl>().ItemType,
                         Items[i].GetComponent<ItemCtrl>().ItemLevel);
                     Survivor.GetComponent<SurvivorItem>().SurvivorEnterItem(Items[i]);
-
                     break;
                 }
         }
-        else if (numItem == 0)
+        else if (itemNum == 0)
         {
             if (HUDItem.activeSelf)
                 HUDItem.SetActive(false);
@@ -320,18 +319,20 @@ public class SurvivorUICtrl : MonoBehaviour
 
     public int SurvivorEnterItems(GameObject item)
     {
-        if (numItem < 100)
-        {
-            Items[numItem++] = item;
-            return numItem - 1;
-        }
-        return -100;
+        for (int i = 0; i < 100; ++i)
+            if (Items[i] == null)
+            {
+                Items[i] = item;
+                itemNum++;
+                return i;
+            }
+        return -1;
     }
 
-    public void SurvivorExitItems(int ItemsNum)
+    public void SurvivorExitItems(int num)
     {
-        Items[ItemsNum] = null;
-        numItem--;
+        Items[num] = null;
+        itemNum--;
     }
 
     public void DisMachine(int num)
