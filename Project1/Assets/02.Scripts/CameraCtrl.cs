@@ -64,6 +64,8 @@ public class CameraCtrl : MonoBehaviour
                     transform.position = targetMurdererCamPivot.transform.position;
                     transform.rotation = Quaternion.Euler(
                         targetMurdererCamPivot.transform.eulerAngles.x, targetMurderer.transform.eulerAngles.y, 0);
+
+                    MouseY = targetMurdererCamPivot.transform.eulerAngles.x;
                 }
             }
         }
