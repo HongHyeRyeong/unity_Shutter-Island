@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Login : MonoBehaviour {
 
     //
-    public InputField IDInputField;
+    static public InputField IDInputField;
     public InputField PWInputField;
 
     public InputField NewIDInputField;
@@ -96,6 +96,11 @@ public class Login : MonoBehaviour {
 
         StopCoroutine(LoginGo());
     }
+
+    //static public string GetID()
+    //{
+    //    return IDInputField.text;
+    //}
 
     public void OpenCreateAccountButton()
     {

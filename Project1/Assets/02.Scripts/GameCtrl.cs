@@ -20,6 +20,10 @@ public class GameCtrl : MonoBehaviour
     float deltaTime = 0.0f;
     float fps;
 
+    //
+    int SurvivorScore = 0;
+    int MurdererScore = 0;
+
     private void Start()
     {
         PhotonNetwork.isMessageQueueRunning = true;
@@ -134,6 +138,20 @@ public class GameCtrl : MonoBehaviour
             GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisMurHP(hp);
 
             print("gamectrl " + hp);
+        }
+    }
+
+    public void SetScore(int score)
+    {
+        if (Character == 1)
+        {
+            SurvivorScore += score;
+            print(SurvivorScore);
+        }
+        else if (Character == 2)
+        {
+            MurdererScore += score;
+            print(MurdererScore);
         }
     }
 }
