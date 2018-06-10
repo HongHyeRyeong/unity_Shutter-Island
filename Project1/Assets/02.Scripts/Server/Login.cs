@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Login : MonoBehaviour {
 
     //
-    static public InputField IDInputField;
+    public InputField IDInputField;
     public InputField PWInputField;
 
     public InputField NewIDInputField;
@@ -29,6 +29,9 @@ public class Login : MonoBehaviour {
 
     //
     public Text NowLoginState;
+
+    //
+    public static string user_id;
 
     void Start()
     {
@@ -91,16 +94,18 @@ public class Login : MonoBehaviour {
             print("Login Success" + webRequest.text.Substring(webRequest.text.Length - 1, 1));
             NowLoginState.text = "Login Success";
 
+            user_id = IDInputField.text;
+
             SceneManager.LoadScene("Lobby");
         }
 
         StopCoroutine(LoginGo());
     }
 
-    //static public string GetID()
-    //{
-    //    return IDInputField.text;
-    //}
+    public static string GetID()
+    {
+        return user_id;
+    }
 
     public void OpenCreateAccountButton()
     {

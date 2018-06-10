@@ -141,17 +141,15 @@ public class GameCtrl : MonoBehaviour
         }
     }
 
-    public void SetScore(int score)
+    public void SetSurvivorScore(int score)
     {
-        if (Character == 1)
-        {
-            SurvivorScore += score;
-            print(SurvivorScore);
-        }
-        else if (Character == 2)
-        {
-            MurdererScore += score;
-            print(MurdererScore);
-        }
+        SurvivorScore += score;
+        print(SurvivorScore);
+    }
+
+    public void SetMurdererScore(int score)
+    {
+        MurdererScore += score;
+        print(MurdererScore);
     }
 }

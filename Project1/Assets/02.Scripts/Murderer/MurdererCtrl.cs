@@ -145,6 +145,8 @@ public class MurdererCtrl : MonoBehaviour
         if (Hp < 0)
         {
             pv.RPC("DieAnim", PhotonTargets.All);
+
+            GameObject.Find("GameController").GetComponent<GameCtrl>().SetSurvivorScore(2000);
         }
     }
 

@@ -9,7 +9,8 @@ public class DataManager : MonoBehaviour {
 
     private void Start()
     {
-        //username = Login.GetID();
+        username = Login.GetID();
+        print(username);
     }
 
     IEnumerator SaveScore(int SurScore)
