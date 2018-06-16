@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4918037504348138}
   - component: {fileID: 64688878210600496}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 33280500909593530}
   - component: {fileID: 23975580921576622}
   - component: {fileID: 65188601617083842}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CanonHouse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1555677422024592}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: -0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 200, y: 200, z: 200}
   m_Children:
   - {fileID: 4918037504348138}

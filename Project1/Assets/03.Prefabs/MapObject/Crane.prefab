@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33584948658463912}
   - component: {fileID: 23030542853982878}
   - component: {fileID: 65848162681747686}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Crane
   m_TagString: Untagged
   m_Icon: {fileID: 0}

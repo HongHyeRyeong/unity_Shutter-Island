@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4137078910918834}
   - component: {fileID: 33620203954279578}
   - component: {fileID: 23463230361519560}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4615239743490736}
   - component: {fileID: 33939025554681066}
   - component: {fileID: 23365478663556300}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Object001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 4481968618883838}
   - component: {fileID: 33810193582078680}
   - component: {fileID: 23238383706646614}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Object002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 4671149385232542}
   - component: {fileID: 95798820471312946}
   - component: {fileID: 65011004581412112}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BigBell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
