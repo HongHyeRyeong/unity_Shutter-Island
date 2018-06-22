@@ -12,9 +12,10 @@ public class MurdererCtrl : MonoBehaviour
     GameObject curSurvivor;
 
     //
-    private Animator Ani;
-
     MurdererUICtrl MurdererUI;
+
+    private Animator Ani;
+    public GameObject ParticleTrail;
 
     private int State = 0;
     private float Hp = 200f;
@@ -201,6 +202,8 @@ public class MurdererCtrl : MonoBehaviour
 
         Ani.SetBool("isRun", false);
         Ani.SetBool("isBackRun", false);
+
+        ParticleTrail.SetActive(false);
     }
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -259,6 +262,8 @@ public class MurdererCtrl : MonoBehaviour
     {
         State = State_AttackW;
         isAttack = true;
+
+        ParticleTrail.SetActive(true);
     }
 
     [PunRPC]
@@ -266,5 +271,7 @@ public class MurdererCtrl : MonoBehaviour
     {
         State = State_AttackL;
         isAttack = true;
+
+        ParticleTrail.SetActive(true);
     }
 }
