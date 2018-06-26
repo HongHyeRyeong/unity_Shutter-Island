@@ -6,8 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/01.Scene/Login.unity
+    guid: a479f2997b04c4e4d84d9d0a8c92f469
+  - enabled: 1
     path: Assets/01.Scene/Lobby.unity
     guid: 743fdbe2928bcbe4eba1dbab92cdf395
   - enabled: 1
     path: Assets/01.Scene/Shutter Island.unity
     guid: 32668ad80d378e8429a74bbeb67c2a8c
+  m_configObjects: {}
