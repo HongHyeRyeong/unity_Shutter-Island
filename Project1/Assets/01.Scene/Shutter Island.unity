@@ -56839,6 +56839,7 @@ MonoBehaviour:
   Camera: {fileID: 1305429263}
   SkyboxDay: {fileID: 2100000, guid: e391f00234292cc4f935308c11cf0e54, type: 2}
   SkyboxNight: {fileID: 2100000, guid: d4454f71d85928744be7771e2143dab7, type: 2}
+  SurvivorFootPrints: {fileID: 1035940607}
   FootPrint: {fileID: 1999113944256596, guid: e33a4612c9f3aab419505c926c089df4, type: 2}
 --- !u!114 &872156588
 MonoBehaviour:

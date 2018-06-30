@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class EffectCtrl : MonoBehaviour
 {
-    public GameObject Camera;
+    [SerializeField]
+    private GameObject Camera;
+    [SerializeField]
+    private Material SkyboxDay;
+    [SerializeField]
+    private Material SkyboxNight;
 
-    public Material SkyboxDay;
-    public Material SkyboxNight;
-
-    public GameObject FootPrint;
-    const int FootPrintsNum = 1000;
-    GameObject[] FootPrints = new GameObject[FootPrintsNum];
+    [SerializeField]
+    private GameObject SurvivorFootPrints;
+    [SerializeField]
+    private GameObject FootPrint;
+    private GameObject[] FootPrints = new GameObject[3000];
+    private int FootPrintsNum = -1;
+    private float delay = 0.05f;
+    private float savedelay;
 
     void Start()
     {
@@ -23,32 +30,55 @@ public class EffectCtrl : MonoBehaviour
         else
             Camera.AddComponent<Skybox>().material = SkyboxDay;
 
-        // Survivor FootPrint
-        GameObject SurvivorFootPrints = GameObject.Find("SurvivorFootPrints");
-        for (int i = 0; i < FootPrintsNum; ++i)
-        {
-            Quaternion rot = Quaternion.Euler(90, 0, Random.Range(0, 360));
-            GameObject temp = Instantiate(FootPrint, new Vector3(0, 0, 0), rot);
-
-            FootPrints[i] = temp;
-            temp.transform.parent = SurvivorFootPrints.transform;
-        }
-
+        savedelay = delay;
     }
 
     public void UseFootPrint(Vector3 SurPos)
     {
-        for (int i = 0; i < FootPrintsNum; ++i)
+        if (delay != savedelay)
+            return;
+        StartCoroutine(DelayTime());
+
+        bool isNew = true;
+
+        float randomX = Random.Range(-0.8f, 0.8f);
+
+        for (int i = 0; i <= FootPrintsNum; ++i)
         {
             if (!FootPrints[i].activeSelf)
             {
-                FootPrints[i].SetActive(true);
+                isNew = false;
+
+                StartCoroutine(FootPrints[i].GetComponent<FootPrintCtrl>().Use());
                 FootPrints[i].transform.position = new Vector3(
-                    Random.Range(-0.4f, 0.4f) + SurPos.x,
-                    SurPos.y + 1.5f,
-                    SurPos.z);
+                    randomX + SurPos.x, SurPos.y + 1.5f, SurPos.z);
                 break;
             }
         }
+
+        if (isNew)
+        {
+            Vector3 Pos = new Vector3(
+                    randomX + SurPos.x, SurPos.y + 1.5f, SurPos.z);
+
+            FootPrints[++FootPrintsNum] = Instantiate(FootPrint, Pos,
+                Quaternion.Euler(90, 0, Random.Range(0, 360)));
+            FootPrints[FootPrintsNum].transform.parent = SurvivorFootPrints.transform;
+            StartCoroutine(FootPrints[FootPrintsNum].GetComponent<FootPrintCtrl>().Use());
+        }
+    }
+
+    IEnumerator DelayTime()
+    {
+        while (true)
+        {
+            delay -= Time.deltaTime;
+
+            if (delay <= 0)
+                break;
+
+            yield return null;
+        }
+        delay = savedelay;
     }
 }

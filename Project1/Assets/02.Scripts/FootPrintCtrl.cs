@@ -11,25 +11,28 @@ public class FootPrintCtrl : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    void Update()
+    public IEnumerator Use()
     {
-        if (this.gameObject.activeSelf)
+        this.gameObject.SetActive(true);
+
+        float time = UseTime;
+
+        while (true)
         {
-            UseTime -= Time.deltaTime;
+            time -= Time.deltaTime;
 
-            if (UseTime < 3)
-            {
-                float tempY = this.gameObject.transform.position.y - 0.01f;
-                this.gameObject.transform.position = new Vector3(
-                    this.gameObject.transform.position.x, tempY, this.gameObject.transform.position.z);
-            }
+            if (time < 3)
+                transform.position = new Vector3(
+                    transform.position.x,
+                    transform.position.y - Time.deltaTime * 0.25f,
+                    transform.position.z);
 
-            if(UseTime < 0)
-            {
-                UseTime = 5.0f;
-                this.gameObject.SetActive(false);
-            }
+            if (time < 0)
+                break;
 
+            yield return null;
         }
+
+        this.gameObject.SetActive(false);
     }
 }
