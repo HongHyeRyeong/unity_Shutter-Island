@@ -9,11 +9,12 @@ EditorBuildSettings:
     path: Assets/01.Scene/Login.unity
     guid: a479f2997b04c4e4d84d9d0a8c92f469
   - enabled: 1
-    path: Assets/01.Scene/Lobby.unity
-    guid: 743fdbe2928bcbe4eba1dbab92cdf395
+    path: Assets/01.Scene/TEST.unity
+    guid: c65a646c0f5e3324891cbaa032cfc85e
   - enabled: 1
     path: Assets/01.Scene/inGame1.unity
     guid: 32668ad80d378e8429a74bbeb67c2a8c
   - enabled: 1
     path: Assets/01.Scene/inGame2.unity
     guid: d57dc36f3c337fd48b55a33fd38321c5
+  m_configObjects: {}

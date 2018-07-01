@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 8
+  serializedVersion: 9
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -38,7 +38,8 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44129857, g: 0.4901014, b: 0.57015187, a: 1}
+  m_IndirectSpecularColor: {r: 0.44129837, g: 0.4901008, b: 0.57015085, a: 1}
+  m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -54,11 +55,10 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
-    serializedVersion: 9
+    serializedVersion: 10
     m_Resolution: 2
     m_BakeResolution: 40
-    m_TextureWidth: 1024
-    m_TextureHeight: 1024
+    m_AtlasSize: 1024
     m_AO: 0
     m_AOMaxDistance: 1
     m_CompAOExponent: 1
@@ -1635,7 +1635,7 @@ GameObject:
   - component: {fileID: 1107006862}
   - component: {fileID: 1107006861}
   m_Layer: 5
-  m_Name: Text (3)
+  m_Name: SurRank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1691,7 +1691,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 20
+  m_Text: '-'
 --- !u!222 &1107006862
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1900,7 +1900,7 @@ GameObject:
   - component: {fileID: 1235849860}
   - component: {fileID: 1235849859}
   m_Layer: 5
-  m_Name: Text (4)
+  m_Name: MurRank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1956,7 +1956,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 20
+  m_Text: '-'
 --- !u!222 &1235849860
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2067,8 +2067,8 @@ RectTransform:
   m_Father: {fileID: 375797148}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.08948584, y: 0.675}
-  m_AnchorMax: {x: 0.46248585, y: 0.9250001}
+  m_AnchorMin: {x: 0.08948584, y: 0.6854324}
+  m_AnchorMax: {x: 0.924536, y: 0.9250001}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2328,6 +2328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1635191711}
   - component: {fileID: 1635191710}
+  - component: {fileID: 1635191712}
   m_Layer: 0
   m_Name: GameCtrl
   m_TagString: Untagged
@@ -2363,6 +2364,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1635191712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1635191709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe4e0dd4d8848234997098076348faa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UserID: {fileID: 1340802907}
+  SurRankTxt: {fileID: 1107006861}
+  MurRankTxt: {fileID: 1235849859}
 --- !u!1 &1698627482
 GameObject:
   m_ObjectHideFlags: 0

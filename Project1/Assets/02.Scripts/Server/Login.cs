@@ -32,6 +32,8 @@ public class Login : MonoBehaviour {
 
     //
     public static string user_id;
+    public static string SurRank;
+    public static string MurRank;
 
     void Start()
     {
@@ -91,12 +93,25 @@ public class Login : MonoBehaviour {
         }
         else
         {
-            print("Login Success" + webRequest.text.Substring(webRequest.text.Length - 1, 1));
+            string[] stringSeparators = new string[] { "\n" };
+            string[] lines = webRequest.text.Split(stringSeparators, System.StringSplitOptions.RemoveEmptyEntries);
+
+            for(int i = 0; i < lines.Length; ++i)
+            {
+                string[] _parts = lines[i].Split(',');
+                SurRank = _parts[0];
+                MurRank = _parts[1];
+            }
+
+            print(SurRank);
+            print(MurRank);
+
+            print("Login Success ");
             NowLoginState.text = "Login Success";
 
             user_id = IDInputField.text;
 
-            SceneManager.LoadScene("Lobby");
+            SceneManager.LoadScene("TEST");
         }
 
         StopCoroutine(LoginGo());
@@ -105,6 +120,16 @@ public class Login : MonoBehaviour {
     public static string GetID()
     {
         return user_id;
+    }
+
+    public static string GetSurRank()
+    {
+        return SurRank;
+    }
+
+    public static string GetMurRank()
+    {
+        return MurRank;
     }
 
     public void OpenCreateAccountButton()
