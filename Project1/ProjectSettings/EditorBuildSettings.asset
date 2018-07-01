@@ -12,6 +12,8 @@ EditorBuildSettings:
     path: Assets/01.Scene/Lobby.unity
     guid: 743fdbe2928bcbe4eba1dbab92cdf395
   - enabled: 1
-    path: Assets/01.Scene/Shutter Island.unity
+    path: Assets/01.Scene/inGame1.unity
     guid: 32668ad80d378e8429a74bbeb67c2a8c
-  m_configObjects: {}
+  - enabled: 1
+    path: Assets/01.Scene/inGame2.unity
+    guid: d57dc36f3c337fd48b55a33fd38321c5

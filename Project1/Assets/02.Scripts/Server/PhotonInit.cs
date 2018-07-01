@@ -42,7 +42,12 @@ public class PhotonInit : MonoBehaviour {
     {
         PhotonNetwork.isMessageQueueRunning = false;
 
-        AsyncOperation ao = Application.LoadLevelAsync("Shutter Island");
+        AsyncOperation ao;
+        if (Random.Range(1, 3) == 1)
+            ao = Application.LoadLevelAsync("inGame1");
+        else
+            ao = Application.LoadLevelAsync("inGame2");
+
         yield return ao;
     }
 
