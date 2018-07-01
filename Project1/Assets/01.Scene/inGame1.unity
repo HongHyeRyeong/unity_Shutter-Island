@@ -6603,7 +6603,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 174158684}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -37.79711, y: 3.0418086, z: 22.644657}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 185495981}
@@ -6816,7 +6816,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 0
+  randomSeed: 2130417217
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -10124,7 +10124,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 185495978}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 37.79711, y: -3.0418086, z: -22.644657}
+  m_LocalPosition: {x: 0, y: -3, z: -11.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 721373590}
@@ -19139,7 +19139,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &324840724
 GameObject:
@@ -28691,7 +28691,7 @@ Transform:
   - {fileID: 1665059912}
   - {fileID: 1568366902}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &473259468
 Prefab:
@@ -38803,7 +38803,7 @@ Transform:
   m_Children:
   - {fileID: 1662055141}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &638632257
 GameObject:
@@ -39095,7 +39095,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 0
+  randomSeed: 1069913645
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -43715,7 +43715,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 0
+  randomSeed: 1889742681
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -47560,7 +47560,7 @@ Transform:
   - {fileID: 709814930}
   - {fileID: 1729723842}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &756784572
 GameObject:
@@ -56786,7 +56786,6 @@ GameObject:
   m_Component:
   - component: {fileID: 872156585}
   - component: {fileID: 872156586}
-  - component: {fileID: 872156587}
   - component: {fileID: 872156588}
   - component: {fileID: 872156589}
   m_Layer: 0
@@ -56822,21 +56821,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aedbd75733f4b847b2419a2b27a024a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Survivor: {fileID: 0}
+  Murderer: {fileID: 0}
   Camera: {fileID: 1305429263}
   GameController: {fileID: 872156584}
+  SurGameController: {fileID: 324840724}
+  MurGameController: {fileID: 769524596}
   UI: {fileID: 1618485302}
---- !u!114 &872156587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 872156584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb069e29b4ff2364dba4a8ca86c72343, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Camera: {fileID: 1305429263}
   SkyboxDay: {fileID: 2100000, guid: e391f00234292cc4f935308c11cf0e54, type: 2}
   SkyboxNight: {fileID: 2100000, guid: d4454f71d85928744be7771e2143dab7, type: 2}
   SurvivorFootPrints: {fileID: 1035940607}
@@ -69988,7 +69979,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1035940607}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 37.79711, y: -3.0418086, z: -22.644657}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 174158685}
@@ -82788,7 +82779,7 @@ Transform:
   - {fileID: 1323445626}
   - {fileID: 1604509027}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1223396413
 Prefab:
@@ -89251,7 +89242,7 @@ Transform:
   - {fileID: 1091950783}
   - {fileID: 563444979}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1395791133
 Prefab:

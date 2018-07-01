@@ -8,6 +8,8 @@ public class PhotonInit : MonoBehaviour {
     // App의 버전 정보
     public string version = "v1.0";
 
+    static public int Map = 0;
+
     // Use this for initialization
     void Awake () {
         // 포톤 클라우드에 접속
@@ -43,7 +45,8 @@ public class PhotonInit : MonoBehaviour {
         PhotonNetwork.isMessageQueueRunning = false;
 
         AsyncOperation ao;
-        if (Random.Range(1, 3) == 1)
+        Map = Random.Range(1, 3);
+        if (Map == 1)
             ao = Application.LoadLevelAsync("inGame1");
         else
             ao = Application.LoadLevelAsync("inGame2");

@@ -13,8 +13,7 @@ public class SurvivorCtrl : MonoBehaviour
     private Animator Ani;
     private Transform trModel;
 
-    SurvivorUICtrl SurvivorUI;
-    GameObject Murderer;
+    private SurvivorUICtrl SurvivorUI;
 
     //
     public int Type;
@@ -78,9 +77,9 @@ public class SurvivorCtrl : MonoBehaviour
         if (pv.isMine)
         {
             trModel = this.gameObject.transform.Find("SurvivorModel").GetComponent<Transform>();
-            SurvivorUI = GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>();
+            SurvivorUI = GameCtrl.instance.SurGameController.GetComponent<SurvivorUICtrl>();
 
-            GameObject.Find("MainCamera").GetComponent<CameraCtrl>().targetSurvivorComPivot =
+            GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetSurvivorComPivot =
                 this.gameObject.transform.Find("SurvivorCamPivot");
 
             Type = Cha_Stamina;  // Demo
@@ -214,7 +213,7 @@ public class SurvivorCtrl : MonoBehaviour
 
                     MoveSpeed = 6f;
                     Stamina -= Time.deltaTime;
-                    GameObject.Find("GameController").GetComponent<EffectCtrl>().UseFootPrint(this.transform.position);
+                    GameCtrl.instance.GameController.GetComponent<GameCtrl>().UseFootPrint(this.transform.position);
 
                     if (Stamina < 0)
                         Stamina = 0;
@@ -269,7 +268,7 @@ public class SurvivorCtrl : MonoBehaviour
                         pv.RPC("AttackEnd", PhotonTargets.All);
                         pv.RPC("DamageToMurderer", PhotonTargets.All);
 
-                        GameObject.Find("GameController").GetComponent<GameCtrl>().SetSurvivorScore(100);
+                        GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(100);
                     }
                 }
                 else if (Input.GetMouseButtonDown(1))
@@ -288,7 +287,7 @@ public class SurvivorCtrl : MonoBehaviour
                         pv.RPC("AttackEnd", PhotonTargets.All);
                         pv.RPC("DamageToMurderer", PhotonTargets.All);
 
-                        GameObject.Find("GameController").GetComponent<GameCtrl>().SetSurvivorScore(100);
+                        GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(100);
                     }
 
                 }
@@ -310,16 +309,16 @@ public class SurvivorCtrl : MonoBehaviour
     [PunRPC]
     public void DamageToMurderer()
     {
-        Murderer.GetComponent<MurdererCtrl>().DamageByPlayer(Power);
+        GameCtrl.instance.Murderer.GetComponent<MurdererCtrl>().DamageByPlayer(Power);
     }
 
     public void AttackByMurderer(GameObject m, int MurdererAttack)
     {
         if (!Prison)
         {
-            if (Murderer == null)
+            if (GameCtrl.instance.Murderer == null)
             {
-                Murderer = m;
+                GameCtrl.instance.Murderer = m;
             }
 
             if (State == State_AttackW || State == State_AttackL)
@@ -376,7 +375,7 @@ public class SurvivorCtrl : MonoBehaviour
             Prison = true;
             Life -= 1;
 
-            GameObject.Find("GameController").GetComponent<GameCtrl>().SetMurdererScore(500);
+            GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(500);
 
             if (pv.isMine)
                 SurvivorUI.DispLife(Life);
@@ -387,10 +386,10 @@ public class SurvivorCtrl : MonoBehaviour
             inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
             pv.RPC("DieAnim", PhotonTargets.All);
 
-            GameObject.Find("GameController").GetComponent<GameCtrl>().SetMurdererScore(2000);
+            GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(2000);
         }
 
-        GameObject.Find("GameController").GetComponent<GameCtrl>().SetMurdererScore(100);
+        GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(100);
     }
 
     public void PrisonStay(GameObject prison)
@@ -414,7 +413,7 @@ public class SurvivorCtrl : MonoBehaviour
                     prison.GetComponent<PrisonCtrl>().OpenDoor();
                     PrisonTime = 3f;
 
-                    GameObject.Find("GameController").GetComponent<GameCtrl>().SetSurvivorScore(500);
+                    GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(500);
                 }
             }
             else
@@ -456,7 +455,7 @@ public class SurvivorCtrl : MonoBehaviour
             inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
             pv.RPC("DieAnim", PhotonTargets.All);
             Prison = false;
-            GameObject.Find("GameController").GetComponent<GameCtrl>().SetMurdererScore(2000);
+            GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(2000);
         }
 
         if (PrisonTP == false)
@@ -493,7 +492,7 @@ public class SurvivorCtrl : MonoBehaviour
             {
                 inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
                 pv.RPC("DieAnim", PhotonTargets.All);
-                GameObject.Find("GameController").GetComponent<GameCtrl>().SetMurdererScore(2000);
+                GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(2000);
             }
         }
     }
@@ -546,7 +545,7 @@ public class SurvivorCtrl : MonoBehaviour
                                 State = State_Idle;
                                 Ani.SetBool("isRepair", false);
                                 WorkMachine = 0;
-                                GameObject.Find("GameController").GetComponent<GameCtrl>().SetSurvivorScore(200);
+                                GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(200);
 
                                 other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(false);
                             }

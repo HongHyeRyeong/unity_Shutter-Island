@@ -50,10 +50,10 @@ public class MurdererCtrl : MonoBehaviour
 
         if (pv.isMine)
         {
-            MurdererUI = GameObject.Find("MurdererController").GetComponent<MurdererUICtrl>();
+            MurdererUI = GameCtrl.instance.MurGameController.GetComponent<MurdererUICtrl>();
 
-            GameObject.Find("MainCamera").GetComponent<CameraCtrl>().targetMurderer = this.gameObject.transform;
-            GameObject.Find("MainCamera").GetComponent<CameraCtrl>().targetMurdererCamPivot =
+            GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetMurderer = this.gameObject.transform;
+            GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetMurdererCamPivot =
                 this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/MurdererCamPivot").transform;
         }
     }
@@ -147,7 +147,7 @@ public class MurdererCtrl : MonoBehaviour
         {
             pv.RPC("DieAnim", PhotonTargets.All);
 
-            GameObject.Find("GameController").GetComponent<GameCtrl>().SetSurvivorScore(2000);
+            GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(2000);
         }
     }
 
@@ -175,7 +175,7 @@ public class MurdererCtrl : MonoBehaviour
             MurdererUI.DispHP(Hp);
         }
 
-        GameObject.Find("GameController").GetComponent<GameCtrl>().DisMurHP(Hp);
+        GameCtrl.instance.GameController.GetComponent<GameCtrl>().DisMurHP(Hp);
         print("murdererctrl " + Hp);
     }
 
@@ -184,7 +184,7 @@ public class MurdererCtrl : MonoBehaviour
         Hp -= Power;
 
         MurdererUI.DispHP(Hp);
-        GameObject.Find("GameController").GetComponent<GameCtrl>().DisMurHP(Hp);
+        GameCtrl.instance.GameController.GetComponent<GameCtrl>().DisMurHP(Hp);
     }
 
     public int GetState()

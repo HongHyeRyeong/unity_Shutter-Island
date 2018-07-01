@@ -4,111 +4,123 @@ using UnityEngine;
 
 public class GameCtrl : MonoBehaviour
 {
-    int Character;
+    public static GameCtrl instance;
 
-    GameObject Survivor;
-    GameObject Murderer;
+    public GameObject Survivor;
+    public GameObject Murderer;
 
     public GameObject Camera;
     public GameObject GameController;
+    public GameObject SurGameController;
+    public GameObject MurGameController;
     public GameObject UI;
 
-    int MachineCompleteNum = 0;
-    int PrisonSurNum = 0;
+    [SerializeField]
+    private Material SkyboxDay;
+    [SerializeField]
+    private Material SkyboxNight;
 
-    //
-    float deltaTime = 0.0f;
-    float fps;
+    // inGame
+    private int Character;
+    private int Skill;
 
-    //
+    private int MachineCompleteNum = 0;
+    private int PrisonSurNum = 0;
+
+    [SerializeField]
+    private GameObject SurvivorFootPrints;
+    [SerializeField]
+    private GameObject FootPrint;
+    private GameObject[] FootPrints = new GameObject[3000];
+    private int FootPrintsNum = -1;
+    private float delay = 0.05f;
+    private float savedelay;
+
+    // score
     int SurvivorScore = 0;
     int MurdererScore = 0;
+
+    // fps
+    float deltaTime = 0.0f;
+    float fps;
 
     private void Start()
     {
         PhotonNetwork.isMessageQueueRunning = true;
         Application.targetFrameRate = 60;
 
+        instance = this;
+
         if (CharacterSelect.SelSur == true)
-            CreateSurvivor();
+        {
+            Character = 1;
+            UI = UI.transform.Find("SurvivorUI").gameObject;
+
+            // 맵에 따라 다른 생성 위치
+            if (PhotonInit.Map == 1)
+                Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(-37, 0.0f, 36), Quaternion.identity, 0);
+            else
+                Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(80, 0.0f, 36), Quaternion.identity, 0);
+
+            // 각 오브젝트 적용
+            Camera.GetComponent<CameraCtrl>().SetCharacter(Character);
+
+            SurGameController.SetActive(true);
+            SurGameController.GetComponent<SurvivorUICtrl>().Init();
+            UI.SetActive(true);
+        }
         else
-            CreateMurderer();
-    }
-
-    void Update()
-    {
-        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
-        fps = 1.0f / deltaTime;
-
-        DisFPS();
-    }
-
-    void DisFPS()
-    {
-        if (Character == 1)
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisFPS(fps);
-        else if (Character == 2)
-            GameObject.Find("MurdererController").GetComponent<MurdererUICtrl>().DisFPS(fps);
-    }
-
-    void CreateSurvivor()
-    {
-        Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(-37, 0.0f, 36), Quaternion.identity, 0);
-
-        SetGame(1, Survivor, null);
-    }
-
-    void CreateMurderer()
-    {
-        Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(10, 0.0f, 67), Quaternion.identity, 0);
-
-        SetGame(2, null, Murderer);
-    }
-
-    public void SetGame(int character, GameObject survivor, GameObject murderer)
-    {
-        Character = character;
-
-        GameObject.Find("MainCamera").GetComponent<CameraCtrl>().SetCharacter(Character);
-
-        if (Character == 1)
         {
-            Survivor = survivor;
+            Character = 2;
+            UI = UI.transform.Find("MurdererUI").gameObject;
 
-            GameController.transform.Find("SurvivorController").gameObject.SetActive(true);
-            GameController.transform.Find("SurvivorController").GetComponent<SurvivorUICtrl>().SetSurvivor(Survivor);
-            UI.transform.Find("SurvivorUI").gameObject.SetActive(true);
-        }
-        else if (Character == 2)
-        {
-            Murderer = murderer;
+            // 맵에 따라 다른 생성 위치
+            if (PhotonInit.Map == 1)
+                Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(10, 0.0f, 67), Quaternion.identity, 0);
+            else
+                Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(80, 0.0f, 36), Quaternion.identity, 0);
 
-            GameController.transform.Find("MurdererController").gameObject.SetActive(true);
-            GameController.transform.Find("MurdererController").GetComponent<MurdererUICtrl>().SetMurderer(Murderer);
-            UI.transform.Find("MurdererUI").gameObject.SetActive(true);
+            // 각 오브젝트 적용
+            Camera.GetComponent<CameraCtrl>().SetCharacter(Character);
+
+            MurGameController.SetActive(true);
+            MurGameController.GetComponent<MurdererUICtrl>().Init();
+            UI.SetActive(true);
         }
+
+        // SkyBox
+        int sky = Random.Range(1, 3);
+
+        if (sky == 1)
+            Camera.AddComponent<Skybox>().material = SkyboxDay;
+        else
+            Camera.AddComponent<Skybox>().material = SkyboxDay;
+
+        savedelay = delay;
+
+        //StartCoroutine(DisFPS());
     }
+
 
     public void MachineComplete()
     {
         MachineCompleteNum++;
 
         if (Character == 1)
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisMachine(MachineCompleteNum);
+            SurGameController.GetComponent<SurvivorUICtrl>().DisMachine(MachineCompleteNum);
         else if (Character == 2)
         {
-            print("장치 가동");
             Murderer.GetComponent<MurdererCtrl>().DamageByMachine(40);
-            GameObject.Find("MurdererController").GetComponent<MurdererUICtrl>().DisMachine(MachineCompleteNum);
+            MurGameController.GetComponent<MurdererUICtrl>().DisMachine(MachineCompleteNum);
         }
     }
 
     public void DisPrison(Vector3 pos, int num)
     {
         if (Character == 1)
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisPrison(pos, num);
+            SurGameController.GetComponent<SurvivorUICtrl>().DisPrison(pos, num);
         else if (Character == 2)
-            GameObject.Find("MurdererController").GetComponent<MurdererUICtrl>().DisPrison(pos, num);
+            MurGameController.GetComponent<MurdererUICtrl>().DisPrison(pos, num);
     }
 
     public void DisSurPrison(int num)
@@ -116,29 +128,73 @@ public class GameCtrl : MonoBehaviour
         PrisonSurNum += num;
 
         if (Character == 2)
-            GameObject.Find("MurdererController").GetComponent<MurdererUICtrl>().DisSurPrison(PrisonSurNum);
+            MurGameController.GetComponent<MurdererUICtrl>().DisSurPrison(PrisonSurNum);
     }
 
     public void SetPrisons(int num, bool b, int Surnum)
     {
         if (Character == 1)
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().SetPrisons(num, b);
+            SurGameController.GetComponent<SurvivorUICtrl>().SetPrisons(num, b);
         else if (Character == 2)
         {
             PrisonSurNum -= Surnum;
-            GameObject.Find("MurdererController").GetComponent<MurdererUICtrl>().DisSurPrison(PrisonSurNum);
-            GameObject.Find("MurdererController").GetComponent<MurdererUICtrl>().SetPrisons(num, b);
+            MurGameController.GetComponent<MurdererUICtrl>().DisSurPrison(PrisonSurNum);
+            MurGameController.GetComponent<MurdererUICtrl>().SetPrisons(num, b);
         }
     }
 
     public void DisMurHP(float hp)
     {
         if (Character == 1)
-        {
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisMurHP(hp);
+            SurGameController.GetComponent<SurvivorUICtrl>().DisMurHP(hp);
+    }
 
-            print("gamectrl " + hp);
+    public void UseFootPrint(Vector3 SurPos)
+    {
+        if (delay != savedelay)
+            return;
+        StartCoroutine(DelayTime());
+
+        bool isNew = true;
+
+        float randomX = Random.Range(-0.8f, 0.8f);
+        Vector3 Pos = new Vector3(
+                randomX + SurPos.x, SurPos.y + 1.5f, SurPos.z);
+
+        for (int i = 0; i <= FootPrintsNum; ++i)
+        {
+            if (!FootPrints[i].activeSelf)
+            {
+                isNew = false;
+
+                FootPrints[i].SetActive(true);
+                FootPrints[i].transform.position = Pos;
+                StartCoroutine(FootPrints[i].GetComponent<FootPrintCtrl>().Use());
+                break;
+            }
         }
+
+        if (isNew)
+        {
+            FootPrints[++FootPrintsNum] = Instantiate(FootPrint, Pos,
+                Quaternion.Euler(90, 0, Random.Range(0, 360)));
+            FootPrints[FootPrintsNum].transform.parent = SurvivorFootPrints.transform;
+            StartCoroutine(FootPrints[FootPrintsNum].GetComponent<FootPrintCtrl>().Use());
+        }
+    }
+
+    IEnumerator DelayTime()
+    {
+        while (true)
+        {
+            delay -= Time.deltaTime;
+
+            if (delay <= 0)
+                break;
+
+            yield return null;
+        }
+        delay = savedelay;
     }
 
     public void SetSurvivorScore(int score)
@@ -151,5 +207,21 @@ public class GameCtrl : MonoBehaviour
     {
         MurdererScore += score;
         print(MurdererScore);
+    }
+
+    IEnumerator DisFPS()
+    {
+        while (true)
+        {
+            deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+            fps = 1.0f / deltaTime;
+
+            if (Character == 1)
+                SurGameController.GetComponent<SurvivorUICtrl>().DisFPS(fps);
+            else if (Character == 2)
+                MurGameController.GetComponent<MurdererUICtrl>().DisFPS(fps);
+
+            yield return null;
+        }
     }
 }

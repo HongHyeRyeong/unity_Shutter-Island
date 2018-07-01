@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MurdererUICtrl : MonoBehaviour
 {
-    GameObject Murderer;
+    private GameObject Murderer;
 
     int ScreenW;
     int ScreenH;
@@ -26,9 +26,11 @@ public class MurdererUICtrl : MonoBehaviour
     public GameObject[] Prisons = new GameObject[3];
     public Text[] txtPrisons = new Text[3];
 
-    void Start()
+    public void Init()
     {
         Cursor.lockState = CursorLockMode.Locked;
+
+        Murderer = GameCtrl.instance.Murderer;
 
         ScreenW = Screen.width;
         ScreenH = Screen.height;
@@ -121,10 +123,5 @@ public class MurdererUICtrl : MonoBehaviour
     public void SetPrisons(int num, bool b)
     {
         Prisons[num].SetActive(b);
-    }
-
-    public void SetMurderer(GameObject murderer)
-    {
-        Murderer = murderer;
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SurvivorUICtrl : MonoBehaviour
 {
-    GameObject Survivor;
+    private GameObject Survivor;
     
     int ScreenW;
     int ScreenH;
@@ -59,9 +59,11 @@ public class SurvivorUICtrl : MonoBehaviour
     public GameObject HUDItem;
     public Text txtHUDItem;
 
-    void Start()
+    public void Init()
     {
         Cursor.lockState = CursorLockMode.Locked;
+
+        Survivor = GameCtrl.instance.Survivor;
 
         ScreenW = Screen.width;
         ScreenH = Screen.height;
@@ -353,10 +355,5 @@ public class SurvivorUICtrl : MonoBehaviour
     public void DisMurHP(float hp)
     {
         imgMurHP.fillAmount = hp / 200;
-    }
-
-    public void SetSurvivor(GameObject survivor)
-    {
-        Survivor = survivor;
     }
 }
