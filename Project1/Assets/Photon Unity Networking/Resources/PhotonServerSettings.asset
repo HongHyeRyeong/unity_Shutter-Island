@@ -94,4 +94,8 @@ MonoBehaviour:
   - AttackScore
   - KillScore
   - PrisonScore
+  - BackRunAnim
+  - RunAnim
+  - BackRunFAnim
+  - RunFAnim
   DisableAutoOpenWizard: 1

@@ -15,7 +15,7 @@
 		LOD 200
 
 		CGPROGRAM
-		#pragma surface surf Warp noambient noshadow
+		#pragma surface surf Warp noambient
 
 		sampler2D _MainTex;
 		sampler2D _BumpMap;
