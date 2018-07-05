@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 137854072233038290}
   m_Layer: 10
   m_Name: boreas_low001
-  m_TagString: Untagged
+  m_TagString: Murderer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 137930706088857856}
   m_Layer: 10
   m_Name: boreas_low
-  m_TagString: Untagged
+  m_TagString: Murderer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1105,7 +1105,7 @@ GameObject:
   - component: {fileID: 4465287101917994}
   m_Layer: 10
   m_Name: Bip001
-  m_TagString: Untagged
+  m_TagString: Murderer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

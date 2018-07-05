@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 114831926840431748}
   m_Layer: 11
   m_Name: SurvivorModel
-  m_TagString: Untagged
+  m_TagString: Survivor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -575,7 +575,7 @@ GameObject:
   - component: {fileID: 4062221240942148}
   m_Layer: 11
   m_Name: SurvivorCamPivot
-  m_TagString: Untagged
+  m_TagString: Survivor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

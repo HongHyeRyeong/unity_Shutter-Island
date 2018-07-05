@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Murderer
+  - Survivor
+  - Machine
+  - Spawn
+  - Prison
   layers:
   - Default
   - TransparentFX
@@ -13,10 +18,10 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Map
+  - Item
+  - Murderer
+  - Survivor
   - 
   - 
   - 
