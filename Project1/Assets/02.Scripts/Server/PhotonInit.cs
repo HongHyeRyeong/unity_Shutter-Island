@@ -11,6 +11,9 @@ public class PhotonInit : MonoBehaviour {
     // 룸 이름을 입력받을 UI 항목 연결 변수
     public InputField roomName;
 
+    public GameObject scrollContents;
+    public GameObject roomItem;
+
     static public int Map = 0;
 
     // Use this for initialization
@@ -68,6 +71,7 @@ public class PhotonInit : MonoBehaviour {
     public void OnClickCreateRoom()
     {
         Map = Random.Range(1, 3);
+
         string _roomName = roomName.text;
 
         if(string.IsNullOrEmpty(roomName.text))
@@ -91,12 +95,33 @@ public class PhotonInit : MonoBehaviour {
         Debug.Log("Create Room Failed = " + codeAndMsg[1]);
     }
 
-    void OnReceiveRoomListUpdate()
+    void OnReceivedRoomListUpdate()
     {
-        foreach(RoomInfo _room in PhotonNetwork.GetRoomList())
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ROOM_ITEM"))
+        {
+            Destroy(obj);
+        }
+
+        foreach (RoomInfo _room in PhotonNetwork.GetRoomList())
         {
             Debug.Log(_room.Name);
+            GameObject room = (GameObject)Instantiate(roomItem);
+            room.transform.SetParent(scrollContents.transform, false);
+
+            RoomData roomData = room.GetComponent<RoomData>();
+            roomData.roomName = _room.Name;
+            roomData.connectPlayer = _room.PlayerCount;
+            roomData.maxPlayers = _room.MaxPlayers;
+
+            roomData.DispRoomData();
+
+            roomData.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(delegate { OnClickRoomItem(roomData.roomName); });
         }
+    }
+
+    void OnClickRoomItem(string roomName)
+    {
+        PhotonNetwork.JoinRoom(roomName);
     }
 
     void OnGUI () {

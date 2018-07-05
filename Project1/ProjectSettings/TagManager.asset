@@ -9,6 +9,7 @@ TagManager:
   - Machine
   - Spawn
   - Prison
+  - ROOM_ITEM
   layers:
   - Default
   - TransparentFX

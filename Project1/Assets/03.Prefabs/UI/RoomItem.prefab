@@ -23,9 +23,10 @@ GameObject:
   - component: {fileID: 114082565295058502}
   - component: {fileID: 114656539414335200}
   - component: {fileID: 114115399362361390}
+  - component: {fileID: 114604299613759326}
   m_Layer: 5
   m_Name: RoomItem
-  m_TagString: Untagged
+  m_TagString: ROOM_ITEM
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,6 +147,22 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Room #1'
+--- !u!114 &114604299613759326
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1460695888636702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5d7dfc8bb3d190499e41e5af70b35f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomName: 
+  connectPlayer: 0
+  maxPlayers: 0
+  textRoomName: {fileID: 114484967679597752}
+  textConnectInfo: {fileID: 114893775693710220}
 --- !u!114 &114656539414335200
 MonoBehaviour:
   m_ObjectHideFlags: 1
