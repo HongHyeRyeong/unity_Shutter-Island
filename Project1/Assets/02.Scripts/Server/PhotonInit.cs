@@ -51,7 +51,7 @@ public class PhotonInit : MonoBehaviour {
         PhotonNetwork.isMessageQueueRunning = false;
 
         AsyncOperation ao;
-        
+
         if (Map == 1)
             ao = Application.LoadLevelAsync("inGame1");
         else
@@ -95,7 +95,7 @@ public class PhotonInit : MonoBehaviour {
     {
         foreach(RoomInfo _room in PhotonNetwork.GetRoomList())
         {
-            Debug.Log(_room.name);
+            Debug.Log(_room.Name);
         }
     }
 
