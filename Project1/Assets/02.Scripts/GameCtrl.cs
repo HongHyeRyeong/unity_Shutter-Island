@@ -157,7 +157,7 @@ public class GameCtrl : MonoBehaviour
 
         bool isNew = true;
 
-        float randomX = Random.Range(-0.8f, 0.8f);
+        float randomX = Random.Range(-1.2f, 1.2f);
         Vector3 Pos = new Vector3(
                 randomX + SurPos.x, SurPos.y + 1.5f, SurPos.z);
 
