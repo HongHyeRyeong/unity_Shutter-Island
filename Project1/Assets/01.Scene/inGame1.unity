@@ -57232,7 +57232,6 @@ GameObject:
   - component: {fileID: 872156585}
   - component: {fileID: 872156586}
   - component: {fileID: 872156588}
-  - component: {fileID: 872156589}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -57277,6 +57276,7 @@ MonoBehaviour:
   SkyboxNight: {fileID: 2100000, guid: d4454f71d85928744be7771e2143dab7, type: 2}
   SurvivorFootPrints: {fileID: 1035940607}
   FootPrint: {fileID: 1999113944256596, guid: e33a4612c9f3aab419505c926c089df4, type: 2}
+  Murdererskill1: {fileID: 0}
 --- !u!114 &872156588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57301,17 +57301,6 @@ MonoBehaviour:
   ItemBag2: {fileID: 1285812287092282, guid: 4c904d18ff09e6944a06bb9b8ea57828, type: 2}
   ItemGadget: {fileID: 1175799601747676, guid: 8a351f50f56b94a4f8bd23cef14db581, type: 2}
   ItemKey: {fileID: 1289127548982364, guid: 84a7b1ca064b7b341864cf5bbde8d655, type: 2}
---- !u!114 &872156589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 872156584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 309fc5c282fb10241bd9ed4d09a593a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &873198772
 GameObject:
   m_ObjectHideFlags: 0

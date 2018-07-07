@@ -16,8 +16,10 @@ public class MurdererCtrl : MonoBehaviour
 
     private Animator Ani;
     public GameObject ParticleTrail;
+    private GameObject[] skill1_Item;
 
     private int State = 0;
+    private int skill = 1;
     private float Hp = 200f;
     private float MoveSpeed = 6f;
     private bool isAttack = false;
@@ -55,6 +57,16 @@ public class MurdererCtrl : MonoBehaviour
             GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetMurderer = this.gameObject.transform;
             GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetMurdererCamPivot =
                 this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/MurdererCamPivot").transform;
+
+            if (skill == 1)
+            {
+                skill1_Item = new GameObject[GameCtrl.instance.Murdererskill1.transform.childCount];
+                for (int i = 0; i < skill1_Item.Length; ++i)
+                {
+                    skill1_Item[i] = GameCtrl.instance.Murdererskill1.transform.GetChild(i).gameObject;
+                    skill1_Item[i].SetActive(false);
+                }
+            }
         }
     }
 
@@ -118,6 +130,21 @@ public class MurdererCtrl : MonoBehaviour
                     pv.RPC("BackRunFAnim", PhotonTargets.All);
 
                     pv.RPC("AttackLTrue", PhotonTargets.All);
+                }
+                else if (Input.GetKeyDown(KeyCode.E))
+                {
+                    for (int i = 0; i < skill1_Item.Length; ++i)
+                    {
+                        if (!skill1_Item[i].gameObject.activeSelf)
+                        {
+                            skill1_Item[i].SetActive(true);
+
+                            Vector3 Pos = transform.position + transform.forward * 3;
+                            skill1_Item[i].transform.position = Pos;
+
+                            break;
+                        }
+                    }
                 }
             }
             else if (State == State_AttackW || State == State_AttackL)

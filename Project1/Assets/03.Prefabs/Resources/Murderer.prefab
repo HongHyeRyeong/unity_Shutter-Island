@@ -403,10 +403,10 @@ GameObject:
   - component: {fileID: 4952394071612664}
   - component: {fileID: 95986854098820796}
   - component: {fileID: 54713772702280904}
+  - component: {fileID: 65344085062529096}
+  - component: {fileID: 114143822987314078}
   - component: {fileID: 114424874682528658}
   - component: {fileID: 114389938009609356}
-  - component: {fileID: 114143822987314078}
-  - component: {fileID: 65344085062529096}
   m_Layer: 10
   m_Name: Murderer
   m_TagString: Murderer
@@ -2212,7 +2212,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1375817868459444}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.31, z: -4.66}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4465287101917994}
@@ -2414,6 +2414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParticleTrail: {fileID: 1912350814678226}
+  skill1: {fileID: 1065710072470030, guid: d3e7af5743c40dd4a849bbc122174b0e, type: 2}
 --- !u!114 &114389938009609356
 MonoBehaviour:
   m_ObjectHideFlags: 1
