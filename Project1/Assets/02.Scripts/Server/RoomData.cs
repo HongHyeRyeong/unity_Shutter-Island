@@ -11,6 +11,7 @@ public class RoomData : MonoBehaviour {
     public int connectPlayer = 0;
     [HideInInspector]
     public int maxPlayers = 0;
+    public ExitGames.Client.Photon.Hashtable cp;
 
     public Text textRoomName;
     public Text textConnectInfo;

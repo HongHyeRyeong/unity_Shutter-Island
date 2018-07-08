@@ -15,14 +15,15 @@ public class PhotonInit : MonoBehaviour {
     public GameObject roomItem;
 
     static public int Map = 0;
+    int tmp;
 
     // Use this for initialization
-    void Awake () {
+    void Awake() {
         // 포톤 클라우드에 접속
         PhotonNetwork.ConnectUsingSettings(version);
         // 룸 이름을 무작위로 설정
         roomName.text = "Room_" + Random.Range(0, 999).ToString("000");
-	}
+    }
 
     // 포톤 클라우드에 정상적으로 접속한 후 로비에 입장하면 호출되는 콜백 함수
     void OnJoinedLobby()
@@ -55,7 +56,7 @@ public class PhotonInit : MonoBehaviour {
 
         AsyncOperation ao;
 
-        if (Map == 1)
+        if (Map == 1 || tmp == 1)
             ao = Application.LoadLevelAsync("inGame1");
         else
             ao = Application.LoadLevelAsync("inGame2");
@@ -83,9 +84,11 @@ public class PhotonInit : MonoBehaviour {
         roomOptions.IsOpen = true;
         roomOptions.IsVisible = true;
         roomOptions.MaxPlayers = 5;
-        //roomOptions.customRoomPropertiesForLobby = new string[1];
-        //roomOptions.customRoomPropertiesForLobby[0] = "map";
-        //roomOptions.customRoomProperties.Add("map", Map);
+
+        roomOptions.customRoomProperties = new ExitGames.Client.Photon.Hashtable();
+        roomOptions.customRoomPropertiesForLobby = new string[1];
+        roomOptions.customRoomPropertiesForLobby[0] = "map";
+        roomOptions.customRoomProperties.Add("map", Map);
 
         PhotonNetwork.CreateRoom(_roomName, roomOptions, TypedLobby.Default);
     }
@@ -112,6 +115,9 @@ public class PhotonInit : MonoBehaviour {
             roomData.roomName = _room.Name;
             roomData.connectPlayer = _room.PlayerCount;
             roomData.maxPlayers = _room.MaxPlayers;
+            roomData.cp = _room.customProperties;
+
+            tmp = (int)roomData.cp["map"];
 
             roomData.DispRoomData();
 
