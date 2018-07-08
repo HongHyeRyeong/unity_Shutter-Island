@@ -55,7 +55,7 @@ public class CameraCtrl : MonoBehaviour
                         targetMurdererCamPivot.transform.position.z);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;
-                    MouseY = ClampAngle(MouseY, -30, 40);
+                    MouseY = ClampAngle(MouseY, -30, 50);
 
                     transform.rotation = Quaternion.Euler(MouseY, targetMurderer.eulerAngles.y, 0);
                 }
@@ -63,9 +63,9 @@ public class CameraCtrl : MonoBehaviour
                 {
                     transform.position = targetMurdererCamPivot.transform.position;
                     transform.rotation = Quaternion.Euler(
-                        targetMurdererCamPivot.transform.eulerAngles.x, targetMurderer.transform.eulerAngles.y, 0);
+                        targetMurdererCamPivot.transform.eulerAngles.x + 20, targetMurderer.transform.eulerAngles.y, 0);
 
-                    MouseY = transform.localRotation.x;
+                    MouseY = transform.localRotation.x + 20;
                 }
             }
         }

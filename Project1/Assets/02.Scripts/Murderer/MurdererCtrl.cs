@@ -16,7 +16,9 @@ public class MurdererCtrl : MonoBehaviour
 
     private Animator Ani;
     public GameObject ParticleTrail;
-    private GameObject[] skill1_Item;
+
+    private GameObject[] Skill1_Item;
+    private int Skill1_SetNum = 0;
 
     private int State = 0;
     private int skill = 1;
@@ -33,6 +35,7 @@ public class MurdererCtrl : MonoBehaviour
     const int State_Idle = 0;
     const int State_Run = 1;
     const int State_Parry = 2;
+    const int State_Item = 3;
     const int State_AttackW = 10;
     const int State_AttackL = 11;
 
@@ -56,15 +59,15 @@ public class MurdererCtrl : MonoBehaviour
 
             GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetMurderer = this.gameObject.transform;
             GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetMurdererCamPivot =
-                this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/MurdererCamPivot").transform;
+                this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head/MurdererCamPivot").transform;
 
             if (skill == 1)
             {
-                skill1_Item = new GameObject[GameCtrl.instance.Murdererskill1.transform.childCount];
-                for (int i = 0; i < skill1_Item.Length; ++i)
+                Skill1_Item = new GameObject[GameCtrl.instance.Murdererskill1.transform.childCount];
+                for (int i = 0; i < Skill1_Item.Length; ++i)
                 {
-                    skill1_Item[i] = GameCtrl.instance.Murdererskill1.transform.GetChild(i).gameObject;
-                    skill1_Item[i].SetActive(false);
+                    Skill1_Item[i] = GameCtrl.instance.Murdererskill1.transform.GetChild(i).gameObject;
+                    Skill1_Item[i].SetActive(false);
                 }
             }
         }
@@ -133,17 +136,41 @@ public class MurdererCtrl : MonoBehaviour
                 }
                 else if (Input.GetKeyDown(KeyCode.E))
                 {
-                    for (int i = 0; i < skill1_Item.Length; ++i)
+                    bool use = false;
+                    
+                    for (int i = 0; i < Skill1_Item.Length; ++i)
                     {
-                        if (!skill1_Item[i].gameObject.activeSelf)
+                        if (!Skill1_Item[i].activeSelf)
                         {
-                            skill1_Item[i].SetActive(true);
+                            use = true;
 
-                            Vector3 Pos = transform.position + transform.forward * 3;
-                            skill1_Item[i].transform.position = Pos;
+                            State = State_Item;
+                            pv.RPC("ItemAnim", PhotonTargets.All);
+
+                            PlaceItem(i);   // 애니메이션 바꾸면 원하는 이벤트에 함수 호출
 
                             break;
                         }
+                    }
+
+                    if (!use)
+                    {
+                        int Num = 0;
+                        int MinNum = Skill1_Item[0].GetComponent<MurdererSkill1Ctrl>().SetNum;
+
+                        for (int i = 1; i < Skill1_Item.Length; ++i)
+                        {
+                            if (MinNum > Skill1_Item[i].GetComponent<MurdererSkill1Ctrl>().SetNum)
+                            {
+                                Num = i;
+                                MinNum = Skill1_Item[i].GetComponent<MurdererSkill1Ctrl>().SetNum;
+                            }
+                        }
+
+                        State = State_Item;
+                        pv.RPC("ItemAnim", PhotonTargets.All);
+
+                        PlaceItem(Num);
                     }
                 }
             }
@@ -188,6 +215,16 @@ public class MurdererCtrl : MonoBehaviour
             isAttack = false;
             other.GetComponent<SurvivorCtrl>().AttackByMurderer(this.gameObject, State);
         }
+    }
+
+    void PlaceItem(int num)
+    {
+        if (!Skill1_Item[num].activeSelf)
+            Skill1_Item[num].SetActive(true);
+
+        Skill1_Item[num].transform.position = transform.position + transform.forward * 1;
+        Skill1_Item[num].GetComponent<MurdererSkill1Ctrl>().SetNum = Skill1_SetNum;
+        Skill1_SetNum++;
     }
 
     public void DamageByPlayer(float Power)
@@ -273,6 +310,12 @@ public class MurdererCtrl : MonoBehaviour
     public void BackRunFAnim()
     {
         Ani.SetBool("isBackRun", false);
+    }
+
+    [PunRPC]
+    public void ItemAnim()
+    {
+        Ani.SetTrigger("trItem");
     }
 
     [PunRPC]
