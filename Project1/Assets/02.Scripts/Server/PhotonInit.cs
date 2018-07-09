@@ -93,6 +93,54 @@ public class PhotonInit : MonoBehaviour {
         PhotonNetwork.CreateRoom(_roomName, roomOptions, TypedLobby.Default);
     }
 
+    public void OnClickCreateRoomMap1()
+    {
+        Map = 1;
+
+        string _roomName = roomName.text;
+
+        if (string.IsNullOrEmpty(roomName.text))
+        {
+            _roomName = "Room_" + Random.Range(0, 999).ToString("000");
+        }
+
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.IsOpen = true;
+        roomOptions.IsVisible = true;
+        roomOptions.MaxPlayers = 5;
+
+        roomOptions.customRoomProperties = new ExitGames.Client.Photon.Hashtable();
+        roomOptions.customRoomPropertiesForLobby = new string[1];
+        roomOptions.customRoomPropertiesForLobby[0] = "map";
+        roomOptions.customRoomProperties.Add("map", Map);
+
+        PhotonNetwork.CreateRoom(_roomName, roomOptions, TypedLobby.Default);
+    }
+
+    public void OnClickCreateRoomMap2()
+    {
+        Map = 2;
+
+        string _roomName = roomName.text;
+
+        if (string.IsNullOrEmpty(roomName.text))
+        {
+            _roomName = "Room_" + Random.Range(0, 999).ToString("000");
+        }
+
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.IsOpen = true;
+        roomOptions.IsVisible = true;
+        roomOptions.MaxPlayers = 5;
+
+        roomOptions.customRoomProperties = new ExitGames.Client.Photon.Hashtable();
+        roomOptions.customRoomPropertiesForLobby = new string[1];
+        roomOptions.customRoomPropertiesForLobby[0] = "map";
+        roomOptions.customRoomProperties.Add("map", Map);
+
+        PhotonNetwork.CreateRoom(_roomName, roomOptions, TypedLobby.Default);
+    }
+
     void OnPhotonCreateRoomFailed(object[] codeAndMsg)
     {
         Debug.Log("Create Room Failed = " + codeAndMsg[1]);
@@ -116,6 +164,8 @@ public class PhotonInit : MonoBehaviour {
             roomData.connectPlayer = _room.PlayerCount;
             roomData.maxPlayers = _room.MaxPlayers;
             roomData.cp = _room.customProperties;
+
+            print(roomData.cp);
 
             tmp = (int)roomData.cp["map"];
 
