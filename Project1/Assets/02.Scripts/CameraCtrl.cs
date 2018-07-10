@@ -51,7 +51,7 @@ public class CameraCtrl : MonoBehaviour
                 {
                     transform.position = new Vector3(
                         targetMurdererCamPivot.transform.position.x, 
-                        targetMurderer.transform.position.y + 2.2f, 
+                        targetMurderer.transform.position.y + 2.5f, 
                         targetMurdererCamPivot.transform.position.z);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;
