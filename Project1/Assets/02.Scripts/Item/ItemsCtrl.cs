@@ -32,12 +32,15 @@ public class ItemsCtrl : MonoBehaviour
 
         for (int i = 0; i < itemnum; ++i)
         {
-            int random = Random.Range(0, spawns.Length);
+            print(PlayerPrefs.GetInt("itemrand" + (i + 1)));
+        }
 
+        for (int i = 0; i < itemnum; ++i)
+        {
             Vector3 pos = new Vector3(
-                spawns[random].transform.position.x + Random.Range(-3.0f, 3.0f),
-                spawns[random].transform.position.y,
-                spawns[random].transform.position.z + Random.Range(-3.0f, 3.0f));
+                spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.x + Random.Range(-3.0f, 3.0f),
+                spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.y,
+                spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.z + Random.Range(-3.0f, 3.0f));
 
             if (i < hatNum)
             {
@@ -68,24 +71,20 @@ public class ItemsCtrl : MonoBehaviour
 
         for (int i = 0; i < GadgetNum; ++i)
         {
-            int random = Random.Range(0, spawns.Length);
-
             Vector3 pos = new Vector3(
-                spawns[random].transform.position.x + Random.Range(-3.0f, 3.0f),
-                spawns[random].transform.position.y,
-                spawns[random].transform.position.z + Random.Range(-3.0f, 3.0f));
+                spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47))].transform.position.x + Random.Range(-3.0f, 3.0f),
+                spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47))].transform.position.y,
+                spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47))].transform.position.z + Random.Range(-3.0f, 3.0f));
 
             Instantiate(ItemGadget, pos, Quaternion.Euler(-90, 0, 0));
         }
 
         for (int i = 0; i < keyNum; ++i)
         {
-            int random = Random.Range(0, spawns.Length);
-
             Vector3 pos = new Vector3(
-                spawns[random].transform.position.x + Random.Range(-3.0f, 3.0f),
-                spawns[random].transform.position.y,
-                spawns[random].transform.position.z + Random.Range(-3.0f, 3.0f));
+                spawns[PlayerPrefs.GetInt("keyrand" + (i + 82))].transform.position.x + Random.Range(-3.0f, 3.0f),
+                spawns[PlayerPrefs.GetInt("keyrand" + (i + 82))].transform.position.y,
+                spawns[PlayerPrefs.GetInt("keyrand" + (i + 82))].transform.position.z + Random.Range(-3.0f, 3.0f));
 
             Instantiate(ItemKey, pos, Quaternion.identity);
         }
