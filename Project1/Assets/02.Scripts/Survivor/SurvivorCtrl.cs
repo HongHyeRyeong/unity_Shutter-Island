@@ -40,6 +40,10 @@ public class SurvivorCtrl : MonoBehaviour
     bool PrisonTP = false;
     GameObject inPrison = null;
 
+    public bool Trap = false;
+
+    private Vector3 SaveRot;
+
     //
     const int Cha_Default = 0;
     const int Cha_Stamina = 1;
@@ -53,6 +57,7 @@ public class SurvivorCtrl : MonoBehaviour
     const int State_Hit = 3;
     const int State_PickItem = 4;
     const int State_Repair = 5;
+    const int State_Trap = 6;
     const int State_AttackW = 10;
     const int State_AttackL = 11;
     const int State_ParryToMurdererW = 12;
@@ -134,15 +139,11 @@ public class SurvivorCtrl : MonoBehaviour
                     {
                         State = State_AttackW;
                         Ani.SetTrigger("trAttackW");
-                        Ani.SetBool("isSlowRun", false);
-                        Ani.SetBool("isRun", false);
                     }
                     else if (Input.GetMouseButtonDown(1))
                     {
                         State = State_AttackL;
                         Ani.SetTrigger("trAttackL");
-                        Ani.SetBool("isSlowRun", false);
-                        Ani.SetBool("isRun", false);
                     }
                 }
             }
@@ -173,6 +174,11 @@ public class SurvivorCtrl : MonoBehaviour
 
             if (State == State_Idle || State == State_Run || State == State_SlowRun)
                 transform.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
+            else if(State == State_Repair || State == State_Trap)
+            {
+                transform.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
+                trModel.rotation = Quaternion.Euler(SaveRot);
+            }
 
             InputGet();
         }
@@ -186,7 +192,7 @@ public class SurvivorCtrl : MonoBehaviour
             pv.RPC("PrisonTrue", PhotonTargets.All);
     }
 
-    public void InputGet()
+    void InputGet()
     {
         // Stamina
         float FillStaminaSpeed = 0.15f;
@@ -197,9 +203,7 @@ public class SurvivorCtrl : MonoBehaviour
             Ani.SetBool("isRun", false);
 
             if (State == State_Run)
-            {
                 State = State_SlowRun;
-            }
         }
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -262,9 +266,6 @@ public class SurvivorCtrl : MonoBehaviour
                     {
                         State = State_ParryToMurdererW;
                         pv.RPC("ParryWAnim", PhotonTargets.All);
-                        Ani.SetBool("isSlowRun", false);
-                        Ani.SetBool("isRun", false);
-
                         pv.RPC("AttackEnd", PhotonTargets.All);
                         pv.RPC("DamageToMurderer", PhotonTargets.All);
 
@@ -281,9 +282,6 @@ public class SurvivorCtrl : MonoBehaviour
                     {
                         State = State_ParryToMurdererL;
                         pv.RPC("ParryLAnim", PhotonTargets.All);
-                        Ani.SetBool("isSlowRun", false);
-                        Ani.SetBool("isRun", false);
-
                         pv.RPC("AttackEnd", PhotonTargets.All);
                         pv.RPC("DamageToMurderer", PhotonTargets.All);
 
@@ -335,15 +333,16 @@ public class SurvivorCtrl : MonoBehaviour
                         State = State_ParryToMurdererL;
                         Ani.SetTrigger("trAttackL");
                     }
-                    Ani.SetBool("isSlowRun", false);
-                    Ani.SetBool("isRun", false);
-
                     pv.RPC("DamageToMurderer", PhotonTargets.All);
                 }
                 else
                 {
                     DamageByMurderer();
                 }
+            }
+            else if (State == State_Trap)
+            {
+                DamageByMurderer();
             }
             else
             {
@@ -390,6 +389,21 @@ public class SurvivorCtrl : MonoBehaviour
         }
 
         GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(100);
+    }
+
+    public void TrapOn(Vector3 Rot)
+    {
+        Trap = true;
+        SaveRot = Rot;
+
+        State = State_Trap;
+        Ani.SetTrigger("trTrap");
+    }
+
+    public void TrapOff()
+    {
+        Trap = false;
+        SetState(0);
     }
 
     public void PrisonStay(GameObject prison)
@@ -531,11 +545,8 @@ public class SurvivorCtrl : MonoBehaviour
                                 Ani.SetBool("isRepair", true);
                                 Ani.SetBool("isSlowRun", false);
                                 Ani.SetBool("isRun", false);
-                            }
-                            else
-                            {
-                                transform.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
-                                trModel.rotation = Quaternion.Euler(other.transform.eulerAngles);
+
+                                SaveRot = other.transform.eulerAngles;
                             }
 
                             bool complete = machine.gameObject.GetComponent<MachineCtrl>().Install(Time.deltaTime * WorkSpeed);
@@ -612,17 +623,33 @@ public class SurvivorCtrl : MonoBehaviour
 
     public void SetState(int s)
     {
-        State = s;
-        Ani.SetBool("isSlowRun", false);
-        Ani.SetBool("isRun", false);
-
-        if (State == State_PickItem)
+        if (s == State_PickItem)
         {
             State = State_PickItem;
             pv.RPC("PickItemAnim", PhotonTargets.All);
         }
-        else if (State == State_Die)
+        else if (s == State_Die)
+        {
+            State = State_Die;
             gameObject.SetActive(false);
+        }
+        else
+        {
+            float h = Input.GetAxis("Horizontal");
+            float v = Input.GetAxis("Vertical");
+
+            if (v != 0 || h != 0)
+            {
+                State = State_SlowRun;
+                Ani.SetBool("isSlowRun", true);
+            }
+            else
+            {
+                State = State_Idle;
+                Ani.SetBool("isSlowRun", false);
+            }
+            Ani.SetBool("isRun", false);
+        }
     }
 
     public int GetState()

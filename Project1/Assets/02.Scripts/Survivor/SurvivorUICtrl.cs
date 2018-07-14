@@ -179,11 +179,13 @@ public class SurvivorUICtrl : MonoBehaviour
 
     public void OnClickInventory(int type)
     {
-        if (Survivor.GetComponent<SurvivorItem>().ItemGet(type) == 0)
-            return;
+        int state = Survivor.GetComponent<SurvivorCtrl>().GetState();
 
-        Survivor.GetComponent<SurvivorItem>().ItemPut(type);
-        UpdateItemInformation(type);
+        if (state == 0 || state == 1 || state == 2)
+        {
+            Survivor.GetComponent<SurvivorItem>().ItemPut(type);
+            UpdateItemInformation(type);
+        }
     }
 
     public void OnMouseInventory(int type)

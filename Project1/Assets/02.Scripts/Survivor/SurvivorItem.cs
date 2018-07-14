@@ -164,12 +164,6 @@ public class SurvivorItem : MonoBehaviour
 
     public void ItemPut(int type)
     {
-        int state = GetComponent<SurvivorCtrl>().GetState();
-
-        if (state == 3 || state == 4 || state == 5 ||
-            state == 10 || state == 11 || state == 12 || state == 13)
-            return;
-
         if (type == 1)
         {
             for (int i = 0; i < 3; ++i)

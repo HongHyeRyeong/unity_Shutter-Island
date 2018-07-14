@@ -99,4 +99,5 @@ MonoBehaviour:
   - BackRunFAnim
   - RunFAnim
   - ItemAnim
+  - InstallAnim
   DisableAutoOpenWizard: 1

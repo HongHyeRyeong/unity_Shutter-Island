@@ -15,4 +15,9 @@ public class SurvivorAnimCtrl : MonoBehaviour
     {
         parent.SetState(s);
     }
+
+    public void TrapOff()
+    {
+        parent.TrapOff();
+    }
 }

@@ -324,6 +324,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4358649265639206}
   - component: {fileID: 54743590721053190}
+  - component: {fileID: 65072883106913314}
   - component: {fileID: 114337623108998074}
   - component: {fileID: 114469038206761618}
   - component: {fileID: 114487899276913832}
@@ -1021,22 +1022,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1912711313585756
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4314989069513386}
-  - component: {fileID: 65475865245796298}
-  m_Layer: 11
-  m_Name: SurvivorColider
-  m_TagString: Survivor
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1920773622617592
 GameObject:
   m_ObjectHideFlags: 1
@@ -1208,7 +1193,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4358649265639206}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4086361352003760
 Transform:
@@ -1438,19 +1423,6 @@ Transform:
   m_Father: {fileID: 4858399514563766}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4314989069513386
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1912711313585756}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4358649265639206}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4323495266798550
 Transform:
   m_ObjectHideFlags: 1
@@ -1492,7 +1464,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4340522247716368}
-  - {fileID: 4314989069513386}
   - {fileID: 4062221240942148}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -2346,18 +2317,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &65475865245796298
+--- !u!65 &65072883106913314
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1912711313585756}
+  m_GameObject: {fileID: 1266354928646998}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.6, y: 2, z: 0.6}
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 1, z: 0.1}
 --- !u!95 &95620250947825466
 Animator:
   serializedVersion: 3
@@ -2414,6 +2385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 0
+  Trap: 0
 --- !u!114 &114469038206761618
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2506,6 +2478,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: trDie
+  - Type: 9
+    SynchronizeType: 0
+    Name: trTrap
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

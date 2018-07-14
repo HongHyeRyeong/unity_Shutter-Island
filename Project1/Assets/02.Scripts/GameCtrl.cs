@@ -38,7 +38,7 @@ public class GameCtrl : MonoBehaviour
     private float savedelay;
 
     // Murderer
-    public GameObject Murdererskill1;
+    public GameObject MurdererTrap;
 
     // score
     int SurvivorScore = 0;
@@ -77,9 +77,6 @@ public class GameCtrl : MonoBehaviour
         {
             Character = 2;
             UI = UI.transform.Find("MurdererUI").gameObject;
-
-            if (Skill == 1)
-                Murdererskill1.SetActive(true);
 
             // 맵에 따라 다른 생성 위치
             if (PhotonInit.Map == 1)
