@@ -30,10 +30,10 @@ public class ItemsCtrl : MonoBehaviour
         int bagNum = Bag[0] + Bag[1];
         int itemnum = hatNum + clothesNum + bagNum;
 
-        for (int i = 0; i < itemnum; ++i)
-        {
-            print(PlayerPrefs.GetInt("itemrand" + (i + 1)));
-        }
+        //for (int i = 0; i < itemnum; ++i)
+        //{
+        //    print(PlayerPrefs.GetInt("itemrand" + (i + 1)));
+        //}
 
         for (int i = 0; i < itemnum; ++i)
         {

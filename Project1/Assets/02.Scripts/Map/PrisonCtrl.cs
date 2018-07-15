@@ -105,7 +105,7 @@ public class PrisonCtrl : MonoBehaviour
             if (Survivors[i] != null)
             {
                 Survivors[i].transform.position = SpawnPoint;
-                Survivors[i].GetComponent<DemoSurvivorCtrl>().PrisonFalse();    // Demo
+                Survivors[i].GetComponent<SurvivorCtrl>().PrisonFalse();
                 Survivors[i] = null;
             }
         }

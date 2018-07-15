@@ -24,11 +24,12 @@ public class MurdererTrapCtrl : MonoBehaviour
 
         if (other.gameObject.tag == "Survivor")
         {
+            print("dd");
             Use = true;
             Survivor = other.gameObject;
 
             Anim.SetTrigger("trCaught");
-            other.gameObject.GetComponent<SurvivorCtrl>().TrapOn(other.transform.forward);
+            other.gameObject.GetComponent<SurvivorCtrl>().TrapOn();
 
             StartCoroutine(TrapOn());
         }

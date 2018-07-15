@@ -18,6 +18,6 @@ public class SurvivorAnimCtrl : MonoBehaviour
 
     public void TrapOff()
     {
-        parent.TrapOff();
+        parent.Trap = false;
     }
 }

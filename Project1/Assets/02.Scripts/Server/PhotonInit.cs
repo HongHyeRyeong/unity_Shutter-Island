@@ -62,7 +62,7 @@ public class PhotonInit : MonoBehaviour {
 
         if (Map == 1 || tmp[0] == 1)
         {
-            ao = Application.LoadLevelAsync("inGame1");
+            ao = Application.LoadLevelAsync("2. inGame1");
 
             for (int i = 1; i < 47; ++i)
                 PlayerPrefs.SetInt("itemrand" + i, tmp[i]);
@@ -75,7 +75,7 @@ public class PhotonInit : MonoBehaviour {
         }
         else
         {
-            ao = Application.LoadLevelAsync("inGame2");
+            ao = Application.LoadLevelAsync("2. inGame2");
 
             for (int i = 1; i < 47; ++i)
                 PlayerPrefs.SetInt("itemrand" + i, tmp[i]);

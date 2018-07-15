@@ -23,7 +23,7 @@ public class SurvivorCtrl : MonoBehaviour
     private float Hp = 100f;
     private float Power = 10f;
     private float Stamina = 4f;
-    private float MoveSpeed = 4f;
+    private float MoveSpeed = 5f;
     private float WorkSpeed = 1f;
 
     float maxStamina;
@@ -199,7 +199,7 @@ public class SurvivorCtrl : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            MoveSpeed = 4f;
+            MoveSpeed = 5f;
             Ani.SetBool("isRun", false);
 
             if (State == State_Run)
@@ -215,7 +215,7 @@ public class SurvivorCtrl : MonoBehaviour
                     State = State_Run;
                     Ani.SetBool("isRun", true);
 
-                    MoveSpeed = 6f;
+                    MoveSpeed = 7f;
                     Stamina -= Time.deltaTime;
                     GameCtrl.instance.GameController.GetComponent<GameCtrl>().UseFootPrint(this.transform.position);
 
@@ -228,7 +228,7 @@ public class SurvivorCtrl : MonoBehaviour
                 {
                     State = State_SlowRun;
                     Ani.SetBool("isRun", false);
-                    MoveSpeed = 4f;
+                    MoveSpeed = 5f;
                 }
             }
             else
@@ -354,56 +354,57 @@ public class SurvivorCtrl : MonoBehaviour
 
     void DamageByMurderer()
     {
-        State = State_Idle;
-        Ani.SetBool("isSlowRun", false);
-        Ani.SetBool("isRun", false);
         pv.RPC("AttackEnd", PhotonTargets.All);
+        GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(100);
 
-        if (Hp == 100f)
+        Hp -= 50f;
+        if (pv.isMine)
+            SurvivorUI.DispHP(Hp);
+
+        if(Hp <= 0)
         {
-            Hp = 50f;
-            State = State_Hit;
-            Ani.SetTrigger("trHit");
+            State = State_Idle;
+            Ani.SetBool("isSlowRun", false);
+            Ani.SetBool("isRun", false);
 
-            if (pv.isMine)
-                SurvivorUI.DispHP(Hp);
-
-        }
-        else if (Hp == 50f)
-        {
             Prison = true;
             Life -= 1;
+            Hp = 50f;
+            if (pv.isMine)
+            {
+                SurvivorUI.DispLife(Life);
+                SurvivorUI.DispHP(Hp);
+            }
 
             GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(500);
 
-            if (pv.isMine)
-                SurvivorUI.DispLife(Life);
-        }
+            if (Life == 0)
+            {
+                inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
 
-        if (Life == 0)
+                State = State_Die;
+                pv.RPC("DieAnim", PhotonTargets.All);
+
+                GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(2000);
+            }
+        }
+        else
         {
-            inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
-            pv.RPC("DieAnim", PhotonTargets.All);
-
-            GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(2000);
+            State = State_Hit;
+            Ani.SetTrigger("trHit");
         }
-
-        GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(100);
     }
 
-    public void TrapOn(Vector3 Rot)
+    public void TrapOn()
     {
+        Hp -= 10f;
         Trap = true;
-        SaveRot = Rot;
+        SaveRot = trModel.eulerAngles;
 
         State = State_Trap;
         Ani.SetTrigger("trTrap");
-    }
-
-    public void TrapOff()
-    {
-        Trap = false;
-        SetState(0);
+        Ani.SetBool("isSlowRun", false);
+        Ani.SetBool("isRun", false);
     }
 
     public void PrisonStay(GameObject prison)
@@ -457,18 +458,18 @@ public class SurvivorCtrl : MonoBehaviour
     [PunRPC]
     void PrisonTrue()
     {
-        Hp -= 3.0f * Time.deltaTime;    // Demo
-
-        print(Hp);
-
+        Hp -= 1.5f * Time.deltaTime;
         if(pv.isMine)
             SurvivorUI.DispHP(Hp);
 
         if (Hp <= 0)
         {
-            inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
-            pv.RPC("DieAnim", PhotonTargets.All);
             Prison = false;
+            inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
+
+            State = State_Die;
+            pv.RPC("DieAnim", PhotonTargets.All);
+
             GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(2000);
         }
 
@@ -504,8 +505,12 @@ public class SurvivorCtrl : MonoBehaviour
             }
             else
             {
+                Prison = false;
                 inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
+
+                State = State_Die;
                 pv.RPC("DieAnim", PhotonTargets.All);
+
                 GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(2000);
             }
         }
@@ -517,7 +522,8 @@ public class SurvivorCtrl : MonoBehaviour
         PrisonTP = false;
 
         Hp = 50;
-        SurvivorUI.DispHP(Hp);
+        if (pv.isMine)
+            SurvivorUI.DispHP(Hp);
     }
 
     private void OnTriggerStay(Collider other)

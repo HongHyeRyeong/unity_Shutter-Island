@@ -93,7 +93,7 @@ public class MurdererCtrl : MonoBehaviour
                     }
                     else
                     {
-                        MoveSpeed = 4.5f;
+                        MoveSpeed = 6f;
                         pv.RPC("RunAnim", PhotonTargets.All);
                         //Ani.SetBool("isRun", true);
                         pv.RPC("BackRunFAnim", PhotonTargets.All);
@@ -150,7 +150,7 @@ public class MurdererCtrl : MonoBehaviour
             if (State == State_Run)
                 transform.Translate(new Vector3(h, 0, v) * MoveSpeed * Time.deltaTime);
 
-            if (State != State_Parry || State != State_Trap)
+            if (State != State_Parry && State != State_Trap)
             {
                 MouseX += Input.GetAxis("Mouse X") * Time.deltaTime * 100;
                 transform.rotation = Quaternion.Euler(0, MouseX, 0);
@@ -164,6 +164,7 @@ public class MurdererCtrl : MonoBehaviour
 
         if (Hp < 0)
         {
+            State = State_Die;
             pv.RPC("DieAnim", PhotonTargets.All);
             GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(2000);
         }
@@ -246,15 +247,14 @@ public class MurdererCtrl : MonoBehaviour
     public void SetState(int s)
     {
         State = s;
-        AttackRunTime = 0;
-
-        if (State == State_Die)
-            gameObject.SetActive(false);
-
         pv.RPC("RunFAnim", PhotonTargets.All);
         pv.RPC("BackRunFAnim", PhotonTargets.All);
 
+        AttackRunTime = 0;
         ParticleTrail.SetActive(false);
+
+        if (State == State_Die)
+            gameObject.SetActive(false);
     }
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
