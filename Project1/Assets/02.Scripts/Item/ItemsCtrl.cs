@@ -21,7 +21,7 @@ public class ItemsCtrl : MonoBehaviour
     int GadgetNum = 35;
     int keyNum = 10;
 
-    private void Start()
+    void Start()
     {
         GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawn");
 
@@ -30,17 +30,18 @@ public class ItemsCtrl : MonoBehaviour
         int bagNum = Bag[0] + Bag[1];
         int itemnum = hatNum + clothesNum + bagNum;
 
-        //for (int i = 0; i < itemnum; ++i)
-        //{
-        //    print(PlayerPrefs.GetInt("itemrand" + (i + 1)));
-        //}
+        for (int i = 0; i < itemnum; ++i)
+        {
+            print("스폰 : " + PlayerPrefs.GetFloat("random" + (i + 1)));
+            print("아이템 : " + PlayerPrefs.GetFloat("random" + (i + 47)));
+        }
 
         for (int i = 0; i < itemnum; ++i)
         {
             Vector3 pos = new Vector3(
-                spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.x + Random.Range(-3.0f, 3.0f),
+                spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.x + PlayerPrefs.GetFloat("random" + (i + 1)),
                 spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.y,
-                spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.z + Random.Range(-3.0f, 3.0f));
+                spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.z + PlayerPrefs.GetFloat("random" + (i + 47)));
 
             if (i < hatNum)
             {
@@ -72,9 +73,9 @@ public class ItemsCtrl : MonoBehaviour
         for (int i = 0; i < GadgetNum; ++i)
         {
             Vector3 pos = new Vector3(
-                spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47))].transform.position.x + Random.Range(-3.0f, 3.0f),
+                spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47))].transform.position.x + PlayerPrefs.GetFloat("random" + (i + 93)),
                 spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47))].transform.position.y,
-                spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47))].transform.position.z + Random.Range(-3.0f, 3.0f));
+                spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47))].transform.position.z + PlayerPrefs.GetFloat("random" + (i + 128)));
 
             Instantiate(ItemGadget, pos, Quaternion.Euler(-90, 0, 0));
         }
@@ -82,9 +83,9 @@ public class ItemsCtrl : MonoBehaviour
         for (int i = 0; i < keyNum; ++i)
         {
             Vector3 pos = new Vector3(
-                spawns[PlayerPrefs.GetInt("keyrand" + (i + 82))].transform.position.x + Random.Range(-3.0f, 3.0f),
+                spawns[PlayerPrefs.GetInt("keyrand" + (i + 82))].transform.position.x + PlayerPrefs.GetFloat("random1" + (i + 163)),
                 spawns[PlayerPrefs.GetInt("keyrand" + (i + 82))].transform.position.y,
-                spawns[PlayerPrefs.GetInt("keyrand" + (i + 82))].transform.position.z + Random.Range(-3.0f, 3.0f));
+                spawns[PlayerPrefs.GetInt("keyrand" + (i + 82))].transform.position.z + PlayerPrefs.GetFloat("random2" + (i + 173)));
 
             Instantiate(ItemKey, pos, Quaternion.identity);
         }

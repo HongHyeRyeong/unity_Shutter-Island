@@ -61,7 +61,7 @@ public class GameCtrl : MonoBehaviour
             UI = UI.transform.Find("SurvivorUI").gameObject;
 
             // 맵에 따라 다른 생성 위치
-            if (PhotonInit.Map == 1)
+            if (PhotonInit.instance.Map == 1)
                 Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(-37, 0.0f, 36), Quaternion.identity, 0);
             else
                 Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(80, 0.0f, 36), Quaternion.identity, 0);
@@ -79,7 +79,7 @@ public class GameCtrl : MonoBehaviour
             UI = UI.transform.Find("MurdererUI").gameObject;
 
             // 맵에 따라 다른 생성 위치
-            if (PhotonInit.Map == 1)
+            if (PhotonInit.instance.Map == 1)
                 Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(10, 0.0f, 67), Quaternion.identity, 0);
             else
                 Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(80, 0.0f, 36), Quaternion.identity, 0);
