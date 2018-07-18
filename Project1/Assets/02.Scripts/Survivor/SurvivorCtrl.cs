@@ -16,7 +16,6 @@ public class SurvivorCtrl : MonoBehaviour
     private SurvivorUICtrl SurvivorUI;
 
     //
-    public int Type;
     private int State = 0;
 
     private int Life = 2;
@@ -45,11 +44,6 @@ public class SurvivorCtrl : MonoBehaviour
     private Vector3 SaveRot;
 
     //
-    const int Cha_Default = 0;
-    const int Cha_Stamina = 1;
-    const int Cha_WorkSpeed = 2;
-    const int Cha_Damage = 3;
-
     const int State_Die = -1;
     const int State_Idle = 0;
     const int State_SlowRun = 1;
@@ -87,17 +81,19 @@ public class SurvivorCtrl : MonoBehaviour
             GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetSurvivorComPivot =
                 this.gameObject.transform.Find("SurvivorCamPivot");
 
-            Type = Cha_Stamina;  // Demo
+            //CharacterSelect.instance.SurStat = 1;   // Demo
 
-            if (Type == Cha_Stamina)
+            print(CharacterSelect.instance.SurStat);
+
+            if (CharacterSelect.instance.SurStat == 1)
             {
                 Stamina = 10f;  // Demo 6
             }
-            else if (Type == Cha_WorkSpeed)
+            else if (CharacterSelect.instance.SurStat == 2)
             {
                 WorkSpeed = 1.1f;
             }
-            else if (Type == Cha_Damage)
+            else if (CharacterSelect.instance.SurStat == 3)
             {
                 Power = 15f;
             }

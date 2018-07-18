@@ -55,7 +55,7 @@ public class GameCtrl : MonoBehaviour
 
         instance = this;
 
-        if (CharacterSelect.SelSur == true)
+        if (CharacterSelect.instance.SelSur == true)
         {
             Character = 1;
             UI = UI.transform.Find("SurvivorUI").gameObject;
