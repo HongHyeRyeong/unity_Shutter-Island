@@ -52,6 +52,13 @@ public class MurdererCtrl : MonoBehaviour
         currPos = transform.position;
         currRot = transform.rotation;
 
+        TrapItems = new GameObject[GameCtrl.instance.MurdererTrap.transform.childCount];
+        for (int i = 0; i < TrapItems.Length; ++i)
+        {
+            TrapItems[i] = GameCtrl.instance.MurdererTrap.transform.GetChild(i).gameObject;
+            TrapItems[i].SetActive(false);
+        }
+
         if (pv.isMine)
         {
             MurdererUI = GameCtrl.instance.MurGameController.GetComponent<MurdererUICtrl>();
@@ -59,13 +66,6 @@ public class MurdererCtrl : MonoBehaviour
             GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetMurderer = this.gameObject.transform;
             GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetMurdererCamPivot =
                 this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head/MurdererCamPivot").transform;
-
-            TrapItems = new GameObject[GameCtrl.instance.MurdererTrap.transform.childCount];
-            for (int i = 0; i < TrapItems.Length; ++i)
-            {
-                TrapItems[i] = GameCtrl.instance.MurdererTrap.transform.GetChild(i).gameObject;
-                TrapItems[i].SetActive(false);
-            }
         }
     }
 
@@ -181,6 +181,12 @@ public class MurdererCtrl : MonoBehaviour
 
     public void PlaceTrap()
     {
+        pv.RPC("TrapActive", PhotonTargets.AllBuffered);
+    }
+
+    [PunRPC]
+    public void TrapActive()
+    {
         int index = -1;
         bool use = false;
 
@@ -206,7 +212,7 @@ public class MurdererCtrl : MonoBehaviour
                 }
             index = Num;
         }
-        
+
         TrapItems[index].transform.position = transform.position + transform.forward;
         TrapItems[index].GetComponent<MurdererTrapCtrl>().SetNum = TrapSetNum;
         TrapSetNum++;

@@ -100,4 +100,6 @@ MonoBehaviour:
   - RunFAnim
   - ItemAnim
   - InstallAnim
+  - TrapAnim
+  - TrapActive
   DisableAutoOpenWizard: 1
