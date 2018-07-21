@@ -30257,7 +30257,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4671149385232542, guid: 333303be09e426641b390c812afd81c9, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 44.72
+      value: 44
       objectReference: {fileID: 0}
     - target: {fileID: 4671149385232542, guid: 333303be09e426641b390c812afd81c9, type: 2}
       propertyPath: m_LocalPosition.y
@@ -30265,7 +30265,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4671149385232542, guid: 333303be09e426641b390c812afd81c9, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -61.55
+      value: -62.07
       objectReference: {fileID: 0}
     - target: {fileID: 4671149385232542, guid: 333303be09e426641b390c812afd81c9, type: 2}
       propertyPath: m_LocalRotation.x
@@ -30273,7 +30273,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4671149385232542, guid: 333303be09e426641b390c812afd81c9, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0.017634777
+      value: -0.091993906
       objectReference: {fileID: 0}
     - target: {fileID: 4671149385232542, guid: 333303be09e426641b390c812afd81c9, type: 2}
       propertyPath: m_LocalRotation.z
@@ -30281,7 +30281,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4671149385232542, guid: 333303be09e426641b390c812afd81c9, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.9998445
+      value: 0.99575955
       objectReference: {fileID: 0}
     - target: {fileID: 4671149385232542, guid: 333303be09e426641b390c812afd81c9, type: 2}
       propertyPath: m_RootOrder
@@ -30289,7 +30289,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4671149385232542, guid: 333303be09e426641b390c812afd81c9, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 2.0210001
+      value: -10.557
       objectReference: {fileID: 0}
     - target: {fileID: 1630562884534426, guid: 333303be09e426641b390c812afd81c9, type: 2}
       propertyPath: m_Layer
@@ -142796,7 +142796,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bcae914220acd4907840a029bb9d9aec, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bcae914220acd4907840a029bb9d9aec, type: 2}
       propertyPath: m_Layer
