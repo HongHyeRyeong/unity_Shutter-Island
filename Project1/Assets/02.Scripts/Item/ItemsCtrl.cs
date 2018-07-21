@@ -32,12 +32,6 @@ public class ItemsCtrl : MonoBehaviour
 
         for (int i = 0; i < itemnum; ++i)
         {
-            print("스폰 : " + PlayerPrefs.GetFloat("random" + (i + 1)));
-            print("아이템 : " + PlayerPrefs.GetFloat("random" + (i + 47)));
-        }
-
-        for (int i = 0; i < itemnum; ++i)
-        {
             Vector3 pos = new Vector3(
                 spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.x + PlayerPrefs.GetFloat("random" + (i + 1)),
                 spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.y,

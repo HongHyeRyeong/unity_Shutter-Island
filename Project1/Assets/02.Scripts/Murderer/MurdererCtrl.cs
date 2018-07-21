@@ -148,7 +148,10 @@ public class MurdererCtrl : MonoBehaviour
 
             // Movement
             if (State == State_Run)
-                transform.Translate(new Vector3(h, 0, v) * MoveSpeed * Time.deltaTime);
+            {
+                Vector3 Pos = new Vector3(h, 0, v);
+                transform.Translate(Pos.normalized * MoveSpeed * Time.deltaTime);
+            }
 
             if (State != State_Parry && State != State_Trap)
             {
