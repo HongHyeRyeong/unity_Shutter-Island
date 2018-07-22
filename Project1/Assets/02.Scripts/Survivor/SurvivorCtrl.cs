@@ -413,8 +413,6 @@ public class SurvivorCtrl : MonoBehaviour
 
         State = State_Trap;
         Ani.SetTrigger("trTrap");
-
-        //pv.RPC("TrapAnim", PhotonTargets.AllBuffered);
         Ani.SetBool("isSlowRun", false);
         Ani.SetBool("isRun", false);
     }
@@ -425,15 +423,21 @@ public class SurvivorCtrl : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.R))
             {
-                if (SurvivorUI.Message.activeSelf)
-                    SurvivorUI.Message.SetActive(false);
-                SurvivorUI.DisTime(PrisonTime, 3);
+                if (pv.isMine)
+                {
+                    if (SurvivorUI.Message.activeSelf)
+                        SurvivorUI.Message.SetActive(false);
+                    SurvivorUI.DisTime(PrisonTime, 3);
+                }
 
                 PrisonTime -= Time.deltaTime;
 
                 if (PrisonTime < 0)
                 {
-                    SurvivorUI.Time.SetActive(false);
+                    if (pv.isMine)
+                    {
+                        SurvivorUI.Time.SetActive(false);
+                    }
 
                     GetComponent<SurvivorItem>().ItemSet(5, 0);
 
@@ -463,8 +467,11 @@ public class SurvivorCtrl : MonoBehaviour
     {
         PrisonTime = 3f;
 
-        SurvivorUI.Message.SetActive(false);
-        SurvivorUI.Time.SetActive(false);
+        if (pv.isMine)
+        {
+            SurvivorUI.Message.SetActive(false);
+            SurvivorUI.Time.SetActive(false);
+        }
     }
 
     [PunRPC]
@@ -595,12 +602,18 @@ public class SurvivorCtrl : MonoBehaviour
                     {
                         if (machine.gameObject.GetComponent<MachineCtrl>().GetGadgetUse())
                         {
-                            if (!SurvivorUI.Message.activeSelf)
-                                SurvivorUI.DisMessage(2);
+                            if (pv.isMine)
+                            {
+                                if (!SurvivorUI.Message.activeSelf)
+                                    SurvivorUI.DisMessage(2);
+                            }
 
                             if (Input.GetKey(KeyCode.R))
                             {
-                                SurvivorUI.Message.SetActive(false);
+                                if (pv.isMine)
+                                {
+                                    SurvivorUI.Message.SetActive(false);
+                                }
                                 other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(true);
                                 WorkMachine = machine.gameObject.GetComponent<MachineCtrl>().MachineNum;
                             }
@@ -611,12 +624,18 @@ public class SurvivorCtrl : MonoBehaviour
 
                             if (GadgetNum > 0)
                             {
-                                if (!SurvivorUI.Message.activeSelf)
-                                    SurvivorUI.DisMessage(1);
+                                if (pv.isMine)
+                                {
+                                    if (!SurvivorUI.Message.activeSelf)
+                                        SurvivorUI.DisMessage(1);
+                                }
 
                                 if (Input.GetKeyDown(KeyCode.T))
                                 {
-                                    SurvivorUI.Message.SetActive(false);
+                                    if (pv.isMine)
+                                    {
+                                        SurvivorUI.Message.SetActive(false);
+                                    }
                                     machine.gameObject.GetComponent<MachineCtrl>().SetGadgetUse(true);
                                     GetComponent<SurvivorItem>().ItemSet(4, GadgetNum - 1);
                                 }
@@ -683,7 +702,10 @@ public class SurvivorCtrl : MonoBehaviour
             if (Stamina > maxStamina)
                 Stamina = maxStamina;
 
-            SurvivorUI.DispStamina(Stamina, maxStamina);
+            if (pv.isMine)
+            {
+                SurvivorUI.DispStamina(Stamina, maxStamina);
+            }
         }
     }
 
