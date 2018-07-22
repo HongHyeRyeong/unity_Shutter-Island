@@ -193,7 +193,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 1
+      - time: 0.8531952
         functionName: SetState
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 3948d0c2ed403f542a0a3839dc4c7487,

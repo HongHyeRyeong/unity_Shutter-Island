@@ -133,11 +133,15 @@ public class SurvivorCtrl : MonoBehaviour
                     {
                         State = State_AttackW;
                         Ani.SetTrigger("trAttackW");
+                        Ani.SetBool("isSlowRun", false);
+                        Ani.SetBool("isRun", false);
                     }
                     else if (Input.GetMouseButtonDown(1))
                     {
                         State = State_AttackL;
                         Ani.SetTrigger("trAttackL");
+                        Ani.SetBool("isSlowRun", false);
+                        Ani.SetBool("isRun", false);
                     }
                 }
             }
@@ -262,6 +266,8 @@ public class SurvivorCtrl : MonoBehaviour
                         pv.RPC("ParryWAnim", PhotonTargets.All);
                         pv.RPC("AttackEnd", PhotonTargets.All);
                         pv.RPC("DamageToMurderer", PhotonTargets.All);
+                        Ani.SetBool("isSlowRun", false);
+                        Ani.SetBool("isRun", false);
 
                         GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(100);
                     }
@@ -278,6 +284,8 @@ public class SurvivorCtrl : MonoBehaviour
                         pv.RPC("ParryLAnim", PhotonTargets.All);
                         pv.RPC("AttackEnd", PhotonTargets.All);
                         pv.RPC("DamageToMurderer", PhotonTargets.All);
+                        Ani.SetBool("isSlowRun", false);
+                        Ani.SetBool("isRun", false);
 
                         GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(100);
                     }
@@ -321,11 +329,15 @@ public class SurvivorCtrl : MonoBehaviour
                     {
                         State = State_ParryToMurdererW;
                         Ani.SetTrigger("trAttackW");
+                        Ani.SetBool("isSlowRun", false);
+                        Ani.SetBool("isRun", false);
                     }
                     else
                     {
                         State = State_ParryToMurdererL;
                         Ani.SetTrigger("trAttackL");
+                        Ani.SetBool("isSlowRun", false);
+                        Ani.SetBool("isRun", false);
                     }
                     pv.RPC("DamageToMurderer", PhotonTargets.All);
                 }
@@ -386,6 +398,8 @@ public class SurvivorCtrl : MonoBehaviour
         {
             State = State_Hit;
             Ani.SetTrigger("trHit");
+            Ani.SetBool("isSlowRun", false);
+            Ani.SetBool("isRun", false);
         }
     }
 
@@ -633,6 +647,8 @@ public class SurvivorCtrl : MonoBehaviour
 
             State = State_PickItem;
             pv.RPC("PickItemAnim", PhotonTargets.All);
+            Ani.SetBool("isSlowRun", false);
+            Ani.SetBool("isRun", false);
         }
         else if (s == State_Die)
         {
@@ -640,22 +656,7 @@ public class SurvivorCtrl : MonoBehaviour
             gameObject.SetActive(false);
         }
         else
-        {
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
-
-            if (v != 0 || h != 0)
-            {
-                State = State_SlowRun;
-                Ani.SetBool("isSlowRun", true);
-            }
-            else
-            {
-                State = State_Idle;
-                Ani.SetBool("isSlowRun", false);
-            }
-            Ani.SetBool("isRun", false);
-        }
+            State = State_Idle;
     }
 
     public int GetState()

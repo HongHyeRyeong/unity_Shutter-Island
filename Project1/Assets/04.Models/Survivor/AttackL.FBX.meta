@@ -173,7 +173,7 @@ ModelImporter:
       name: AttackL
       takeName: Take 001
       firstFrame: 18
-      lastFrame: 29
+      lastFrame: 30
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -193,7 +193,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 1
+      - time: 0.8894646
         functionName: SetState
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 3948d0c2ed403f542a0a3839dc4c7487,

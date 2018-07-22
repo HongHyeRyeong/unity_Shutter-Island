@@ -114,6 +114,9 @@ public class SurvivorItem : MonoBehaviour
 
     public void PickAnimEnd()
     {
+        if (saveItem == null)
+            return;
+
         ItemPick(saveType, saveLevel);
         GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().
             SurvivorExitItems(saveItem.GetComponent<ItemCtrl>().GetincludeNum());
