@@ -86,24 +86,21 @@ public class MurdererCtrl : MonoBehaviour
                     if (v < 0)
                     {
                         MoveSpeed = 3f;
-                        pv.RPC("BackRunAnim", PhotonTargets.All);
-                        //Ani.SetBool("isBackRun", true);
-                        pv.RPC("RunFAnim", PhotonTargets.All);
-                        //Ani.SetBool("isRun", false);
+                        Ani.SetBool("isBackRun", true);
+                        Ani.SetBool("isRun", false);
                     }
                     else
                     {
                         MoveSpeed = 6f;
-                        pv.RPC("RunAnim", PhotonTargets.All);
-                        //Ani.SetBool("isRun", true);
-                        pv.RPC("BackRunFAnim", PhotonTargets.All);
+                        Ani.SetBool("isRun", true);
+                        Ani.SetBool("isBackRun", false);
                     }
                 }
                 else
                 {
                     State = State_Idle;
-                    pv.RPC("RunFAnim", PhotonTargets.All);
-                    pv.RPC("BackRunFAnim", PhotonTargets.All);
+                    Ani.SetBool("isRun", false);
+                    Ani.SetBool("isBackRun", false);
                 }
 
                 if (Input.GetMouseButtonDown(0))
@@ -113,8 +110,8 @@ public class MurdererCtrl : MonoBehaviour
                     else
                         pv.RPC("AttackWAnim", PhotonTargets.All);
 
-                    pv.RPC("RunFAnim", PhotonTargets.All);
-                    pv.RPC("BackRunFAnim", PhotonTargets.All);
+                    Ani.SetBool("isRun", false);
+                    Ani.SetBool("isBackRun", false);
 
                     pv.RPC("AttackWTrue", PhotonTargets.All);
                 }
@@ -125,8 +122,8 @@ public class MurdererCtrl : MonoBehaviour
                     else
                         pv.RPC("AttackLAnim", PhotonTargets.All);
 
-                    pv.RPC("RunFAnim", PhotonTargets.All);
-                    pv.RPC("BackRunFAnim", PhotonTargets.All);
+                    Ani.SetBool("isRun", false);
+                    Ani.SetBool("isBackRun", false);
 
                     pv.RPC("AttackLTrue", PhotonTargets.All);
                 }
@@ -230,8 +227,8 @@ public class MurdererCtrl : MonoBehaviour
             State = State_Parry;
 
             pv.RPC("ParryAnim", PhotonTargets.All);
-            pv.RPC("RunFAnim", PhotonTargets.All);
-            pv.RPC("BackRunFAnim", PhotonTargets.All);
+            Ani.SetBool("isRun", false);
+            Ani.SetBool("isBackRun", false);
 
             MurdererUI.DispHP(Hp);
         }
@@ -256,8 +253,8 @@ public class MurdererCtrl : MonoBehaviour
     public void SetState(int s)
     {
         State = s;
-        pv.RPC("RunFAnim", PhotonTargets.All);
-        pv.RPC("BackRunFAnim", PhotonTargets.All);
+        Ani.SetBool("isRun", false);
+        Ani.SetBool("isBackRun", false);
 
         AttackRunTime = 0;
         ParticleTrail.SetActive(false);
@@ -279,30 +276,6 @@ public class MurdererCtrl : MonoBehaviour
             currPos = (Vector3)stream.ReceiveNext();
             currRot = (Quaternion)stream.ReceiveNext();
         }
-    }
-
-    [PunRPC]
-    public void RunAnim()
-    {
-        Ani.SetBool("isRun", true);
-    }
-
-    [PunRPC]
-    public void BackRunAnim()
-    {
-        Ani.SetBool("isBackRun", true);
-    }
-
-    [PunRPC]
-    public void RunFAnim()
-    {
-        Ani.SetBool("isRun", false);
-    }
-
-    [PunRPC]
-    public void BackRunFAnim()
-    {
-        Ani.SetBool("isBackRun", false);
     }
 
     [PunRPC]

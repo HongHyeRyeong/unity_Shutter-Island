@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MurdererTrapCtrl : MonoBehaviour
 {
+    private PhotonView pv = null;
+
     private Animator Anim;
 
     public int SetNum = -1;
@@ -57,6 +59,12 @@ public class MurdererTrapCtrl : MonoBehaviour
     }
 
     public void TrapDisabled()
+    {
+        pv.RPC("TrapFalse", PhotonTargets.AllBuffered);
+    }
+
+    [PunRPC]
+    public void TrapFalse()
     {
         Use = false;
         gameObject.SetActive(false);
