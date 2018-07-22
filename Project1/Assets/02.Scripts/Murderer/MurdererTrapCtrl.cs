@@ -17,21 +17,25 @@ public class MurdererTrapCtrl : MonoBehaviour
         Survivor = null;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (Use)
             return;
 
         if (other.gameObject.tag == "Survivor")
         {
-            print("dd");
-            Use = true;
-            Survivor = other.gameObject;
+            int state = other.gameObject.GetComponent<SurvivorCtrl>().GetState();
 
-            Anim.SetTrigger("trCaught");
-            other.gameObject.GetComponent<SurvivorCtrl>().TrapOn();
+            if (state == 0 || state == 1 || state == 2)
+            {
+                Use = true;
+                Survivor = other.gameObject;
 
-            StartCoroutine(TrapOn());
+                Anim.SetTrigger("trCaught");
+                other.gameObject.GetComponent<SurvivorCtrl>().TrapOn();
+
+                StartCoroutine(TrapOn());
+            }
         }
     }
 

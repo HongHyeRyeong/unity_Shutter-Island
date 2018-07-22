@@ -83,8 +83,6 @@ public class SurvivorCtrl : MonoBehaviour
 
             //CharacterSelect.instance.SurStat = 1;   // Demo
 
-            print(CharacterSelect.instance.SurStat);
-
             if (CharacterSelect.instance.SurStat == 1)
             {
                 Stamina = 10f;  // Demo 6
@@ -528,79 +526,82 @@ public class SurvivorCtrl : MonoBehaviour
         {
             if (pv.isMine)
             {
-                GameObject machine = other.gameObject.GetComponent<MachineRangeCtrl>().Machine;
-
-                if (machine.gameObject.GetComponent<MachineCtrl>().GetComplete())
-                    return;
-
-                machine.GetComponent<MachineCtrl>().DisHUD(transform.position);
-
-                if (other.gameObject.GetComponent<MachineRangeCtrl>().GetMachineUse())
+                if (State == 0 || State == 1 || State == 2 || State == 5)
                 {
-                    if (WorkMachine == machine.gameObject.GetComponent<MachineCtrl>().MachineNum)
+                    GameObject machine = other.gameObject.GetComponent<MachineRangeCtrl>().Machine;
+
+                    if (machine.gameObject.GetComponent<MachineCtrl>().GetComplete())
+                        return;
+
+                    machine.GetComponent<MachineCtrl>().DisHUD(transform.position);
+
+                    if (other.gameObject.GetComponent<MachineRangeCtrl>().GetMachineUse())
                     {
-                        if (Input.GetKey(KeyCode.R))
+                        if (WorkMachine == machine.gameObject.GetComponent<MachineCtrl>().MachineNum)
                         {
-                            if (State != State_Repair)
+                            if (Input.GetKey(KeyCode.R))
                             {
-                                State = State_Repair;
-                                Ani.SetBool("isRepair", true);
-                                Ani.SetBool("isSlowRun", false);
-                                Ani.SetBool("isRun", false);
+                                if (State != State_Repair)
+                                {
+                                    State = State_Repair;
+                                    Ani.SetBool("isRepair", true);
+                                    Ani.SetBool("isSlowRun", false);
+                                    Ani.SetBool("isRun", false);
 
-                                SaveRot = other.transform.eulerAngles;
+                                    SaveRot = other.transform.eulerAngles;
+                                }
+
+                                bool complete = machine.gameObject.GetComponent<MachineCtrl>().Install(Time.deltaTime * WorkSpeed);
+
+                                if (complete)
+                                {
+                                    State = State_Idle;
+                                    Ani.SetBool("isRepair", false);
+                                    WorkMachine = 0;
+                                    GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(200);
+
+                                    other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(false);
+                                }
                             }
-
-                            bool complete = machine.gameObject.GetComponent<MachineCtrl>().Install(Time.deltaTime * WorkSpeed);
-
-                            if (complete)
+                            else
                             {
                                 State = State_Idle;
                                 Ani.SetBool("isRepair", false);
                                 WorkMachine = 0;
-                                GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(200);
 
                                 other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(false);
                             }
                         }
-                        else
-                        {
-                            State = State_Idle;
-                            Ani.SetBool("isRepair", false);
-                            WorkMachine = 0;
-
-                            other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(false);
-                        }
-                    }
-                }
-                else
-                {
-                    if (machine.gameObject.GetComponent<MachineCtrl>().GetGadgetUse())
-                    {
-                        if (!SurvivorUI.Message.activeSelf)
-                            SurvivorUI.DisMessage(2);
-
-                        if (Input.GetKey(KeyCode.R))
-                        {
-                            SurvivorUI.Message.SetActive(false);
-                            other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(true);
-                            WorkMachine = machine.gameObject.GetComponent<MachineCtrl>().MachineNum;
-                        }
                     }
                     else
                     {
-                        int GadgetNum = GetComponent<SurvivorItem>().ItemGet(4);
-
-                        if (GadgetNum > 0)
+                        if (machine.gameObject.GetComponent<MachineCtrl>().GetGadgetUse())
                         {
                             if (!SurvivorUI.Message.activeSelf)
-                                SurvivorUI.DisMessage(1);
+                                SurvivorUI.DisMessage(2);
 
-                            if (Input.GetKeyDown(KeyCode.T))
+                            if (Input.GetKey(KeyCode.R))
                             {
                                 SurvivorUI.Message.SetActive(false);
-                                machine.gameObject.GetComponent<MachineCtrl>().SetGadgetUse(true);
-                                GetComponent<SurvivorItem>().ItemSet(4, GadgetNum - 1);
+                                other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(true);
+                                WorkMachine = machine.gameObject.GetComponent<MachineCtrl>().MachineNum;
+                            }
+                        }
+                        else
+                        {
+                            int GadgetNum = GetComponent<SurvivorItem>().ItemGet(4);
+
+                            if (GadgetNum > 0)
+                            {
+                                if (!SurvivorUI.Message.activeSelf)
+                                    SurvivorUI.DisMessage(1);
+
+                                if (Input.GetKeyDown(KeyCode.T))
+                                {
+                                    SurvivorUI.Message.SetActive(false);
+                                    machine.gameObject.GetComponent<MachineCtrl>().SetGadgetUse(true);
+                                    GetComponent<SurvivorItem>().ItemSet(4, GadgetNum - 1);
+                                }
                             }
                         }
                     }

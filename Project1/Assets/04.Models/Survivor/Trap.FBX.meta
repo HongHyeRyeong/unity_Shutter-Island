@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: c91f8e35de21b684c955085131ed7a39
-timeCreated: 1531555115
+guid: 2efdf79bd089c554f93015e00739f4e5
+timeCreated: 1532241992
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -141,8 +141,7 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: Event SetState has a time (2.666667) outside the clip's
-      valid range (0.000000..2.666667). It will never be fired
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -158,7 +157,7 @@ ModelImporter:
       name: Trap
       takeName: Take 001
       firstFrame: 40
-      lastFrame: 120
+      lastFrame: 180
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -178,7 +177,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.73407274
+      - time: 0.8878866
         functionName: TrapOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 3948d0c2ed403f542a0a3839dc4c7487,
@@ -560,19 +559,19 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: Caught(Clone)
+    - name: test(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: -0.0065471167, z: 0, w: 0.9999786}
       scale: {x: 1, y: 1, z: 1}
     - name: Bip001
-      parentName: Caught(Clone)
+      parentName: test(Clone)
       position: {x: 0.0028138564, y: -0.90176696, z: 0.021346655}
       rotation: {x: -0.50000036, y: 0.49999967, z: 0.49999967, w: 0.50000036}
       scale: {x: 1, y: 1, z: 1}
     - name: Bip001 Footsteps
       parentName: Bip001
-      position: {x: -0, y: 0, z: -0.6263659}
+      position: {x: -0, y: 0, z: -0.62623954}
       rotation: {x: 0, y: -0, z: -0.7071063, w: 0.70710725}
       scale: {x: 1, y: 1, z: 1}
     - name: Bip001 Pelvis
@@ -846,7 +845,7 @@ ModelImporter:
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: low
-      parentName: Caught(Clone)
+      parentName: test(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
