@@ -628,6 +628,9 @@ public class SurvivorCtrl : MonoBehaviour
     {
         if (s == State_PickItem)
         {
+            if (State == State_PickItem)
+                return;
+
             State = State_PickItem;
             pv.RPC("PickItemAnim", PhotonTargets.All);
         }

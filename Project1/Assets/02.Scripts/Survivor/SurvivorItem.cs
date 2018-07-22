@@ -22,6 +22,10 @@ public class SurvivorItem : MonoBehaviour
     int currclothestype = 2;
     int currbagtype = 3;
 
+    GameObject saveItem;
+    int saveType = -1;
+    int saveLevel = -1;
+
     private void Start()
     {
         pv = GetComponent<PhotonView>();
@@ -83,10 +87,11 @@ public class SurvivorItem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F) && (state == 0 || state == 1 || state == 2))
         {
-            int type = Item.GetComponent<ItemCtrl>().ItemType;
-            int level = Item.GetComponent<ItemCtrl>().ItemLevel;
+            saveItem = Item;
+            saveType = Item.GetComponent<ItemCtrl>().ItemType;
+            saveLevel = Item.GetComponent<ItemCtrl>().ItemLevel;
 
-            if (type == 4)
+            if (saveType == 4)
             {
                 if (ItemGadget == ItemMaxGadget)
                 {
@@ -94,7 +99,7 @@ public class SurvivorItem : MonoBehaviour
                     return;
                 }
             }
-            else if (type == 5)
+            else if (saveType == 5)
             {
                 if (ItemKey)
                 {
@@ -104,12 +109,19 @@ public class SurvivorItem : MonoBehaviour
             }
 
             GetComponent<SurvivorCtrl>().SetState(4);
-            ItemPick(type, level);
-
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().SurvivorExitItems(Item.GetComponent<ItemCtrl>().GetincludeNum());
-
-            Item.SetActive(false);
         }
+    }
+
+    public void PickAnimEnd()
+    {
+        ItemPick(saveType, saveLevel);
+        GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().
+            SurvivorExitItems(saveItem.GetComponent<ItemCtrl>().GetincludeNum());
+        saveItem.SetActive(false);
+
+        saveItem = null;
+        saveType = -1;
+        saveLevel = -1;
     }
 
     void ItemPick(int type, int level)

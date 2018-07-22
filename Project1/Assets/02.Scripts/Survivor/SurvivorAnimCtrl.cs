@@ -4,20 +4,27 @@ using UnityEngine;
 
 public class SurvivorAnimCtrl : MonoBehaviour
 {
-    private SurvivorCtrl parent;
+    private SurvivorCtrl parentCtrl;
+    private SurvivorItem parentItem;
 
     void Start()
     {
-        parent = transform.parent.GetComponent<SurvivorCtrl>();
+        parentCtrl = transform.parent.GetComponent<SurvivorCtrl>();
+        parentItem = transform.parent.GetComponent<SurvivorItem>();
     }
 
     public void SetState(int s)
     {
-        parent.SetState(s);
+        parentCtrl.SetState(s);
     }
 
     public void TrapOff()
     {
-        parent.Trap = false;
+        parentCtrl.Trap = false;
+    }
+
+    public void Item()
+    {
+        parentItem.PickAnimEnd();
     }
 }
