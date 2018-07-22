@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon;
 
-public class MurdererTrapCtrl : MonoBehaviour
+public class MurdererTrapCtrl : Photon.MonoBehaviour
 {
     private PhotonView pv = null;
 
