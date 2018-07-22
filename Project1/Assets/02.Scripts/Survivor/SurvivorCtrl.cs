@@ -407,9 +407,12 @@ public class SurvivorCtrl : MonoBehaviour
     {
         Hp -= 10f;
         Trap = true;
-        SaveRot = trModel.eulerAngles;
+
+        if(pv.isMine)
+            SaveRot = trModel.eulerAngles;
 
         State = State_Trap;
+
         pv.RPC("TrapAnim", PhotonTargets.AllBuffered);
         Ani.SetBool("isSlowRun", false);
         Ani.SetBool("isRun", false);

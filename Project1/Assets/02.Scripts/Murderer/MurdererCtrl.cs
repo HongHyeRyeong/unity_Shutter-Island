@@ -181,12 +181,6 @@ public class MurdererCtrl : MonoBehaviour
 
     public void PlaceTrap()
     {
-        pv.RPC("TrapActive", PhotonTargets.AllBuffered);
-    }
-
-    [PunRPC]
-    public void TrapActive()
-    {
         int index = -1;
         bool use = false;
 

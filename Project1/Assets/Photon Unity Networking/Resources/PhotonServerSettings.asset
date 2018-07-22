@@ -105,4 +105,5 @@ MonoBehaviour:
   - RPCOpen
   - RPCClose
   - TrapFalse
+  - TrapAcitveFalse
   DisableAutoOpenWizard: 1

@@ -15,6 +15,14 @@ public class MurdererTrapCtrl : MonoBehaviour
 
     private void Start()
     {
+        // PhotonView 컴포넌트 할당
+        pv = GetComponent<PhotonView>();
+        // 데이터 전송 타입 설정
+        pv.synchronization = ViewSynchronization.UnreliableOnChange;
+
+        // PhotonView Observed Components 속성에 Ctrl 스크립트 연결
+        pv.ObservedComponents[0] = this;
+
         Anim = gameObject.GetComponent<Animator>();
         Survivor = null;
     }
@@ -60,11 +68,11 @@ public class MurdererTrapCtrl : MonoBehaviour
 
     public void TrapDisabled()
     {
-        pv.RPC("TrapFalse", PhotonTargets.AllBuffered);
+        pv.RPC("TrapAcitveFalse", PhotonTargets.AllBuffered);
     }
 
     [PunRPC]
-    public void TrapFalse()
+    public void TrapAcitveFalse()
     {
         Use = false;
         gameObject.SetActive(false);
