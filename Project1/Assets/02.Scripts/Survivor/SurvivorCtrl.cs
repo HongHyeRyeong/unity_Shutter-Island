@@ -363,6 +363,8 @@ public class SurvivorCtrl : MonoBehaviour
         pv.RPC("AttackEnd", PhotonTargets.All);
         GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(100);
 
+        Trap = false;
+
         Hp -= 50f;
         if (pv.isMine)
             SurvivorUI.DispHP(Hp);
@@ -406,6 +408,9 @@ public class SurvivorCtrl : MonoBehaviour
     public void TrapOn()
     {
         Hp -= 10f;
+        if (pv.isMine)
+            SurvivorUI.DispHP(Hp);
+
         Trap = true;
 
         if(pv.isMine)
