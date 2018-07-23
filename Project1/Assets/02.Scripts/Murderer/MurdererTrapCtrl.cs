@@ -42,7 +42,7 @@ public class MurdererTrapCtrl : Photon.MonoBehaviour
                 Use = true;
                 Survivor = other.gameObject;
 
-                Anim.SetTrigger("trCaught");
+                pv.RPC("CaughtAnim", PhotonTargets.AllBuffered);
                 other.gameObject.GetComponent<SurvivorCtrl>().TrapOn();
 
                 StartCoroutine(TrapOn());
@@ -59,7 +59,7 @@ public class MurdererTrapCtrl : Photon.MonoBehaviour
             if(!surCtrl.Trap)
             {
                 Survivor = null;
-                Anim.SetTrigger("trIdle");
+                pv.RPC("IdleAnim", PhotonTargets.AllBuffered);
                 break;
             }
 
@@ -77,5 +77,17 @@ public class MurdererTrapCtrl : Photon.MonoBehaviour
     {
         Use = false;
         gameObject.SetActive(false);
+    }
+
+    [PunRPC]
+    public void CaughtAnim()
+    {
+        Anim.SetTrigger("trCaught");
+    }
+
+    [PunRPC]
+    public void IdleAnim()
+    {
+        Anim.SetTrigger("trIdle");
     }
 }
