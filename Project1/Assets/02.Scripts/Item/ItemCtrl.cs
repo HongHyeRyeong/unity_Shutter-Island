@@ -35,6 +35,8 @@ public class ItemCtrl : MonoBehaviour
         }
     }
 
+    public void SetUse(bool b) { this.gameObject.SetActive(b); }
+
     public int GetincludeNum()
     {
         return includeNum;

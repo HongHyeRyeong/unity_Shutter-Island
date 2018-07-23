@@ -120,7 +120,7 @@ public class SurvivorItem : MonoBehaviour
         ItemPick(saveType, saveLevel);
         GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().
             SurvivorExitItems(saveItem.GetComponent<ItemCtrl>().GetincludeNum());
-        saveItem.SetActive(false);
+        saveItem.GetComponent<ItemCtrl>().SetUse(false);
 
         saveItem = null;
         saveType = -1;
