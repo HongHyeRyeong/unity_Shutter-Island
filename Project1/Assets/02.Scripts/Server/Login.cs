@@ -191,7 +191,6 @@ public class Login : MonoBehaviour
                 yield return null;
             }
 
-            Fade.SetActive(false);
             SceneManager.LoadScene("1. Lobby");
         }
     }

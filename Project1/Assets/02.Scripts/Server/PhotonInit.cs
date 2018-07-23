@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class PhotonInit : MonoBehaviour {
-
+public class PhotonInit : MonoBehaviour
+{
     // App의 버전 정보
     public string version = "v1.0";
 
@@ -25,7 +25,8 @@ public class PhotonInit : MonoBehaviour {
     float[] random = new float[182];
 
     // Use this for initialization
-    void Awake() {
+    void Awake()
+    {
         // 포톤 클라우드에 접속
         PhotonNetwork.ConnectUsingSettings(version);
         // 룸 이름을 무작위로 설정
@@ -157,6 +158,71 @@ public class PhotonInit : MonoBehaviour {
         }
     }
 
+    void OnPhotonCreateRoomFailed(object[] codeAndMsg)
+    {
+        Debug.Log("Create Room Failed = " + codeAndMsg[1]);
+    }
+
+    void OnReceivedRoomListUpdate()
+    {
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ROOM_ITEM"))
+        {
+            Destroy(obj);
+        }
+
+        int rowCount = 0;
+
+        foreach (RoomInfo _room in PhotonNetwork.GetRoomList())
+        {
+            Debug.Log(_room.Name);
+            GameObject room = (GameObject)Instantiate(roomItem);
+            room.transform.SetParent(scrollContents.transform, false);
+
+            RoomData roomData = room.GetComponent<RoomData>();
+            roomData.roomName = _room.Name;
+            roomData.connectPlayer = _room.PlayerCount;
+            roomData.maxPlayers = _room.MaxPlayers;
+            roomData.cp = _room.customProperties;
+
+            Map = (int)roomData.cp["map"];
+
+            for (int i = 0; i < 46; ++i)
+                itemrand[i] = (int)roomData.cp["itemrand" + (i + 1)];
+            for (int i = 0; i < 35; ++i)
+                gadgetrand[i] = (int)roomData.cp["gadgetrand" + (i + 47)];
+            for (int i = 0; i < 10; ++i)
+                keyrand[i] = (int)roomData.cp["keyrand" + (i + 82)];
+            for (int i = 0; i < 182; ++i)
+                random[i] = (float)roomData.cp["random" + (i + 1)];
+
+            roomData.DispRoomData();
+
+            scrollContents.GetComponent<GridLayoutGroup>().constraintCount = ++rowCount;
+
+            roomData.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(delegate { OnClickRoomItem(roomData.roomName); });
+        }
+    }
+
+    string roomname;
+
+    void OnClickRoomItem(string roomName)
+    {
+        roomname = roomName;
+        print("room check");
+    }
+
+    public void OnClickRoomBtn()
+    {
+        if (CharacterSelect.instance.SurStat != 0)
+            PhotonNetwork.JoinRoom(roomname);
+    }
+
+    void OnGUI()
+    {
+        // 화면 좌측 상단에 접속 과정에 대한 로그를 출력
+        GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+    }
+
     //public void OnClickCreateRoomMap1()
     //{
     //    Map = 1;
@@ -254,64 +320,4 @@ public class PhotonInit : MonoBehaviour {
 
     //    PhotonNetwork.CreateRoom(_roomName, roomOptions, TypedLobby.Default);
     //}
-
-    void OnPhotonCreateRoomFailed(object[] codeAndMsg)
-    {
-        Debug.Log("Create Room Failed = " + codeAndMsg[1]);
-    }
-
-    void OnReceivedRoomListUpdate()
-    {
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ROOM_ITEM"))
-        {
-            Destroy(obj);
-        }
-
-        foreach (RoomInfo _room in PhotonNetwork.GetRoomList())
-        {
-            Debug.Log(_room.Name);
-            GameObject room = (GameObject)Instantiate(roomItem);
-            room.transform.SetParent(scrollContents.transform, false);
-
-            RoomData roomData = room.GetComponent<RoomData>();
-            roomData.roomName = _room.Name;
-            roomData.connectPlayer = _room.PlayerCount;
-            roomData.maxPlayers = _room.MaxPlayers;
-            roomData.cp = _room.customProperties;
-
-            Map = (int)roomData.cp["map"];
-
-            for (int i = 0; i < 46; ++i)
-                itemrand[i] = (int)roomData.cp["itemrand" + (i + 1)];
-            for (int i = 0; i < 35; ++i)
-                gadgetrand[i] = (int)roomData.cp["gadgetrand" + (i + 47)];
-            for (int i = 0; i < 10; ++i)
-                keyrand[i] = (int)roomData.cp["keyrand" + (i + 82)];
-            for (int i = 0; i < 182; ++i)
-                random[i] = (float)roomData.cp["random" + (i + 1)];
-
-            roomData.DispRoomData();
-
-            roomData.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(delegate { OnClickRoomItem(roomData.roomName); });
-        }
-    }
-
-    string roomname;
-
-    void OnClickRoomItem(string roomName)
-    {
-        roomname = roomName;
-        print("room check");
-    }
-
-    public void OnClickRoomBtn()
-    {
-        if(CharacterSelect.instance.SurStat != 0)
-            PhotonNetwork.JoinRoom(roomname);
-    }
-
-    void OnGUI () {
-        // 화면 좌측 상단에 접속 과정에 대한 로그를 출력
-        GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
-	}
 }
