@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ItemCtrl : MonoBehaviour
 {
+    private PhotonView pv = null;
+
     public int ItemType;
     public int ItemLevel;
 
@@ -11,6 +13,8 @@ public class ItemCtrl : MonoBehaviour
 
     private void Start()
     {
+        pv = GetComponent<PhotonView>();
+
         includeNum = -1;
 
         GameObject items;
@@ -35,7 +39,17 @@ public class ItemCtrl : MonoBehaviour
         }
     }
 
-    public void SetUse(bool b) { this.gameObject.SetActive(b); }
+    public void SetUse(bool b)
+    {
+        pv.RPC("RPCSetUse", PhotonTargets.AllBuffered, b);
+    }
+
+    [PunRPC]
+    public void RPCSetUse(bool b)
+    {
+        print("test");
+        this.gameObject.SetActive(b);
+    }
 
     public int GetincludeNum()
     {
