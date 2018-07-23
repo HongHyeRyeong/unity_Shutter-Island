@@ -195,4 +195,13 @@ public class Login : MonoBehaviour
             SceneManager.LoadScene("1. Lobby");
         }
     }
+
+    public void GameQuit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 }
