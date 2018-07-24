@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class CameraCtrl : MonoBehaviour
 {
-    int Character;
+    private Camera Cam;
+
+    private int Character;
 
     // Survivor
     public Transform targetSurvivorComPivot;
@@ -17,10 +19,16 @@ public class CameraCtrl : MonoBehaviour
     public Transform targetMurderer;
     public Transform targetMurdererCamPivot;
 
+    private int saveState = -1;
     private float MouseY;
+
+    float time = 0;
 
     void LateUpdate()
     {
+        if (Cam == null)
+            Cam = this.GetComponent<Camera>();
+
         if (Character == 1)
         {
             if (targetSurvivorComPivot)
@@ -49,22 +57,56 @@ public class CameraCtrl : MonoBehaviour
             {
                 int state = targetMurderer.GetComponent<MurdererCtrl>().GetState();
 
-                if (state == 0 || state == 1)
+                if (state == 0)
                 {
-                    float posX = targetMurdererCamPivot.transform.position.x;
+                    if (saveState != state)
+                    {
+                        saveState = state;
+                        Cam.cullingMask = -1;
 
-                    transform.position = new Vector3(
-                        posX, 
-                        targetMurderer.transform.position.y + 2.4f, 
-                        targetMurdererCamPivot.transform.position.z);
+                        time = 0;
+                    }
+
+                    time += Time.deltaTime;
+
+                    transform.position = Vector3.Lerp(Cam.transform.position, new Vector3(
+                        targetMurdererCamPivot.transform.position.x,
+                        targetMurderer.transform.position.y + 2.4f,
+                        targetMurdererCamPivot.transform.position.z), Time.deltaTime * 10);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;
                     MouseY = ClampAngle(MouseY, -30, 60);
+                    transform.rotation = Quaternion.Euler(MouseY, targetMurderer.eulerAngles.y, 0);
+                }
+                else if (state == 1)
+                {
+                    if (saveState != state)
+                    {
+                        saveState = state;
+                        Cam.cullingMask = ~(1 << 10);
 
+                        time = 0;
+                    }
+
+                    time += Time.deltaTime;
+
+                    transform.position = Vector3.Lerp(Cam.transform.position, new Vector3(
+                        targetMurdererCamPivot.transform.position.x,
+                        targetMurderer.transform.position.y + 2.4f,
+                        targetMurdererCamPivot.transform.position.z), Time.deltaTime * 10);
+
+                    MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;
+                    MouseY = ClampAngle(MouseY, -30, 60);
                     transform.rotation = Quaternion.Euler(MouseY, targetMurderer.eulerAngles.y, 0);
                 }
                 else
                 {
+                    if (saveState != state)
+                    {
+                        saveState = state;
+                        Cam.cullingMask = -1;
+                    }
+
                     transform.position = targetMurdererCamPivot.transform.position;
 
                     float angleX = 20;
