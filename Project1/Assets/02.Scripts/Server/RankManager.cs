@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RankManager : MonoBehaviour {
-
+public class RankManager : MonoBehaviour
+{
+    [SerializeField]
     public Text UserID;
+    [SerializeField]
     public Text SurRankTxt;
+    [SerializeField]
     public Text MurRankTxt;
 
-    // Use this for initialization
-    void Start () {
+    void Start()
+    {
         UserID.text = Login.GetID();
         SurRankTxt.text = Login.GetSurRank();
         MurRankTxt.text = Login.GetMurRank();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

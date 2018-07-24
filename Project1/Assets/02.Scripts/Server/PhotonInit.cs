@@ -5,34 +5,27 @@ using UnityEngine;
 
 public class PhotonInit : MonoBehaviour
 {
-    // App의 버전 정보
-    public string version = "v1.0";
-
-    // 룸 이름을 입력받을 UI 항목 연결 변수
-    //public InputField roomName;
+    public static PhotonInit instance;
+    
+    public string version = "v1.0"; // App의 버전 정보
 
     public GameObject scrollContents;
     public GameObject roomItem;
 
-    public static PhotonInit instance;
-
-    public int Map = 0;
+    public int Map = -1;
     int[] itemrand = new int[46];
     int[] gadgetrand = new int[35];
     int[] keyrand = new int[10];
 
-    //int[] tmp = new int[92];
     float[] random = new float[182];
 
     // Use this for initialization
     void Awake()
     {
+        instance = this;
+
         // 포톤 클라우드에 접속
         PhotonNetwork.ConnectUsingSettings(version);
-        // 룸 이름을 무작위로 설정
-        //roomName.text = "Room_" + Random.Range(0, 999).ToString("000");
-
-        instance = this;
     }
 
     // 포톤 클라우드에 정상적으로 접속한 후 로비에 입장하면 호출되는 콜백 함수
@@ -53,9 +46,6 @@ public class PhotonInit : MonoBehaviour
     void OnJoinedRoom()
     {
         Debug.Log("Enter Room !");
-
-        // 생존자를 생성하는 함수 호출
-        // CreateSurvivor();
 
         StartCoroutine(this.LoadBattleField());
     }
@@ -96,11 +86,6 @@ public class PhotonInit : MonoBehaviour
         yield return ao;
     }
 
-    //public void OnClickJoinRandomRoom()
-    //{
-    //    PhotonNetwork.JoinRandomRoom();
-    //}
-
     public void OnClickCreateRoom()
     {
         if (CharacterSelect.instance.Map != 0)
@@ -113,11 +98,6 @@ public class PhotonInit : MonoBehaviour
                 Map = Random.Range(1, 3);
 
             string _roomName = "Room_" + Random.Range(0, 999).ToString("000");
-
-            //if(string.IsNullOrEmpty(roomName.text))
-            //{
-            //    _roomName = "Room_" + Random.Range(0, 999).ToString("000");
-            //}
 
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.IsOpen = true;
@@ -209,6 +189,9 @@ public class PhotonInit : MonoBehaviour
     {
         roomname = roomName;
         print("room check");
+
+        CharacterSelect.instance.SurRoomSelect = true;
+        StartCoroutine(CharacterSelect.instance.SelectMap(0, true));
     }
 
     public void OnClickRoomBtn()
@@ -222,102 +205,4 @@ public class PhotonInit : MonoBehaviour
         // 화면 좌측 상단에 접속 과정에 대한 로그를 출력
         GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
     }
-
-    //public void OnClickCreateRoomMap1()
-    //{
-    //    Map = 1;
-
-    //    string _roomName = "Room_" + Random.Range(0, 999).ToString("000");
-
-    //    //if (string.IsNullOrEmpty(roomName.text))
-    //    //{
-    //    //    _roomName = "Room_" + Random.Range(0, 999).ToString("000");
-    //    //}
-
-    //    RoomOptions roomOptions = new RoomOptions();
-    //    roomOptions.IsOpen = true;
-    //    roomOptions.IsVisible = true;
-    //    roomOptions.MaxPlayers = 5;
-
-    //    roomOptions.customRoomProperties = new ExitGames.Client.Photon.Hashtable();
-    //    roomOptions.customRoomPropertiesForLobby = new string[274];
-    //    roomOptions.customRoomPropertiesForLobby[0] = "map";
-    //    roomOptions.customRoomProperties.Add("map", Map);
-
-    //    for (int i = 0; i < 46; ++i)
-    //    {
-    //        itemrand[i] = Random.Range(0, 12);
-    //        roomOptions.customRoomPropertiesForLobby[i + 1] = "itemrand" + (i + 1);
-    //        roomOptions.customRoomProperties.Add("itemrand" + (i + 1), itemrand[i]);
-    //    }
-    //    for (int i = 0; i < 35; ++i)
-    //    {
-    //        gadgetrand[i] = Random.Range(0, 12);
-    //        roomOptions.customRoomPropertiesForLobby[i + 47] = "gadgetrand" + (i + 47);
-    //        roomOptions.customRoomProperties.Add("gadgetrand" + (i + 47), gadgetrand[i]);
-    //    }
-    //    for (int i = 0; i < 10; ++i)
-    //    {
-    //        keyrand[i] = Random.Range(0, 12);
-    //        roomOptions.customRoomPropertiesForLobby[i + 82] = "keyrand" + (i + 82);
-    //        roomOptions.customRoomProperties.Add("keyrand" + (i + 82), keyrand[i]);
-    //    }
-    //    for (int i = 0; i < 182; ++i)
-    //    {
-    //        random[i] = Random.Range(-3.0f, 3.0f);
-    //        roomOptions.customRoomPropertiesForLobby[i + 92] = "random" + (i + 1);
-    //        roomOptions.customRoomProperties.Add("random" + (i + 1), random[i]);
-    //    }
-
-    //    PhotonNetwork.CreateRoom(_roomName, roomOptions, TypedLobby.Default);
-    //}
-
-    //public void OnClickCreateRoomMap2()
-    //{
-    //    Map = 2;
-
-    //    string _roomName = "Room_" + Random.Range(0, 999).ToString("000");
-
-    //    //if (string.IsNullOrEmpty(roomName.text))
-    //    //{
-    //    //    _roomName = "Room_" + Random.Range(0, 999).ToString("000");
-    //    //}
-
-    //    RoomOptions roomOptions = new RoomOptions();
-    //    roomOptions.IsOpen = true;
-    //    roomOptions.IsVisible = true;
-    //    roomOptions.MaxPlayers = 5;
-
-    //    roomOptions.customRoomProperties = new ExitGames.Client.Photon.Hashtable();
-    //    roomOptions.customRoomPropertiesForLobby = new string[274];
-    //    roomOptions.customRoomPropertiesForLobby[0] = "map";
-    //    roomOptions.customRoomProperties.Add("map", Map);
-
-    //    for (int i = 0; i < 46; ++i)
-    //    {
-    //        itemrand[i] = Random.Range(0, 12);
-    //        roomOptions.customRoomPropertiesForLobby[i + 1] = "itemrand" + (i + 1);
-    //        roomOptions.customRoomProperties.Add("itemrand" + (i + 1), itemrand[i]);
-    //    }
-    //    for (int i = 0; i < 35; ++i)
-    //    {
-    //        gadgetrand[i] = Random.Range(0, 12);
-    //        roomOptions.customRoomPropertiesForLobby[i + 47] = "gadgetrand" + (i + 47);
-    //        roomOptions.customRoomProperties.Add("gadgetrand" + (i + 47), gadgetrand[i]);
-    //    }
-    //    for (int i = 0; i < 10; ++i)
-    //    {
-    //        keyrand[i] = Random.Range(0, 12);
-    //        roomOptions.customRoomPropertiesForLobby[i + 82] = "keyrand" + (i + 82);
-    //        roomOptions.customRoomProperties.Add("keyrand" + (i + 82), keyrand[i]);
-    //    }
-    //    for (int i = 0; i < 182; ++i)
-    //    {
-    //        random[i] = Random.Range(-3.0f, 3.0f);
-    //        roomOptions.customRoomPropertiesForLobby[i + 92] = "random" + (i + 1);
-    //        roomOptions.customRoomProperties.Add("random" + (i + 1), random[i]);
-    //    }
-
-    //    PhotonNetwork.CreateRoom(_roomName, roomOptions, TypedLobby.Default);
-    //}
 }
