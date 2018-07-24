@@ -19,6 +19,8 @@ public class PhotonInit : MonoBehaviour
 
     float[] random = new float[182];
 
+    string roomname;
+
     // Use this for initialization
     void Awake()
     {
@@ -50,6 +52,7 @@ public class PhotonInit : MonoBehaviour
         StartCoroutine(this.LoadBattleField());
     }
 
+    // 게임 플레이 씬을 넘어가는 함수
     IEnumerator LoadBattleField()
     {
         PhotonNetwork.isMessageQueueRunning = false;
@@ -86,6 +89,8 @@ public class PhotonInit : MonoBehaviour
         yield return ao;
     }
 
+    // 살인마가 방 만드는 함수
+    // 방을 만들 때 맵 정보와 아이템 정보들을 넣어줌
     public void OnClickCreateRoom()
     {
         if (CharacterSelect.instance.Map != 0)
@@ -138,11 +143,13 @@ public class PhotonInit : MonoBehaviour
         }
     }
 
+    // 방 만들기 실패했을 때
     void OnPhotonCreateRoomFailed(object[] codeAndMsg)
     {
         Debug.Log("Create Room Failed = " + codeAndMsg[1]);
     }
 
+    // 방 리스트 업데이트 함수
     void OnReceivedRoomListUpdate()
     {
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ROOM_ITEM"))
@@ -183,8 +190,6 @@ public class PhotonInit : MonoBehaviour
         }
     }
 
-    string roomname;
-
     void OnClickRoomItem(string roomName)
     {
         roomname = roomName;
@@ -194,6 +199,7 @@ public class PhotonInit : MonoBehaviour
         StartCoroutine(CharacterSelect.instance.SelectMap(0, true));
     }
 
+    // 생존자가 방에 들어갈 때 함수
     public void OnClickRoomBtn()
     {
         if (CharacterSelect.instance.SurStat != 0)

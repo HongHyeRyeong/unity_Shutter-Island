@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class Login : MonoBehaviour
@@ -51,6 +52,31 @@ public class Login : MonoBehaviour
             }
 
         StartCoroutine(StartFade(true));
+    }
+    
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                if (EventSystem.current.currentSelectedGameObject != null)
+                {
+                    Selectable selectable = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp();
+                    if (selectable != null)
+                        selectable.Select();
+                }
+            }
+            else
+            {
+                if (EventSystem.current.currentSelectedGameObject != null)
+                {
+                    Selectable selectable = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
+                    if (selectable != null)
+                        selectable.Select();
+                }
+            }
+        }
     }
 
     public void PWToStar()
@@ -128,6 +154,9 @@ public class Login : MonoBehaviour
 
     public void OpenCreateAccountButton()
     {
+        IDInputField.text = "";
+        PWInputField.text = "";
+
         print("dd");
         LoginPanelObj.SetActive(false);
         CreateAccountPanelObj.SetActive(true);
@@ -135,6 +164,9 @@ public class Login : MonoBehaviour
 
     public void CreateAccountButton()
     {
+        NewIDInputField.text = "";
+        NewPWInputField.text = "";
+
         StartCoroutine(CreateGo());
 
         CreateAccountPanelObj.SetActive(false);
