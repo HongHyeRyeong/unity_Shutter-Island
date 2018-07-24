@@ -248,8 +248,10 @@ public class GameCtrl : MonoBehaviour
 
         if (isNew)
         {
-            FootPrints[++FootPrintsNum] = Instantiate(FootPrint, Pos,
-                Quaternion.Euler(90, 0, Random.Range(0, 360)));
+            FootPrints[++FootPrintsNum] = PhotonNetwork.Instantiate("FootPrintProjector", Pos,
+                Quaternion.Euler(90, 0, Random.Range(0, 360)), 0);
+            //FootPrints[++FootPrintsNum] = PhotonNetwork.Instantiate("FootPrint", Pos,
+            //    Quaternion.Euler(90, 0, Random.Range(0, 360)), 0);
             FootPrints[FootPrintsNum].transform.parent = SurvivorFootPrints.transform;
             StartCoroutine(FootPrints[FootPrintsNum].GetComponent<FootPrintCtrl>().Use());
         }

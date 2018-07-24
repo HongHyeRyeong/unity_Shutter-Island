@@ -109,4 +109,5 @@ MonoBehaviour:
   - CaughtAnim
   - IdleAnim
   - RPCSetUse
+  - FootActFalse
   DisableAutoOpenWizard: 1
