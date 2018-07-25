@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MurdererCtrl : MonoBehaviour
 {
@@ -331,4 +332,11 @@ public class MurdererCtrl : MonoBehaviour
 
         ParticleTrail.SetActive(true);
     }
+
+    //IEnumerator MurdererDie(float DelayTime)
+    //{
+    //    yield return new WaitForSeconds(DelayTime);
+
+    //    SceneManager.LoadScene("3. Result");
+    //}
 }

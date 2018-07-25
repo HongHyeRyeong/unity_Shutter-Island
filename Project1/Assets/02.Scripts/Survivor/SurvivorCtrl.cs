@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class SurvivorCtrl : MonoBehaviour
 {
@@ -495,6 +496,8 @@ public class SurvivorCtrl : MonoBehaviour
             pv.RPC("DieAnim", PhotonTargets.All);
 
             GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(2000);
+
+            StartCoroutine(SurvivorDie());
         }
 
         if (PrisonTP == false)
@@ -681,7 +684,7 @@ public class SurvivorCtrl : MonoBehaviour
         else if (s == State_Die)
         {
             State = State_Die;
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
         else
             State = State_Idle;
@@ -757,5 +760,14 @@ public class SurvivorCtrl : MonoBehaviour
     public void TrapAnim()
     {
         Ani.SetTrigger("trTrap");
+    }
+
+    IEnumerator SurvivorDie()
+    {
+        print("test");
+
+        yield return new WaitForSeconds(2.0f);
+
+        SceneManager.LoadScene("3. Result");
     }
 }
