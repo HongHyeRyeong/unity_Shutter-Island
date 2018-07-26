@@ -14,11 +14,7 @@ public class SurvivorCtrl : MonoBehaviour
     private Animator Ani;
     private Transform trModel;
 
-    private SurvivorUICtrl SurvivorUI;
-
-    //
     private int State = 0;
-
     private int Life = 2;
     private float Hp = 100f;
     private float Power = 10f;
@@ -77,10 +73,8 @@ public class SurvivorCtrl : MonoBehaviour
         if (pv.isMine)
         {
             trModel = this.gameObject.transform.Find("SurvivorModel").GetComponent<Transform>();
-            SurvivorUI = GameCtrl.instance.SurGameController.GetComponent<SurvivorUICtrl>();
 
-            GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetSurvivorComPivot =
-                this.gameObject.transform.Find("SurvivorCamPivot");
+            CameraCtrl.instance.targetSurvivorComPivot = this.gameObject.transform.Find("SurvivorCamPivot");
 
             //CharacterSelect.instance.SurStat = 1;   // Demo
 
@@ -101,8 +95,8 @@ public class SurvivorCtrl : MonoBehaviour
             saveStamina = Stamina;
             saveWorkSpeed = WorkSpeed;
 
-            SurvivorUI.DispHP(Hp);
-            SurvivorUI.DispStamina(Stamina, maxStamina);
+            SurvivorUICtrl.instance.DispHP(Hp);
+            SurvivorUICtrl.instance.DispStamina(Stamina, maxStamina);
         }
     }
 
@@ -128,7 +122,7 @@ public class SurvivorCtrl : MonoBehaviour
                     Ani.SetBool("isRun", false);
                 }
 
-                if (!SurvivorUI.Inven.activeSelf)
+                if (!SurvivorUICtrl.instance.Inven.activeSelf)
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
@@ -216,12 +210,12 @@ public class SurvivorCtrl : MonoBehaviour
 
                     MoveSpeed = 7f;
                     Stamina -= Time.deltaTime;
-                    GameCtrl.instance.GameController.GetComponent<GameCtrl>().UseFootPrint(this.transform.position);
+                    GameCtrl.instance.UseFootPrint(this.transform.position);
 
                     if (Stamina < 0)
                         Stamina = 0;
 
-                    SurvivorUI.DispStamina(Stamina, maxStamina);
+                    SurvivorUICtrl.instance.DispStamina(Stamina, maxStamina);
                 }
                 else
                 {
@@ -235,7 +229,7 @@ public class SurvivorCtrl : MonoBehaviour
                 if (Stamina < maxStamina)
                 {
                     Stamina += FillStaminaSpeed * Time.deltaTime;
-                    SurvivorUI.DispStamina(Stamina, maxStamina);
+                    SurvivorUICtrl.instance.DispStamina(Stamina, maxStamina);
                 }
             }
         }
@@ -244,7 +238,7 @@ public class SurvivorCtrl : MonoBehaviour
             if (Stamina < maxStamina)
             {
                 Stamina += FillStaminaSpeed * Time.deltaTime;
-                SurvivorUI.DispStamina(Stamina, maxStamina);
+                SurvivorUICtrl.instance.DispStamina(Stamina, maxStamina);
             }
         }
 
@@ -270,7 +264,7 @@ public class SurvivorCtrl : MonoBehaviour
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
 
-                        GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(100);
+                        GameCtrl.instance.SetSurvivorScore(100);
                     }
                 }
                 else if (Input.GetMouseButtonDown(1))
@@ -288,7 +282,7 @@ public class SurvivorCtrl : MonoBehaviour
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
 
-                        GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(100);
+                        GameCtrl.instance.SetSurvivorScore(100);
                     }
 
                 }
@@ -362,13 +356,13 @@ public class SurvivorCtrl : MonoBehaviour
     void DamageByMurderer()
     {
         pv.RPC("AttackEnd", PhotonTargets.All);
-        GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(100);
+        GameCtrl.instance.SetMurdererScore(100);
 
         Trap = false;
 
         Hp -= 50f;
         if (pv.isMine)
-            SurvivorUI.DispHP(Hp);
+            SurvivorUICtrl.instance.DispHP(Hp);
 
         if(Hp <= 0)
         {
@@ -381,11 +375,11 @@ public class SurvivorCtrl : MonoBehaviour
             Hp = 50f;
             if (pv.isMine)
             {
-                SurvivorUI.DispLife(Life);
-                SurvivorUI.DispHP(Hp);
+                SurvivorUICtrl.instance.DispLife(Life);
+                SurvivorUICtrl.instance.DispHP(Hp);
             }
 
-            GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(500);
+            GameCtrl.instance.SetMurdererScore(500);
 
             if (Life == 0)
             {
@@ -394,7 +388,7 @@ public class SurvivorCtrl : MonoBehaviour
                 State = State_Die;
                 pv.RPC("DieAnim", PhotonTargets.All);
 
-                GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(2000);
+                GameCtrl.instance.SetMurdererScore(2000);
             }
         }
         else
@@ -410,7 +404,7 @@ public class SurvivorCtrl : MonoBehaviour
     {
         Hp -= 10f;
         if (pv.isMine)
-            SurvivorUI.DispHP(Hp);
+            SurvivorUICtrl.instance.DispHP(Hp);
 
         Trap = true;
 
@@ -431,9 +425,9 @@ public class SurvivorCtrl : MonoBehaviour
             {
                 if (pv.isMine)
                 {
-                    if (SurvivorUI.Message.activeSelf)
-                        SurvivorUI.Message.SetActive(false);
-                    SurvivorUI.DisTime(PrisonTime, 3);
+                    if (SurvivorUICtrl.instance.Message.activeSelf)
+                        SurvivorUICtrl.instance.Message.SetActive(false);
+                    SurvivorUICtrl.instance.DisTime(PrisonTime, 3);
                 }
 
                 PrisonTime -= Time.deltaTime;
@@ -442,7 +436,7 @@ public class SurvivorCtrl : MonoBehaviour
                 {
                     if (pv.isMine)
                     {
-                        SurvivorUI.Time.SetActive(false);
+                        SurvivorUICtrl.instance.Time.SetActive(false);
                     }
 
                     GetComponent<SurvivorItem>().ItemSet(5, 0);
@@ -450,18 +444,18 @@ public class SurvivorCtrl : MonoBehaviour
                     prison.GetComponent<PrisonCtrl>().OpenDoor();
                     PrisonTime = 3f;
 
-                    GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(500);
+                    GameCtrl.instance.SetSurvivorScore(500);
                 }
             }
             else
             {
                 if (pv.isMine)
                 {
-                    if (!SurvivorUI.Message.activeSelf)
-                        SurvivorUI.DisMessage(3);
+                    if (!SurvivorUICtrl.instance.Message.activeSelf)
+                        SurvivorUICtrl.instance.DisMessage(3);
 
-                    if (SurvivorUI.Time.activeSelf)
-                        SurvivorUI.Time.SetActive(false);
+                    if (SurvivorUICtrl.instance.Time.activeSelf)
+                        SurvivorUICtrl.instance.Time.SetActive(false);
                 }
 
                 PrisonTime = 3f;
@@ -475,8 +469,8 @@ public class SurvivorCtrl : MonoBehaviour
 
         if (pv.isMine)
         {
-            SurvivorUI.Message.SetActive(false);
-            SurvivorUI.Time.SetActive(false);
+            SurvivorUICtrl.instance.Message.SetActive(false);
+            SurvivorUICtrl.instance.Time.SetActive(false);
         }
     }
 
@@ -485,7 +479,7 @@ public class SurvivorCtrl : MonoBehaviour
     {
         Hp -= 1.5f * Time.deltaTime;
         if(pv.isMine)
-            SurvivorUI.DispHP(Hp);
+            SurvivorUICtrl.instance.DispHP(Hp);
 
         if (Hp <= 0)
         {
@@ -495,7 +489,7 @@ public class SurvivorCtrl : MonoBehaviour
             State = State_Die;
             pv.RPC("DieAnim", PhotonTargets.All);
 
-            GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(2000);
+            GameCtrl.instance.SetMurdererScore(2000);
 
             StartCoroutine(SurvivorDie());
         }
@@ -538,7 +532,7 @@ public class SurvivorCtrl : MonoBehaviour
                 State = State_Die;
                 pv.RPC("DieAnim", PhotonTargets.All);
 
-                GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetMurdererScore(2000);
+                GameCtrl.instance.SetMurdererScore(2000);
             }
         }
     }
@@ -550,7 +544,7 @@ public class SurvivorCtrl : MonoBehaviour
 
         Hp = 50;
         if (pv.isMine)
-            SurvivorUI.DispHP(Hp);
+            SurvivorUICtrl.instance.DispHP(Hp);
     }
 
     private void OnTriggerStay(Collider other)
@@ -591,7 +585,7 @@ public class SurvivorCtrl : MonoBehaviour
                                     State = State_Idle;
                                     Ani.SetBool("isRepair", false);
                                     WorkMachine = 0;
-                                    GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(200);
+                                    GameCtrl.instance.SetSurvivorScore(200);
 
                                     other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(false);
                                 }
@@ -612,15 +606,15 @@ public class SurvivorCtrl : MonoBehaviour
                         {
                             if (pv.isMine)
                             {
-                                if (!SurvivorUI.Message.activeSelf)
-                                    SurvivorUI.DisMessage(2);
+                                if (!SurvivorUICtrl.instance.Message.activeSelf)
+                                    SurvivorUICtrl.instance.DisMessage(2);
                             }
 
                             if (Input.GetKey(KeyCode.R))
                             {
                                 if (pv.isMine)
                                 {
-                                    SurvivorUI.Message.SetActive(false);
+                                    SurvivorUICtrl.instance.Message.SetActive(false);
                                 }
                                 other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(true);
                                 WorkMachine = machine.gameObject.GetComponent<MachineCtrl>().MachineNum;
@@ -634,15 +628,15 @@ public class SurvivorCtrl : MonoBehaviour
                             {
                                 if (pv.isMine)
                                 {
-                                    if (!SurvivorUI.Message.activeSelf)
-                                        SurvivorUI.DisMessage(1);
+                                    if (!SurvivorUICtrl.instance.Message.activeSelf)
+                                        SurvivorUICtrl.instance.DisMessage(1);
                                 }
 
                                 if (Input.GetKeyDown(KeyCode.T))
                                 {
                                     if (pv.isMine)
                                     {
-                                        SurvivorUI.Message.SetActive(false);
+                                        SurvivorUICtrl.instance.Message.SetActive(false);
                                     }
                                     machine.gameObject.GetComponent<MachineCtrl>().SetGadgetUse(true);
                                     GetComponent<SurvivorItem>().ItemSet(4, GadgetNum - 1);
@@ -661,8 +655,8 @@ public class SurvivorCtrl : MonoBehaviour
         {
             if (pv.isMine)
             {
-                if (SurvivorUI.Message.activeSelf)
-                    SurvivorUI.Message.SetActive(false);
+                if (SurvivorUICtrl.instance.Message.activeSelf)
+                    SurvivorUICtrl.instance.Message.SetActive(false);
 
                 other.gameObject.GetComponent<MachineRangeCtrl>().Machine.GetComponent<MachineCtrl>().SetHUD(false);
             }
@@ -712,7 +706,7 @@ public class SurvivorCtrl : MonoBehaviour
 
             if (pv.isMine)
             {
-                SurvivorUI.DispStamina(Stamina, maxStamina);
+                SurvivorUICtrl.instance.DispStamina(Stamina, maxStamina);
             }
         }
     }

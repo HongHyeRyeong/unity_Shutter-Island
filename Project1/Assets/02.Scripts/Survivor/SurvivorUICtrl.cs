@@ -5,12 +5,8 @@ using UnityEngine.UI;
 
 public class SurvivorUICtrl : MonoBehaviour
 {
-    private GameObject Survivor;
-    
-    int ScreenW;
-    int ScreenH;
+    public static SurvivorUICtrl instance;
 
-    // ui
     public Text txtFPS;
 
     public GameObject Message;
@@ -47,34 +43,21 @@ public class SurvivorUICtrl : MonoBehaviour
 
     public Image[] imgMachine = new Image[5];
 
-    public Camera Cam;
     public RectTransform rtPrison;
     public GameObject[] Prisons = new GameObject[3];
     public Text[] txtPrisons = new Text[3];
 
-    // world ui
     GameObject[] Items = new GameObject[100];
     int itemNum = 0;
 
     public GameObject HUDItem;
     public Text txtHUDItem;
 
-    public void Init()
+    private void Start()
     {
+        instance = this;
+
         Cursor.lockState = CursorLockMode.Locked;
-
-        Survivor = GameCtrl.instance.Survivor;
-
-        ScreenW = Screen.width;
-        ScreenH = Screen.height;
-
-        for (int i = 0; i < 5; ++i)
-        {
-            Color c = imgMachine[i].color;
-            c.a = 0.2f;
-
-            imgMachine[i].color = c;
-        }
     }
 
     void Update()
@@ -114,7 +97,7 @@ public class SurvivorUICtrl : MonoBehaviour
                         Items[i].transform.position,
                         Items[i].GetComponent<ItemCtrl>().ItemType,
                         Items[i].GetComponent<ItemCtrl>().ItemLevel);
-                    Survivor.GetComponent<SurvivorItem>().SurvivorEnterItem(Items[i]);
+                    GameCtrl.instance.Survivor.GetComponent<SurvivorItem>().SurvivorEnterItem(Items[i]);
                     break;
                 }
         }
@@ -179,11 +162,11 @@ public class SurvivorUICtrl : MonoBehaviour
 
     public void OnClickInventory(int type)
     {
-        int state = Survivor.GetComponent<SurvivorCtrl>().GetState();
+        int state = GameCtrl.instance.Survivor.GetComponent<SurvivorCtrl>().GetState();
 
         if (state == 0 || state == 1 || state == 2)
         {
-            Survivor.GetComponent<SurvivorItem>().ItemPut(type);
+            GameCtrl.instance.Survivor.GetComponent<SurvivorItem>().ItemPut(type);
             UpdateItemInformation(type);
         }
     }
@@ -201,7 +184,7 @@ public class SurvivorUICtrl : MonoBehaviour
 
     public void UpdateItemInformation(int type)
     {
-        int level = Survivor.GetComponent<SurvivorItem>().ItemGet(type);
+        int level = GameCtrl.instance.Survivor.GetComponent<SurvivorItem>().ItemGet(type);
 
         if (level == 0)
         {
@@ -252,14 +235,14 @@ public class SurvivorUICtrl : MonoBehaviour
         if (!Prisons[num].activeSelf)
             Prisons[num].SetActive(true);
 
-        float dist = Vector3.Distance(pos, Survivor.transform.position) - 5.5f;
+        float dist = Vector3.Distance(pos, GameCtrl.instance.Survivor.transform.position) - 5.5f;
 
         if (dist < 0)
             dist = 0;
 
         pos.y += 5;
 
-        Vector3 view = Cam.WorldToViewportPoint(pos);
+        Vector3 view = CameraCtrl.instance.MainCam.WorldToViewportPoint(pos);
 
         if (!(-0.5 < view.x && view.x < 1.5) || view.z < 0)
         {
@@ -271,10 +254,10 @@ public class SurvivorUICtrl : MonoBehaviour
             ((view.x * rtPrison.sizeDelta.x) - (rtPrison.sizeDelta.x * 0.5f)),
             ((view.y * rtPrison.sizeDelta.y) - (rtPrison.sizeDelta.y * 0.5f)));
 
-        int Minx = ScreenW / 2 - 80;
-        int MaXx = ScreenW / 2 - 80;
-        int Miny = ScreenH / 2 - 150;
-        int MaXy = ScreenH / 2 - 150;
+        int Minx = Screen.width / 2 - 80;
+        int MaXx = Screen.width / 2 - 80;
+        int Miny = Screen.height / 2 - 150;
+        int MaXy = Screen.height / 2 - 150;
 
         if (screen.x > Minx)
             screen.x = Minx;
@@ -301,7 +284,7 @@ public class SurvivorUICtrl : MonoBehaviour
         pos.y += 2.5f;
         HUDItem.transform.position = pos;
 
-        Vector3 survivorPos = Survivor.transform.position;
+        Vector3 survivorPos = GameCtrl.instance.Survivor.transform.position;
 
         survivorPos.y = HUDItem.transform.position.y;
         Vector3 vec = survivorPos - HUDItem.transform.position;

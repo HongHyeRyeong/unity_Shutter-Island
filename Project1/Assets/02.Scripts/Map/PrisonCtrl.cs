@@ -50,7 +50,7 @@ public class PrisonCtrl : MonoBehaviour
                 break;
             }
 
-        GameObject.Find("GameController").GetComponent<GameCtrl>().DisSurPrison(1);
+        GameCtrl.instance.DisSurPrison(1);
     }
 
     IEnumerator SurvivorInPrison()
@@ -59,7 +59,7 @@ public class PrisonCtrl : MonoBehaviour
 
         while (true)
         {
-            GameObject.Find("GameController").GetComponent<GameCtrl>().DisPrison(transform.position, PrisonNum);
+            GameCtrl.instance.DisPrison(transform.position, PrisonNum);
             yield return new WaitForEndOfFrame();
         }
     }
@@ -88,7 +88,7 @@ public class PrisonCtrl : MonoBehaviour
         if (num == 0)
             isSurvivor = false;
 
-        GameObject.Find("GameController").GetComponent<GameCtrl>().SetPrisons(PrisonNum, false, 1);
+        GameCtrl.instance.SetPrisons(PrisonNum, false, 1);
     }
 
     public void OpenDoor()
@@ -117,7 +117,7 @@ public class PrisonCtrl : MonoBehaviour
             if (Survivors[i] != null)
                 num++;
 
-        GameObject.Find("GameController").GetComponent<GameCtrl>().SetPrisons(PrisonNum, false, num);
+        GameCtrl.instance.SetPrisons(PrisonNum, false, num);
 
         for (int i = 0; i < 4; ++i)
         {

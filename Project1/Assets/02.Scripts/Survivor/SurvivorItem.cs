@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SurvivorItem : MonoBehaviour
 {
+    private SurvivorCtrl ctrl;
+
     GameObject Hat;
     GameObject Clothes;
     GameObject Bag;
@@ -30,6 +32,8 @@ public class SurvivorItem : MonoBehaviour
     {
         pv = GetComponent<PhotonView>();
 
+        ctrl = GetComponent<SurvivorCtrl>();
+
         Hat = this.gameObject.transform.Find("SurvivorModel/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/ItemHat").gameObject;
         Clothes = this.gameObject.transform.Find("SurvivorModel/ItemClothes").gameObject;
         Bag = this.gameObject.transform.Find("SurvivorModel/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/ItemBag").gameObject;
@@ -40,24 +44,24 @@ public class SurvivorItem : MonoBehaviour
         if (type == 1)
         {
             if (level == 0)
-                GetComponent<SurvivorCtrl>().SetStatus("WorkSpeed", 0);
+                ctrl.SetStatus("WorkSpeed", 0);
             else if (level == 1)
-                GetComponent<SurvivorCtrl>().SetStatus("WorkSpeed", 0.1f);
+                ctrl.SetStatus("WorkSpeed", 0.1f);
             else if (level == 2)
-                GetComponent<SurvivorCtrl>().SetStatus("WorkSpeed", 0.2f);
+                ctrl.SetStatus("WorkSpeed", 0.2f);
             else if (level == 3)
-                GetComponent<SurvivorCtrl>().SetStatus("WorkSpeed", 0.3f);
+                ctrl.SetStatus("WorkSpeed", 0.3f);
         }
         else if (type == 2)
         {
             if (level == 0)
-                GetComponent<SurvivorCtrl>().SetStatus("Stamina", 0);
+                ctrl.SetStatus("Stamina", 0);
             else if (level == 1)
-                GetComponent<SurvivorCtrl>().SetStatus("Stamina", 0.5f);
+                ctrl.SetStatus("Stamina", 0.5f);
             else if (level == 2)
-                GetComponent<SurvivorCtrl>().SetStatus("Stamina", 1);
+                ctrl.SetStatus("Stamina", 1);
             else if (level == 3)
-                GetComponent<SurvivorCtrl>().SetStatus("Stamina", 2);
+                ctrl.SetStatus("Stamina", 2);
         }
         else if (type == 3)
         {
@@ -73,17 +77,17 @@ public class SurvivorItem : MonoBehaviour
                 while (ItemGadget > ItemMaxGadget)
                 {
                     ItemGadget--;
-                    GameObject.Find("GameController").GetComponent<ItemsCtrl>().SetItem(this.transform.position, 4, 0);
+                    ItemsCtrl.instance.SetItem(this.transform.position, 4, 0);
                 }
             }
 
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisGadget(ItemGadget);
+            SurvivorUICtrl.instance.DisGadget(ItemGadget);
         }
     }
 
     public void SurvivorEnterItem(GameObject Item)
     {
-        int state = GetComponent<SurvivorCtrl>().GetState();
+        int state = ctrl.GetState();
 
         if (Input.GetKeyDown(KeyCode.F) && (state == 0 || state == 1 || state == 2))
         {
@@ -108,7 +112,7 @@ public class SurvivorItem : MonoBehaviour
                 }
             }
 
-            GetComponent<SurvivorCtrl>().SetState(4);
+            ctrl.SetState(4);
         }
     }
 
@@ -118,8 +122,7 @@ public class SurvivorItem : MonoBehaviour
             return;
 
         ItemPick(saveType, saveLevel);
-        GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().
-            SurvivorExitItems(saveItem.GetComponent<ItemCtrl>().GetincludeNum());
+        SurvivorUICtrl.instance.SurvivorExitItems(saveItem.GetComponent<ItemCtrl>().GetincludeNum());
         saveItem.GetComponent<ItemCtrl>().SetUse(false);
 
         saveItem = null;
@@ -139,7 +142,7 @@ public class SurvivorItem : MonoBehaviour
             SurvivorByItem(type, level);
 
             pv.RPC("HatEquip", PhotonTargets.AllBuffered, type, level);
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().UpdateItemInformation(type);
+            SurvivorUICtrl.instance.UpdateItemInformation(type);
         }
         else if (type == 2)
         {
@@ -151,7 +154,7 @@ public class SurvivorItem : MonoBehaviour
             SurvivorByItem(type, level);
 
             pv.RPC("ClothesEquip", PhotonTargets.AllBuffered, type, level);
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().UpdateItemInformation(type);
+            SurvivorUICtrl.instance.UpdateItemInformation(type);
         }
         else if (type == 3)
         {
@@ -163,17 +166,17 @@ public class SurvivorItem : MonoBehaviour
             SurvivorByItem(type, level);
 
             pv.RPC("BagEquip", PhotonTargets.AllBuffered, type, level);
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().UpdateItemInformation(type);
+            SurvivorUICtrl.instance.UpdateItemInformation(type);
         }
         else if (type == 4)
         {
             ItemGadget++;
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisGadget(ItemGadget);
+            SurvivorUICtrl.instance.DisGadget(ItemGadget);
         }
         else if (type == 5)
         {
             ItemKey = true;
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisKey(true);
+            SurvivorUICtrl.instance.DisKey(true);
         }
     }
 
@@ -186,7 +189,7 @@ public class SurvivorItem : MonoBehaviour
                 if (ItemHat[i])
                 {
                     ItemHat[i] = false;
-                    GetComponent<SurvivorCtrl>().SetState(4);
+                    ctrl.SetState(4);
 
                     int level = i + 1;
                     pv.RPC("HatTakeOff", PhotonTargets.AllBuffered, type, level);
@@ -202,7 +205,7 @@ public class SurvivorItem : MonoBehaviour
                 if (ItemClothes[i])
                 {
                     ItemClothes[i] = false;
-                    GetComponent<SurvivorCtrl>().SetState(4);
+                    ctrl.SetState(4);
 
                     int level = i + 1;
                     pv.RPC("ClothesTakeOff", PhotonTargets.AllBuffered, type, level);
@@ -218,7 +221,7 @@ public class SurvivorItem : MonoBehaviour
                 if (ItemBag[i])
                 {
                     ItemBag[i] = false;
-                    GetComponent<SurvivorCtrl>().SetState(4);
+                    ctrl.SetState(4);
 
                     int level = i + 1;
                     pv.RPC("BagTakeOff", PhotonTargets.AllBuffered, type, level);
@@ -271,7 +274,7 @@ public class SurvivorItem : MonoBehaviour
         if (type == 4)
         {
             ItemGadget = num;
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisGadget(ItemGadget);
+            SurvivorUICtrl.instance.DisGadget(ItemGadget);
         }
         else if (type == 5)
         {
@@ -279,7 +282,7 @@ public class SurvivorItem : MonoBehaviour
                 ItemKey = true;
             else
                 ItemKey = false;
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().DisKey(ItemKey);
+            SurvivorUICtrl.instance.DisKey(ItemKey);
         }
     }
 
@@ -305,20 +308,20 @@ public class SurvivorItem : MonoBehaviour
     public void HatTakeOff(int type, int level)
     {
         Hat.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-        GameObject.Find("GameController").GetComponent<ItemsCtrl>().SetItem(this.transform.position, type, level);
+        ItemsCtrl.instance.SetItem(this.transform.position, type, level);
     }
 
     [PunRPC]
     public void ClothesTakeOff(int type, int level)
     {
         Clothes.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-        GameObject.Find("GameController").GetComponent<ItemsCtrl>().SetItem(this.transform.position, type, level);
+        ItemsCtrl.instance.SetItem(this.transform.position, type, level);
     }
 
     [PunRPC]
     public void BagTakeOff(int type, int level)
     {
         Bag.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-        GameObject.Find("GameController").GetComponent<ItemsCtrl>().SetItem(this.transform.position, type, level);
+        ItemsCtrl.instance.SetItem(this.transform.position, type, level);
     }
 }

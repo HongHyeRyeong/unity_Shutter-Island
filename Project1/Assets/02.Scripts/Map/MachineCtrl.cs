@@ -94,7 +94,7 @@ public class MachineCtrl : MonoBehaviour
         Flare.SetActive(false);
 
         Ani.SetTrigger("Complete");
-        GameObject.Find("GameController").GetComponent<GameCtrl>().MachineComplete();
+        GameCtrl.instance.MachineComplete();
     }
 
     public void DisHUD(Vector3 pos)

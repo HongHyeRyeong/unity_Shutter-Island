@@ -4,22 +4,31 @@ using UnityEngine;
 
 public class ItemsCtrl : MonoBehaviour
 {
+    public static ItemsCtrl instance;
+
+    [SerializeField]
+    public GameObject Items;
+
+    private void Start()
+    {
+        instance = this;
+    }
+
     public void SetItem(Vector3 position, int type, int level)
     {
-        int itemsCount = GameObject.Find("Items").transform.childCount;
+        int itemsCount = Items.transform.childCount;
 
         for (int i = 0; i < itemsCount; ++i)
         {
-            GameObject item = GameObject.Find("Items").transform.GetChild(i).transform.gameObject;
+            GameObject item = Items.transform.GetChild(i).transform.gameObject;
 
             if (item.activeSelf)
                 continue;
 
-            if (item.GetComponent<ItemCtrl>().ItemType == type &&
-                item.GetComponent<ItemCtrl>().ItemLevel == level)
+            if (item.GetComponent<ItemCtrl>().ItemType == type && item.GetComponent<ItemCtrl>().ItemLevel == level)
             {
-                item.transform.position = position;
                 item.SetActive(true);
+                item.transform.position = position;
                 break;
             }
         }

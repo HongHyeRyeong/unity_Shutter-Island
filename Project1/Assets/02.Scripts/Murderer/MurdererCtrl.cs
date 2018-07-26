@@ -13,8 +13,6 @@ public class MurdererCtrl : MonoBehaviour
     GameObject curSurvivor;
 
     //
-    MurdererUICtrl MurdererUI;
-
     private Animator Ani;
     public GameObject ParticleTrail;
 
@@ -62,11 +60,8 @@ public class MurdererCtrl : MonoBehaviour
 
         if (pv.isMine)
         {
-            MurdererUI = GameCtrl.instance.MurGameController.GetComponent<MurdererUICtrl>();
-
-            GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetMurderer = this.gameObject.transform;
-            GameCtrl.instance.Camera.GetComponent<CameraCtrl>().targetMurdererCamPivot =
-                this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head/MurdererCamPivot").transform;
+            CameraCtrl.instance.targetMurderer = this.gameObject.transform;
+            CameraCtrl.instance.targetMurdererCamPivot = this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head/MurdererCamPivot").transform;
         }
     }
 
@@ -167,7 +162,7 @@ public class MurdererCtrl : MonoBehaviour
         {
             State = State_Die;
             pv.RPC("DieAnim", PhotonTargets.All);
-            GameCtrl.instance.GameController.GetComponent<GameCtrl>().SetSurvivorScore(2000);
+            GameCtrl.instance.SetSurvivorScore(2000);
         }
     }
 
@@ -225,19 +220,19 @@ public class MurdererCtrl : MonoBehaviour
             Ani.SetBool("isRun", false);
             Ani.SetBool("isBackRun", false);
 
-            MurdererUI.DispHP(Hp);
+            MurdererUICtrl.instance.DispHP(Hp);
+            GameCtrl.instance.DisMurHP(Hp);
         }
 
-        GameCtrl.instance.GameController.GetComponent<GameCtrl>().DisMurHP(Hp);
-        print("murdererctrl " + Hp);
+        GameCtrl.instance.DisMurHP(Hp);
     }
 
     public void DamageByMachine(float Power)
     {
         Hp -= Power;
 
-        MurdererUI.DispHP(Hp);
-        GameCtrl.instance.GameController.GetComponent<GameCtrl>().DisMurHP(Hp);
+        MurdererUICtrl.instance.DispHP(Hp);
+        GameCtrl.instance.DisMurHP(Hp);
     }
 
     public int GetState()

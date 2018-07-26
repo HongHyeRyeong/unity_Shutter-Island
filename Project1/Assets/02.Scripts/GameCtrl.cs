@@ -9,19 +9,13 @@ public class GameCtrl : MonoBehaviour
     public GameObject Survivor;
     public GameObject Murderer;
 
-    public GameObject Camera;
-    public GameObject GameController;
-    public GameObject SurGameController;
-    public GameObject MurGameController;
-    public GameObject UI;
-
     [SerializeField]
-    private Material SkyboxDay;
+    public GameObject SurvivorUI;
     [SerializeField]
-    private Material SkyboxNight;
+    public GameObject MurdererUI;
 
     // inGame
-    private int Character;
+    public int Character;
     private int Skill = 1;
 
     private int MachineCompleteNum = 0;
@@ -57,33 +51,26 @@ public class GameCtrl : MonoBehaviour
 
     private void Start()
     {
+        instance = this;
+
         PhotonNetwork.isMessageQueueRunning = true;
         Application.targetFrameRate = 60;
-
-        instance = this;
 
         if (CharacterSelect.instance.SelSur == true)
         {
             Character = 1;
-            UI = UI.transform.Find("SurvivorUI").gameObject;
+            SurvivorUI.SetActive(true);
 
             // 맵에 따라 다른 생성 위치
             if (PhotonInit.instance.Map == 1)
                 Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(-37, 0.0f, 36), Quaternion.identity, 0);
             else
                 Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(80, 0.0f, 36), Quaternion.identity, 0);
-
-            // 각 오브젝트 적용
-            Camera.GetComponent<CameraCtrl>().SetCharacter(Character);
-
-            SurGameController.SetActive(true);
-            SurGameController.GetComponent<SurvivorUICtrl>().Init();
-            UI.SetActive(true);
         }
         else
         {
             Character = 2;
-            UI = UI.transform.Find("MurdererUI").gameObject;
+            MurdererUI.SetActive(true);
 
             // 맵에 따라 다른 생성 위치
             if (PhotonInit.instance.Map == 1)
@@ -91,13 +78,7 @@ public class GameCtrl : MonoBehaviour
             else
                 Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(80, 0.0f, 36), Quaternion.identity, 0);
 
-            // 각 오브젝트 적용
-            Camera.GetComponent<CameraCtrl>().SetCharacter(Character);
-
-            MurGameController.SetActive(true);
-            MurGameController.GetComponent<MurdererUICtrl>().Init();
-            UI.SetActive(true);
-
+            // 아이템 생성
             GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawn");
 
             int hatNum = hat[0] + hat[1] + hat[2];
@@ -160,14 +141,6 @@ public class GameCtrl : MonoBehaviour
             }
         }
 
-        // SkyBox
-        int sky = Random.Range(1, 3);
-
-        if (sky == 1)
-            Camera.AddComponent<Skybox>().material = SkyboxDay;
-        else
-            Camera.AddComponent<Skybox>().material = SkyboxDay;
-
         savedelay = delay;
 
         //StartCoroutine(DisFPS());
@@ -179,20 +152,20 @@ public class GameCtrl : MonoBehaviour
         MachineCompleteNum++;
 
         if (Character == 1)
-            SurGameController.GetComponent<SurvivorUICtrl>().DisMachine(MachineCompleteNum);
+            SurvivorUICtrl.instance.DisMachine(MachineCompleteNum);
         else if (Character == 2)
         {
             Murderer.GetComponent<MurdererCtrl>().DamageByMachine(40);
-            MurGameController.GetComponent<MurdererUICtrl>().DisMachine(MachineCompleteNum);
+            MurdererUICtrl.instance.DisMachine(MachineCompleteNum);
         }
     }
 
     public void DisPrison(Vector3 pos, int num)
     {
         if (Character == 1)
-            SurGameController.GetComponent<SurvivorUICtrl>().DisPrison(pos, num);
+            SurvivorUICtrl.instance.DisPrison(pos, num);
         else if (Character == 2)
-            MurGameController.GetComponent<MurdererUICtrl>().DisPrison(pos, num);
+            MurdererUICtrl.instance.DisPrison(pos, num);
     }
 
     public void DisSurPrison(int num)
@@ -200,25 +173,25 @@ public class GameCtrl : MonoBehaviour
         PrisonSurNum += num;
 
         if (Character == 2)
-            MurGameController.GetComponent<MurdererUICtrl>().DisSurPrison(PrisonSurNum);
+            MurdererUICtrl.instance.DisSurPrison(PrisonSurNum);
     }
 
     public void SetPrisons(int num, bool b, int Surnum)
     {
         if (Character == 1)
-            SurGameController.GetComponent<SurvivorUICtrl>().SetPrisons(num, b);
+            SurvivorUICtrl.instance.GetComponent<SurvivorUICtrl>().SetPrisons(num, b);
         else if (Character == 2)
         {
             PrisonSurNum -= Surnum;
-            MurGameController.GetComponent<MurdererUICtrl>().DisSurPrison(PrisonSurNum);
-            MurGameController.GetComponent<MurdererUICtrl>().SetPrisons(num, b);
+            MurdererUICtrl.instance.DisSurPrison(PrisonSurNum);
+            MurdererUICtrl.instance.SetPrisons(num, b);
         }
     }
 
     public void DisMurHP(float hp)
     {
         if (Character == 1)
-            SurGameController.GetComponent<SurvivorUICtrl>().DisMurHP(hp);
+            SurvivorUICtrl.instance.GetComponent<SurvivorUICtrl>().DisMurHP(hp);
     }
 
     public void UseFootPrint(Vector3 SurPos)
@@ -250,8 +223,6 @@ public class GameCtrl : MonoBehaviour
         {
             FootPrints[++FootPrintsNum] = PhotonNetwork.Instantiate("FootPrintProjector", Pos,
                 Quaternion.Euler(90, 0, Random.Range(0, 360)), 0);
-            //FootPrints[++FootPrintsNum] = PhotonNetwork.Instantiate("FootPrint", Pos,
-            //    Quaternion.Euler(90, 0, Random.Range(0, 360)), 0);
             FootPrints[FootPrintsNum].transform.parent = SurvivorFootPrints.transform;
             StartCoroutine(FootPrints[FootPrintsNum].GetComponent<FootPrintCtrl>().Use());
         }
@@ -291,9 +262,9 @@ public class GameCtrl : MonoBehaviour
             fps = 1.0f / deltaTime;
 
             if (Character == 1)
-                SurGameController.GetComponent<SurvivorUICtrl>().DisFPS(fps);
+                SurvivorUICtrl.instance.DisFPS(fps);
             else if (Character == 2)
-                MurGameController.GetComponent<MurdererUICtrl>().DisFPS(fps);
+                MurdererUICtrl.instance.DisFPS(fps);
 
             yield return null;
         }

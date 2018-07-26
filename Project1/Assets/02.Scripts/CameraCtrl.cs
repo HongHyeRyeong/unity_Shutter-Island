@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 
 public class CameraCtrl : MonoBehaviour
 {
-    private Camera Cam;
+    public static CameraCtrl instance;
+    public Camera MainCam;
 
-    private int Character;
+    [SerializeField]
+    private Material SkyboxDay;
+    [SerializeField]
+    private Material SkyboxNight;
 
     // Survivor
     public Transform targetSurvivorComPivot;
@@ -24,12 +27,22 @@ public class CameraCtrl : MonoBehaviour
 
     float time = 0;
 
+    private void Start()
+    {
+        instance = this;
+
+        // SkyBox
+        int sky = Random.Range(1, 3);
+
+        if (sky == 1)
+            gameObject.AddComponent<Skybox>().material = SkyboxDay;
+        else
+            gameObject.AddComponent<Skybox>().material = SkyboxDay;
+    }
+
     void LateUpdate()
     {
-        if (Cam == null)
-            Cam = this.GetComponent<Camera>();
-
-        if (Character == 1)
+        if (GameCtrl.instance.Character == 1)
         {
             if (targetSurvivorComPivot)
             {
@@ -51,7 +64,7 @@ public class CameraCtrl : MonoBehaviour
                 transform.LookAt(pos);
             }
         }
-        else if (Character == 2)
+        else if (GameCtrl.instance.Character == 2)
         {
             if (targetMurdererCamPivot)
             {
@@ -62,14 +75,14 @@ public class CameraCtrl : MonoBehaviour
                     if (saveState != state)
                     {
                         saveState = state;
-                        Cam.cullingMask = -1;
+                        MainCam.cullingMask = -1;
 
                         time = 0;
                     }
 
                     time += Time.deltaTime;
 
-                    transform.position = Vector3.Lerp(Cam.transform.position, new Vector3(
+                    transform.position = Vector3.Lerp(MainCam.transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,
                         targetMurderer.transform.position.y + 2.4f,
                         targetMurdererCamPivot.transform.position.z), Time.deltaTime * 10);
@@ -83,14 +96,14 @@ public class CameraCtrl : MonoBehaviour
                     if (saveState != state)
                     {
                         saveState = state;
-                        Cam.cullingMask = ~(1 << 10);
+                        MainCam.cullingMask = ~(1 << 10);
 
                         time = 0;
                     }
 
                     time += Time.deltaTime;
 
-                    transform.position = Vector3.Lerp(Cam.transform.position, new Vector3(
+                    transform.position = Vector3.Lerp(MainCam.transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,
                         targetMurderer.transform.position.y + 2.4f,
                         targetMurdererCamPivot.transform.position.z), Time.deltaTime * 10);
@@ -104,7 +117,7 @@ public class CameraCtrl : MonoBehaviour
                     if (saveState != state)
                     {
                         saveState = state;
-                        Cam.cullingMask = -1;
+                        MainCam.cullingMask = -1;
                     }
 
                     transform.position = targetMurdererCamPivot.transform.position;
@@ -131,10 +144,5 @@ public class CameraCtrl : MonoBehaviour
         if (angle > 360)
             angle -= 360;
         return Mathf.Clamp(angle, min, max);
-    }
-
-    public void SetCharacter(int character)
-    {
-        Character = character;
     }
 }

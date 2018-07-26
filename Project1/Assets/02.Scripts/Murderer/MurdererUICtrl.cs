@@ -5,10 +5,7 @@ using UnityEngine.UI;
 
 public class MurdererUICtrl : MonoBehaviour
 {
-    private GameObject Murderer;
-
-    int ScreenW;
-    int ScreenH;
+    public static MurdererUICtrl instance;
 
     public Text txtFPS;
 
@@ -21,19 +18,15 @@ public class MurdererUICtrl : MonoBehaviour
 
     public Image[] imgMachine = new Image[5];
 
-    public Camera Cam;
     public RectTransform rtPrison;
     public GameObject[] Prisons = new GameObject[3];
     public Text[] txtPrisons = new Text[3];
 
-    public void Init()
+    private void Start()
     {
+        instance = this;
+
         Cursor.lockState = CursorLockMode.Locked;
-
-        Murderer = GameCtrl.instance.Murderer;
-
-        ScreenW = Screen.width;
-        ScreenH = Screen.height;
     }
 
     public void DisFPS(float fps)
@@ -82,14 +75,14 @@ public class MurdererUICtrl : MonoBehaviour
         if (!Prisons[num].activeSelf)
             Prisons[num].SetActive(true);
 
-        float dist = Vector3.Distance(pos, Murderer.transform.position) - 5.5f;
+        float dist = Vector3.Distance(pos, GameCtrl.instance.Murderer.transform.position) - 5.5f;
 
         if (dist < 0)
             dist = 0;
 
         pos.y += 5;
 
-        Vector3 view = Cam.WorldToViewportPoint(pos);
+        Vector3 view = CameraCtrl.instance.MainCam.WorldToViewportPoint(pos);
 
         if (!(-0.5 < view.x && view.x < 1.5) || view.z < 0)
         {
@@ -101,10 +94,10 @@ public class MurdererUICtrl : MonoBehaviour
             ((view.x * rtPrison.sizeDelta.x) - (rtPrison.sizeDelta.x * 0.5f)),
             ((view.y * rtPrison.sizeDelta.y) - (rtPrison.sizeDelta.y * 0.5f)));
 
-        int Minx = ScreenW / 2 - 80;
-        int MaXx = ScreenW / 2 - 80;
-        int Miny = ScreenH / 2 - 150;
-        int MaXy = ScreenH / 2 - 250;
+        int Minx = Screen.width / 2 - 80;
+        int MaXx = Screen.width / 2 - 80;
+        int Miny = Screen.height / 2 - 150;
+        int MaXy = Screen.height / 2 - 250;
 
         if (screen.x > Minx)
             screen.x = Minx;

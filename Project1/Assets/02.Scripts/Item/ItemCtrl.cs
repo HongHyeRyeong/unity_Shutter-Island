@@ -26,7 +26,7 @@ public class ItemCtrl : MonoBehaviour
     {
         if (other.gameObject.tag == "Survivor")
         {
-            includeNum = GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().SurvivorEnterItems(this.gameObject);
+            includeNum = SurvivorUICtrl.instance.SurvivorEnterItems(this.gameObject);
         }
     }
 
@@ -34,7 +34,7 @@ public class ItemCtrl : MonoBehaviour
     {
         if (other.gameObject.tag == "Survivor")
         {
-            GameObject.Find("SurvivorController").GetComponent<SurvivorUICtrl>().SurvivorExitItems(includeNum);
+            SurvivorUICtrl.instance.SurvivorExitItems(includeNum);
             includeNum = -1;
         }
     }
@@ -47,7 +47,6 @@ public class ItemCtrl : MonoBehaviour
     [PunRPC]
     public void RPCSetUse(bool b)
     {
-        print("test");
         this.gameObject.SetActive(b);
     }
 
