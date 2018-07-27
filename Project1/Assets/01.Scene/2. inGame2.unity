@@ -15885,6 +15885,7 @@ MonoBehaviour:
   spriteLife1: {fileID: 21300000, guid: 35872883e4c6d7b448cb78f9c095d310, type: 3}
   imgHP: {fileID: 1584740796}
   txtSurPrisonNum: {fileID: 889924989}
+  txtTrapNum: {fileID: 1768881597}
   imgMachine:
   - {fileID: 799124473}
   - {fileID: 74962198}

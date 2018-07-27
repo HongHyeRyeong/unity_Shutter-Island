@@ -33,6 +33,7 @@ public class GameCtrl : MonoBehaviour
 
     // Murderer
     public GameObject MurdererTrap;
+    private int TrapNum = 5;
 
     // score
     int SurvivorScore = 0;
@@ -49,7 +50,7 @@ public class GameCtrl : MonoBehaviour
     int GadgetNum = 35;
     int keyNum = 10;
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
 
@@ -71,6 +72,7 @@ public class GameCtrl : MonoBehaviour
         {
             Character = 2;
             MurdererUI.SetActive(true);
+            MurdererUICtrl.instance.DisTrap(TrapNum);
 
             // 맵에 따라 다른 생성 위치
             if (PhotonInit.instance.Map == 1)
@@ -174,6 +176,15 @@ public class GameCtrl : MonoBehaviour
 
         if (Character == 2)
             MurdererUICtrl.instance.DisSurPrison(PrisonSurNum);
+    }
+
+    public void DisTrap(int num)
+    {
+        if (Character == 2)
+        {
+            TrapNum += num;
+            MurdererUICtrl.instance.DisTrap(TrapNum);
+        }
     }
 
     public void SetPrisons(int num, bool b, int Surnum)

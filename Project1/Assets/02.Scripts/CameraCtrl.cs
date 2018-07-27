@@ -27,7 +27,7 @@ public class CameraCtrl : MonoBehaviour
 
     float time = 0;
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
 

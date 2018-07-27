@@ -15,7 +15,7 @@ public class MurdererCtrl : MonoBehaviour
     //
     private Animator Ani;
     public GameObject ParticleTrail;
-
+    
     private GameObject[] TrapItems;
     private int TrapSetNum = 0;
 
@@ -186,6 +186,8 @@ public class MurdererCtrl : MonoBehaviour
                 use = true;
                 index = i;
                 TrapItems[i].SetActive(true);
+
+                GameCtrl.instance.DisTrap(-1);
                 break;
             }
 

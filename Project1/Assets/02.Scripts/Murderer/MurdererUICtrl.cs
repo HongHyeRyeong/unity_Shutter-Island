@@ -15,6 +15,7 @@ public class MurdererUICtrl : MonoBehaviour
     public Image imgHP;
 
     public Text txtSurPrisonNum;
+    public Text txtTrapNum;
 
     public Image[] imgMachine = new Image[5];
 
@@ -22,7 +23,7 @@ public class MurdererUICtrl : MonoBehaviour
     public GameObject[] Prisons = new GameObject[3];
     public Text[] txtPrisons = new Text[3];
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
 
@@ -53,6 +54,11 @@ public class MurdererUICtrl : MonoBehaviour
     public void DisSurPrison(int num)
     {
         txtSurPrisonNum.text = num.ToString();
+    }
+
+    public void DisTrap(int num)
+    {
+        txtTrapNum.text = num.ToString();
     }
 
     public void DisMachine(int num)

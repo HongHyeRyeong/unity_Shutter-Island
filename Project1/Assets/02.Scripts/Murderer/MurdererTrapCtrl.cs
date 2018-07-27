@@ -69,8 +69,7 @@ public class MurdererTrapCtrl : Photon.MonoBehaviour
 
     public void TrapDisabled()
     {
-        Use = false;
-        gameObject.SetActive(false);
+        pv.RPC("TrapAcitveFalse", PhotonTargets.AllBuffered);
     }
 
     [PunRPC]
@@ -78,6 +77,7 @@ public class MurdererTrapCtrl : Photon.MonoBehaviour
     {
         Use = false;
         gameObject.SetActive(false);
+        GameCtrl.instance.DisTrap(1);
     }
 
     [PunRPC]
