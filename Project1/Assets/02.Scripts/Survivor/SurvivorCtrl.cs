@@ -177,8 +177,8 @@ public class SurvivorCtrl : MonoBehaviour
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, currPos, Time.deltaTime * 3.0f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, currRot, Time.deltaTime * 3.0f);
+            transform.position = Vector3.Lerp(transform.position, currPos, Time.deltaTime * 10.0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, currRot, Time.deltaTime * 10.0f);
         }
 
         if (Prison)
