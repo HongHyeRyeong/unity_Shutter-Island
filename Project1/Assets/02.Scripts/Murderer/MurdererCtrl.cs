@@ -228,9 +228,7 @@ public class MurdererCtrl : MonoBehaviour
             Ani.SetBool("isBackRun", false);
 
             MurdererUICtrl.instance.DispHP(Hp);
-            GameCtrl.instance.DisMurHP(Hp);
         }
-
         GameCtrl.instance.DisMurHP(Hp);
     }
 
@@ -240,7 +238,8 @@ public class MurdererCtrl : MonoBehaviour
 
         StartCoroutine(CameraCtrl.instance.Attack(4));
 
-        MurdererUICtrl.instance.DispHP(Hp);
+        if (pv.isMine)
+            MurdererUICtrl.instance.DispHP(Hp);
         GameCtrl.instance.DisMurHP(Hp);
     }
 

@@ -163,8 +163,8 @@ public class GameCtrl : MonoBehaviour
             SurvivorUICtrl.instance.DisMachine(MachineCompleteNum);
         else if (Character == 2)
         {
-            Murderer.GetComponent<MurdererCtrl>().DamageByMachine(40);
             MurdererUICtrl.instance.DisMachine(MachineCompleteNum);
+            Murderer.GetComponent<MurdererCtrl>().DamageByMachine(40);
         }
     }
 
@@ -196,7 +196,7 @@ public class GameCtrl : MonoBehaviour
     public void SetPrisons(int num, bool b, int Surnum)
     {
         if (Character == 1)
-            SurvivorUICtrl.instance.GetComponent<SurvivorUICtrl>().SetPrisons(num, b);
+            SurvivorUICtrl.instance.SetPrisons(num, b);
         else if (Character == 2)
         {
             PrisonSurNum -= Surnum;
@@ -208,7 +208,10 @@ public class GameCtrl : MonoBehaviour
     public void DisMurHP(float hp)
     {
         if (Character == 1)
-            SurvivorUICtrl.instance.GetComponent<SurvivorUICtrl>().DisMurHP(hp);
+        {
+            print("GameCtrl: " + hp);
+            SurvivorUICtrl.instance.DisMurHP(hp);
+        }
     }
 
     public void UseFootPrint(Vector3 SurPos)
