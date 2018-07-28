@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterSelect : MonoBehaviour
+public class LobbyCtrl : MonoBehaviour
 {
-    public static CharacterSelect instance;
+    public static LobbyCtrl instance;
 
     [SerializeField]
     public GameObject[] survivor;

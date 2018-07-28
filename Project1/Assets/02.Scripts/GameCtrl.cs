@@ -62,7 +62,7 @@ public class GameCtrl : MonoBehaviour
         PhotonNetwork.isMessageQueueRunning = true;
         Application.targetFrameRate = 60;
 
-        if (CharacterSelect.instance.SelSur == true)
+        if (LobbyCtrl.instance.SelSur == true)
         {
             Character = 1;
             SurvivorUI.SetActive(true);

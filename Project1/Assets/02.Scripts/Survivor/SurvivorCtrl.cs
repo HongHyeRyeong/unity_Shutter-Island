@@ -77,15 +77,15 @@ public class SurvivorCtrl : MonoBehaviour
             CameraCtrl.instance.transform.position = transform.position;
             CameraCtrl.instance.targetSurvivorComPivot = this.gameObject.transform.Find("SurvivorCamPivot");
 
-            if (CharacterSelect.instance.SurStat == 1)
+            if (LobbyCtrl.instance.SurStat == 1)
             {
                 Stamina = 6f;
             }
-            else if (CharacterSelect.instance.SurStat == 2)
+            else if (LobbyCtrl.instance.SurStat == 2)
             {
                 WorkSpeed = 1.1f;
             }
-            else if (CharacterSelect.instance.SurStat == 3)
+            else if (LobbyCtrl.instance.SurStat == 3)
             {
                 Power = 15f;
             }

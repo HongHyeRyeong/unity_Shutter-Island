@@ -93,15 +93,15 @@ public class PhotonInit : MonoBehaviour
     // 방을 만들 때 맵 정보와 아이템 정보들을 넣어줌
     public void OnClickCreateRoom()
     {
-        if (CharacterSelect.instance.Map != 0)
+        if (LobbyCtrl.instance.Map != 0)
         {
-            StartCoroutine(CharacterSelect.instance.StartFade(false));
+            StartCoroutine(LobbyCtrl.instance.StartFade(false));
 
-            if (CharacterSelect.instance.Map == 1)
+            if (LobbyCtrl.instance.Map == 1)
                 Map = 1;
-            else if (CharacterSelect.instance.Map == 2)
+            else if (LobbyCtrl.instance.Map == 2)
                 Map = 2;
-            else if (CharacterSelect.instance.Map == 3)
+            else if (LobbyCtrl.instance.Map == 3)
                 Map = Random.Range(1, 3);
 
             string _roomName = "Room_" + Random.Range(0, 999).ToString("000");
@@ -196,16 +196,16 @@ public class PhotonInit : MonoBehaviour
     {
         roomname = roomName;
 
-        CharacterSelect.instance.SurRoomSelect = true;
-        StartCoroutine(CharacterSelect.instance.SelectMap(0, true));
+        LobbyCtrl.instance.SurRoomSelect = true;
+        StartCoroutine(LobbyCtrl.instance.SelectMap(0, true));
     }
 
     // 생존자가 방에 들어갈 때 함수
     public void OnClickRoomBtn()   
     {
-        if (CharacterSelect.instance.SurStat != 0)
+        if (LobbyCtrl.instance.SurStat != 0)
         {
-            StartCoroutine(CharacterSelect.instance.StartFade(false));
+            StartCoroutine(LobbyCtrl.instance.StartFade(false));
             PhotonNetwork.JoinRoom(roomname);
         }
     }
