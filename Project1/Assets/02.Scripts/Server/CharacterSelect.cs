@@ -23,6 +23,8 @@ public class CharacterSelect : MonoBehaviour
     void Start()
     {
         instance = this;
+
+        SoundManager.instance.SetBGM("Lobby2-Last Stand");
     }
 
     public void OnClickCharacter(int cha)

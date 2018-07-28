@@ -97,6 +97,8 @@ public class SurvivorCtrl : MonoBehaviour
 
             SurvivorUICtrl.instance.DispHP(Hp);
             SurvivorUICtrl.instance.DispStamina(Stamina, maxStamina);
+
+            SoundManager.instance.SetBGM("Ingame6-In My Nightmares");
         }
     }
 

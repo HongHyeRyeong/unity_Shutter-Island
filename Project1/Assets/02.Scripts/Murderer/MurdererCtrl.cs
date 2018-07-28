@@ -62,6 +62,8 @@ public class MurdererCtrl : MonoBehaviour
         {
             CameraCtrl.instance.targetMurderer = this.gameObject.transform;
             CameraCtrl.instance.targetMurdererCamPivot = this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head/MurdererCamPivot").transform;
+
+            SoundManager.instance.SetBGM("Ingame6-In My Nightmares");
         }
     }
 

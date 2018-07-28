@@ -142,7 +142,6 @@ public class GameCtrl : MonoBehaviour
                 PhotonNetwork.Instantiate("ItemKey", pos, Quaternion.identity, 0);
             }
         }
-
         savedelay = delay;
 
         //StartCoroutine(DisFPS());

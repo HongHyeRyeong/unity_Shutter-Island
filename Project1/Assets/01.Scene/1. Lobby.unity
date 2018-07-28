@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1155,6 +1155,56 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 499388977}
+--- !u!1 &575012806
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 575012807}
+  - component: {fileID: 575012808}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &575012807
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 575012806}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1635191711}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &575012808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 575012806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7aad7d9642675341a1dca6be11b6b57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BGMClip:
+  - {fileID: 8300000, guid: eb5dc5640642b7240b1e396f92ca86f3, type: 3}
+  - {fileID: 8300000, guid: fcc35a757fde623418eedc0cdfd02159, type: 3}
+  - {fileID: 8300000, guid: e7e0aae870a31dc4ca2bfd6f52478bc2, type: 3}
+  EffectClip:
+  - {fileID: 8300000, guid: 28b604853dab9074bb492deed4cb8ff7, type: 3}
+  - {fileID: 8300000, guid: 9a1b6b82651581f4196f0f9ee9b6b85e, type: 3}
+  - {fileID: 8300000, guid: 791be29956bd2a5488417d1f1d1c840d, type: 3}
+  - {fileID: 8300000, guid: 0b533815dfcb33540b66509d5f5547a2, type: 3}
+  - {fileID: 8300000, guid: 0187373db7b638a4e80af850225ab23b, type: 3}
 --- !u!1 &602957537
 GameObject:
   m_ObjectHideFlags: 0
@@ -2678,7 +2728,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 575012807}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
