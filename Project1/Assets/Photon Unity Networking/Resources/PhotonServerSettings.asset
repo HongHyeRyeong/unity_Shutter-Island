@@ -112,4 +112,6 @@ MonoBehaviour:
   - FootActFalse
   - SubtractMurHP
   - DamageToMurdererM
+  - MurdererDieCoroutine
+  - MurdererDie
   DisableAutoOpenWizard: 1

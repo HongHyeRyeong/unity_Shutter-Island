@@ -762,8 +762,6 @@ public class SurvivorCtrl : MonoBehaviour
 
     IEnumerator SurvivorDie()
     {
-        print("test");
-
         yield return new WaitForSeconds(2.0f);
 
         SceneManager.LoadScene("3. Result");

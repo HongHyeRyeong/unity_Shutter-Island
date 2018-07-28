@@ -164,11 +164,13 @@ public class MurdererCtrl : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, currRot, Time.deltaTime * 3.0f);
         }
 
-        if (Hp < 0)
+        if (Hp <= 0)
         {
             State = State_Die;
             pv.RPC("DieAnim", PhotonTargets.All);
             GameCtrl.instance.SetSurvivorScore(2000);
+
+            pv.RPC("MurdererDie", PhotonTargets.AllBuffered);
         }
     }
 
@@ -338,10 +340,16 @@ public class MurdererCtrl : MonoBehaviour
         ParticleTrail.SetActive(true);
     }
 
-    //IEnumerator MurdererDie(float DelayTime)
-    //{
-    //    yield return new WaitForSeconds(DelayTime);
+    [PunRPC]
+    public void MurdererDie()
+    {
+        StartCoroutine(MurdererDieCoroutine());
+    }
 
-    //    SceneManager.LoadScene("3. Result");
-    //}
+    IEnumerator MurdererDieCoroutine()
+    {
+        yield return new WaitForSeconds(2.0f);
+
+        SceneManager.LoadScene("3. Result");
+    }
 }
