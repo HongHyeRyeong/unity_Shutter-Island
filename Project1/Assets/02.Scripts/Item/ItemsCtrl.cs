@@ -27,8 +27,8 @@ public class ItemsCtrl : MonoBehaviour
 
             if (item.GetComponent<ItemCtrl>().ItemType == type && item.GetComponent<ItemCtrl>().ItemLevel == level)
             {
-                item.SetActive(true);
                 item.transform.position = position;
+                item.SetActive(true);
                 break;
             }
         }

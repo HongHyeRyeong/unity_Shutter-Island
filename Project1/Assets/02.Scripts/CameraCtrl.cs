@@ -46,6 +46,9 @@ public class CameraCtrl : MonoBehaviour
     {
         if (GameCtrl.instance.Character == 1)
         {
+            if (!GameCtrl.instance.isStart)
+                transform.position = targetSurvivorComPivot.position;
+
             if (targetSurvivorComPivot)
             {
                 dist -= 0.5f * Input.mouseScrollDelta.y;
@@ -70,6 +73,9 @@ public class CameraCtrl : MonoBehaviour
         {
             if (targetMurdererCamPivot)
             {
+                if (!GameCtrl.instance.isStart)
+                    transform.position = targetMurdererCamPivot.position;
+
                 int state = targetMurderer.GetComponent<MurdererCtrl>().GetState();
 
                 if (state == 0)
@@ -84,7 +90,7 @@ public class CameraCtrl : MonoBehaviour
 
                     time += Time.deltaTime;
 
-                    transform.position = Vector3.Lerp(MainCam.transform.position, new Vector3(
+                    transform.position = Vector3.Lerp(transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,
                         targetMurderer.transform.position.y + 2.4f,
                         targetMurdererCamPivot.transform.position.z), Time.deltaTime * 10);
@@ -105,7 +111,7 @@ public class CameraCtrl : MonoBehaviour
 
                     time += Time.deltaTime;
 
-                    transform.position = Vector3.Lerp(MainCam.transform.position, new Vector3(
+                    transform.position = Vector3.Lerp(transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,
                         targetMurderer.transform.position.y + 2.4f,
                         targetMurdererCamPivot.transform.position.z), Time.deltaTime * 10);

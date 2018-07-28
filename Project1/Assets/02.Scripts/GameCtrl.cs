@@ -288,7 +288,7 @@ public class GameCtrl : MonoBehaviour
 
             while (color.a > 0)
             {
-                time += Time.deltaTime * 0.3f;
+                time += Time.deltaTime;
 
                 color.a = Mathf.Lerp(1, 0, time);
                 imgFade.color = color;

@@ -114,7 +114,7 @@ public class CharacterSelect : MonoBehaviour
             color.a = 1;
             while (color.a > 0)
             {
-                time += Time.deltaTime * 0.5f;
+                time += Time.deltaTime * 0.8f;
                 color.a = Mathf.Lerp(1, 0, time);
                 imgFade.color = color;
 
