@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿emfdjrkusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -72,6 +72,8 @@ public class GameCtrl : MonoBehaviour
                 Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(-37, 0.0f, 36), Quaternion.identity, 0);
             else
                 Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(80, 0.0f, 36), Quaternion.identity, 0);
+
+            StartCoroutine(FindMurderer());
         }
         else
         {
@@ -162,10 +164,9 @@ public class GameCtrl : MonoBehaviour
         if (Character == 1)
             SurvivorUICtrl.instance.DisMachine(MachineCompleteNum);
         else if (Character == 2)
-        {
             MurdererUICtrl.instance.DisMachine(MachineCompleteNum);
-            Murderer.GetComponent<MurdererCtrl>().DamageByMachine(40);
-        }
+
+        Murderer.GetComponent<MurdererCtrl>().DamageByMachine(40);
     }
 
     public void DisPrison(Vector3 pos, int num)
@@ -324,6 +325,19 @@ public class GameCtrl : MonoBehaviour
                 SurvivorUICtrl.instance.DisFPS(fps);
             else if (Character == 2)
                 MurdererUICtrl.instance.DisFPS(fps);
+
+            yield return null;
+        }
+    }
+
+    IEnumerator FindMurderer()
+    {
+        while (Murderer == null)
+        {
+            if (GameObject.Find("Murderer(Clone)") != null)
+                Murderer = GameObject.Find("Murderer(Clone)");
+
+            print(Murderer);
 
             yield return null;
         }

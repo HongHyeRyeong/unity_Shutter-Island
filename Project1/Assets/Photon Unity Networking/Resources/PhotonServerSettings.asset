@@ -110,4 +110,6 @@ MonoBehaviour:
   - IdleAnim
   - RPCSetUse
   - FootActFalse
+  - SubtractMurHP
+  - DamageToMurdererM
   DisableAutoOpenWizard: 1

@@ -311,7 +311,7 @@ public class SurvivorCtrl : MonoBehaviour
     {
         GameCtrl.instance.Murderer.GetComponent<MurdererCtrl>().DamageByPlayer(Power);
     }
-
+    
     public void AttackByMurderer(GameObject m, int MurdererAttack)
     {
         if (!Prison)
