@@ -1,4 +1,4 @@
-﻿emfdjrkusing System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -156,6 +156,16 @@ public class GameCtrl : MonoBehaviour
         //StartCoroutine(DisFPS());
     }
 
+    IEnumerator FindMurderer()
+    {
+        while (Murderer == null)
+        {
+            if (GameObject.Find("Murderer(Clone)") != null)
+                Murderer = GameObject.Find("Murderer(Clone)");
+
+            yield return null;
+        }
+    }
 
     public void MachineComplete()
     {
@@ -289,7 +299,7 @@ public class GameCtrl : MonoBehaviour
 
             while (color.a > 0)
             {
-                time += Time.deltaTime;
+                time += Time.deltaTime * 0.8f;
 
                 color.a = Mathf.Lerp(1, 0, time);
                 imgFade.color = color;
@@ -305,7 +315,7 @@ public class GameCtrl : MonoBehaviour
             color.a = 0;
             while (color.a < 1)
             {
-                time += Time.deltaTime;
+                time += Time.deltaTime * 0.8f;
                 color.a = Mathf.Lerp(0, 1, time);
                 imgFade.color = color;
 
@@ -325,19 +335,6 @@ public class GameCtrl : MonoBehaviour
                 SurvivorUICtrl.instance.DisFPS(fps);
             else if (Character == 2)
                 MurdererUICtrl.instance.DisFPS(fps);
-
-            yield return null;
-        }
-    }
-
-    IEnumerator FindMurderer()
-    {
-        while (Murderer == null)
-        {
-            if (GameObject.Find("Murderer(Clone)") != null)
-                Murderer = GameObject.Find("Murderer(Clone)");
-
-            print(Murderer);
 
             yield return null;
         }

@@ -60,6 +60,7 @@ public class MurdererCtrl : MonoBehaviour
 
         if (pv.isMine)
         {
+            CameraCtrl.instance.transform.position = transform.position;
             CameraCtrl.instance.targetMurderer = this.gameObject.transform;
             CameraCtrl.instance.targetMurdererCamPivot = this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head/MurdererCamPivot").transform;
 

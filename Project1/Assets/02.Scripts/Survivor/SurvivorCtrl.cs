@@ -74,13 +74,12 @@ public class SurvivorCtrl : MonoBehaviour
         {
             trModel = this.gameObject.transform.Find("SurvivorModel").GetComponent<Transform>();
 
+            CameraCtrl.instance.transform.position = transform.position;
             CameraCtrl.instance.targetSurvivorComPivot = this.gameObject.transform.Find("SurvivorCamPivot");
-
-            //CharacterSelect.instance.SurStat = 1;   // Demo
 
             if (CharacterSelect.instance.SurStat == 1)
             {
-                Stamina = 10f;  // Demo 6
+                Stamina = 6f;
             }
             else if (CharacterSelect.instance.SurStat == 2)
             {
