@@ -27,6 +27,8 @@ public class SoundManager : MonoBehaviour
             EffectSource[i] = gameObject.AddComponent<AudioSource>();
             EffectSource[i].playOnAwake = false;
         }
+
+        SetVolume(0, 1);
     }
 
     public void SetBGM(string name)
