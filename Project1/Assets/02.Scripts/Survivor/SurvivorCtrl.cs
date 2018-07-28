@@ -106,6 +106,9 @@ public class SurvivorCtrl : MonoBehaviour
     {
         if (pv.isMine)
         {
+            if (!GameCtrl.instance.isStart)
+                return;
+
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
 

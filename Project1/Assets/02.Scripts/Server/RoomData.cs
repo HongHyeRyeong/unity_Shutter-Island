@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomData : MonoBehaviour {
-
+public class RoomData : MonoBehaviour
+{
     [HideInInspector]
     public string roomName = "";
     [HideInInspector]

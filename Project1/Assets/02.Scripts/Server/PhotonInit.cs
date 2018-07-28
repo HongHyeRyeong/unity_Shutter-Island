@@ -95,6 +95,8 @@ public class PhotonInit : MonoBehaviour
     {
         if (CharacterSelect.instance.Map != 0)
         {
+            StartCoroutine(CharacterSelect.instance.StartFade(false));
+
             if (CharacterSelect.instance.Map == 1)
                 Map = 1;
             else if (CharacterSelect.instance.Map == 2)
@@ -193,22 +195,24 @@ public class PhotonInit : MonoBehaviour
     void OnClickRoomItem(string roomName)
     {
         roomname = roomName;
-        print("room check");
 
         CharacterSelect.instance.SurRoomSelect = true;
         StartCoroutine(CharacterSelect.instance.SelectMap(0, true));
     }
 
     // 생존자가 방에 들어갈 때 함수
-    public void OnClickRoomBtn()
+    public void OnClickRoomBtn()   
     {
         if (CharacterSelect.instance.SurStat != 0)
+        {
+            StartCoroutine(CharacterSelect.instance.StartFade(false));
             PhotonNetwork.JoinRoom(roomname);
+        }
     }
 
-    void OnGUI()
-    {
-        // 화면 좌측 상단에 접속 과정에 대한 로그를 출력
-        GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
-    }
+    //void OnGUI()
+    //{
+    //    // 화면 좌측 상단에 접속 과정에 대한 로그를 출력
+    //    GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+    //}
 }

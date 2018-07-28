@@ -71,6 +71,9 @@ public class MurdererCtrl : MonoBehaviour
     {
         if (pv.isMine)
         {
+            if (!GameCtrl.instance.isStart)
+                return;
+
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
 

@@ -20,11 +20,15 @@ public class CharacterSelect : MonoBehaviour
 
     public bool SurRoomSelect = false;
 
+    [SerializeField]
+    public GameObject Fade;
+
     void Start()
     {
         instance = this;
 
         SoundManager.instance.SetBGM("Lobby2-Last Stand");
+        StartCoroutine(StartFade(true));
     }
 
     public void OnClickCharacter(int cha)
@@ -94,6 +98,41 @@ public class CharacterSelect : MonoBehaviour
                 break;
 
             yield return null;
+        }
+    }
+
+    public IEnumerator StartFade(bool start)
+    {
+        Fade.SetActive(true);
+        Image imgFade = Fade.GetComponent<Image>();
+
+        Color color = imgFade.color;
+        float time = 0;
+
+        if (start)
+        {
+            color.a = 1;
+            while (color.a > 0)
+            {
+                time += Time.deltaTime * 0.5f;
+                color.a = Mathf.Lerp(1, 0, time);
+                imgFade.color = color;
+
+                yield return null;
+            }
+            Fade.SetActive(false);
+        }
+        else
+        {
+            color.a = 0;
+            while (color.a < 1)
+            {
+                time += Time.deltaTime;
+                color.a = Mathf.Lerp(0, 1, time);
+                imgFade.color = color;
+
+                yield return null;
+            }
         }
     }
 }

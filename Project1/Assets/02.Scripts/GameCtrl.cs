@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameCtrl : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class GameCtrl : MonoBehaviour
     public GameObject MurdererUI;
 
     // inGame
+    public bool isStart = false;
     public int Character;
     private int Skill = 1;
 
@@ -35,20 +37,23 @@ public class GameCtrl : MonoBehaviour
     public GameObject MurdererTrap;
     private int TrapNum = 5;
 
-    // score
-    int SurvivorScore = 0;
-    int MurdererScore = 0;
-
-    // fps
-    float deltaTime = 0.0f;
-    float fps;
-
     // item
     int[] hat = new int[] { 10, 4, 2 };
     int[] Clothes = new int[] { 10, 4, 2 };
     int[] Bag = new int[] { 10, 4 };
     int GadgetNum = 35;
     int keyNum = 10;
+
+    // score
+    int SurvivorScore = 0;
+    int MurdererScore = 0;
+
+    [SerializeField]
+    public GameObject Fade;
+
+    // fps
+    float deltaTime = 0.0f;
+    float fps;
 
     private void Awake()
     {
@@ -142,7 +147,9 @@ public class GameCtrl : MonoBehaviour
                 PhotonNetwork.Instantiate("ItemKey", pos, Quaternion.identity, 0);
             }
         }
+
         savedelay = delay;
+        StartCoroutine(StartFade(true));
 
         //StartCoroutine(DisFPS());
     }
@@ -262,6 +269,45 @@ public class GameCtrl : MonoBehaviour
     {
         MurdererScore += score;
         print(MurdererScore);
+    }
+
+    public IEnumerator StartFade(bool start)
+    {
+        Fade.SetActive(true);
+        Image imgFade = Fade.GetComponent<Image>();
+
+        Color color = imgFade.color;
+        float time = 0;
+
+        if (start)
+        {
+            color.a = 1;
+
+            while (color.a > 0)
+            {
+                time += Time.deltaTime * 0.3f;
+
+                color.a = Mathf.Lerp(1, 0, time);
+                imgFade.color = color;
+
+                yield return null;
+            }
+
+            isStart = true;
+            Fade.SetActive(false);
+        }
+        else
+        {
+            color.a = 0;
+            while (color.a < 1)
+            {
+                time += Time.deltaTime;
+                color.a = Mathf.Lerp(0, 1, time);
+                imgFade.color = color;
+
+                yield return null;
+            }
+        }
     }
 
     IEnumerator DisFPS()
