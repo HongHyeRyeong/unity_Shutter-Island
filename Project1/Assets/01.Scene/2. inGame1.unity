@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.31340495, g: 0.33917922, b: 0.38172752, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -56693,6 +56693,7 @@ MonoBehaviour:
   Murderer: {fileID: 0}
   SurvivorUI: {fileID: 342060749}
   MurdererUI: {fileID: 83244731}
+  isStart: 0
   Character: 0
   SurvivorFootPrints: {fileID: 1035940607}
   FootPrint: {fileID: 1999113944256596, guid: e33a4612c9f3aab419505c926c089df4, type: 2}
@@ -87714,6 +87715,7 @@ GameObject:
   - component: {fileID: 1305429266}
   - component: {fileID: 1305429265}
   - component: {fileID: 1305429269}
+  - component: {fileID: 1305429264}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: Untagged
@@ -87721,6 +87723,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1305429264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1305429263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5748ff748dbb416469534e00fc86fb97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SCShader: {fileID: 0}
+  Value: 6
+  Speed: 1
+  Wavy: 1
+  Wave: 0.1
+  Fade: 0
 --- !u!81 &1305429265
 AudioListener:
   m_ObjectHideFlags: 0

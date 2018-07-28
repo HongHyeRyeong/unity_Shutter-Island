@@ -85,7 +85,6 @@
 				
 				float4 color3 = tex2D(_MainTex, normalizedCoord3 + float2(0, 0));
 				float4 finalColor = lerp( lerp(color, color2, unitDrunk1), color3, 0.6);
-				finalColor.yz = lerp(finalColor.yz, normalizedCoord3, 0.4);
 				finalColor = lerp(color3,finalColor,_Fade);
 
 				return finalColor;

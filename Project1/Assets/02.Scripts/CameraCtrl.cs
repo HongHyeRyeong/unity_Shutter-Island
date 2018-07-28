@@ -11,6 +11,7 @@ public class CameraCtrl : MonoBehaviour
     private Material SkyboxDay;
     [SerializeField]
     private Material SkyboxNight;
+    private CameraFilter_Attack FilterAttack;
 
     // Survivor
     public Transform targetSurvivorComPivot;
@@ -30,6 +31,7 @@ public class CameraCtrl : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        FilterAttack = GetComponent<CameraFilter_Attack>();
 
         // SkyBox
         int sky = Random.Range(1, 3);
@@ -144,5 +146,26 @@ public class CameraCtrl : MonoBehaviour
         if (angle > 360)
             angle -= 360;
         return Mathf.Clamp(angle, min, max);
+    }
+
+    public IEnumerator Attack(float delay)
+    {
+        FilterAttack.Fade = 0;
+
+        while (FilterAttack.Fade <= 1)
+        {
+            FilterAttack.Fade += Time.deltaTime * 0.5f;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(delay);
+
+        FilterAttack.Fade = 1;
+
+        while (FilterAttack.Fade >= 0)
+        {
+            FilterAttack.Fade -= Time.deltaTime * 0.3f;
+            yield return null;
+        }
     }
 }

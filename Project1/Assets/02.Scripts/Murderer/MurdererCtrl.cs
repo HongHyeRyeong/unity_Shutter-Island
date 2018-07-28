@@ -238,6 +238,8 @@ public class MurdererCtrl : MonoBehaviour
     {
         Hp -= Power;
 
+        StartCoroutine(CameraCtrl.instance.Attack(4));
+
         MurdererUICtrl.instance.DispHP(Hp);
         GameCtrl.instance.DisMurHP(Hp);
     }
