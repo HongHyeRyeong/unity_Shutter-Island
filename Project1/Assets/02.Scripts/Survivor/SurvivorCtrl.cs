@@ -759,6 +759,8 @@ public class SurvivorCtrl : MonoBehaviour
 
     IEnumerator SurvivorDie()
     {
+        PlayerPrefs.SetInt("Result", 2);
+
         yield return new WaitForSeconds(2.0f);
 
         GameCtrl.instance.ExitRoom();

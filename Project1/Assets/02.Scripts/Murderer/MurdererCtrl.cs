@@ -170,7 +170,14 @@ public class MurdererCtrl : MonoBehaviour
         {
             State = State_Die;
             pv.RPC("DieAnim", PhotonTargets.All);
-            GameCtrl.instance.SetSurvivorScore(2000);
+
+            if(pv.isMine)
+            {
+                GameCtrl.instance.SetSurvivorScore(2000);
+                PlayerPrefs.SetInt("Result", 4);
+            }
+            else
+                PlayerPrefs.SetInt("Result", 1);
 
             pv.RPC("MurdererDie", PhotonTargets.AllBuffered);
         }
@@ -351,6 +358,7 @@ public class MurdererCtrl : MonoBehaviour
 
     public void MurdererWin()
     {
+        PlayerPrefs.SetInt("Result", 3);
         StartCoroutine(NextSceneCoroutine());
     }
 

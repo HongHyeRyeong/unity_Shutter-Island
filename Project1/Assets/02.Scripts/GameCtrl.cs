@@ -24,6 +24,9 @@ public class GameCtrl : MonoBehaviour
     private int MachineCompleteNum = 0;
     private int PrisonSurNum = 0;
 
+    // 1이면 생존자 승리, 2이면 생존자 패배, 3이면 살인마 승리, 4이면 살인마 패배
+    public int Result = 0;
+
     // Survivor
     [SerializeField]
     private GameObject SurvivorFootPrints;
