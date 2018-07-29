@@ -125,7 +125,7 @@ public class SurvivorCtrl : MonoBehaviour
                     Ani.SetBool("isRun", false);
                 }
 
-                if (!SurvivorUICtrl.instance.Inven.activeSelf)
+                if (!SurvivorUICtrl.instance.Inven.activeSelf && !SettingManager.instance.Setting.activeSelf)
                 {
                     if (Input.GetMouseButtonDown(0))
                     {

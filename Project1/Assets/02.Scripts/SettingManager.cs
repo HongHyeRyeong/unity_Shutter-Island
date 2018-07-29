@@ -5,10 +5,9 @@ using UnityEngine.UI;
 
 public class SettingManager : MonoBehaviour
 {
-    SettingManager instance;
+    public static SettingManager instance;
 
-    [SerializeField]
-    private GameObject Setting;
+    public GameObject Setting;
 
     void Start()
     {

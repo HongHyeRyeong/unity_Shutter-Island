@@ -13,6 +13,7 @@ public class SoundManager : MonoBehaviour
 
     private AudioSource BGMSource;
     private AudioSource[] EffectSource = new AudioSource[15];
+    private int EffectSourceNum = 0;
 
     void Awake()
     {
@@ -22,13 +23,7 @@ public class SoundManager : MonoBehaviour
         BGMSource.playOnAwake = false;
         BGMSource.loop = true;
 
-        for (int i = 0; i < EffectSource.Length; ++i)
-        {
-            EffectSource[i] = gameObject.AddComponent<AudioSource>();
-            EffectSource[i].playOnAwake = false;
-        }
-
-        SetVolume(0, 1);
+        //SetVolume(0, 1);  // 나중에 저장해서 받아온걸로 변경
     }
 
     public void SetBGM(string name)
@@ -52,26 +47,15 @@ public class SoundManager : MonoBehaviour
         BGMSource.Play();
     }
 
-    public void SetEffect(string name)
+    public void SetEffect(AudioSource source, string name)
     {
         for (int i = 0; i < EffectClip.Length; ++i)
-        {
             if (EffectClip[i].name == name)
             {
-                AudioSource source = GetEmptyEffectSource();
+                EffectSource[EffectSourceNum++] = source;
                 source.clip = EffectClip[i];
-                source.Play();
                 return;
             }
-        }
-
-        if (name == "Footstep")
-        {
-            AudioSource source = GetEmptyEffectSource();
-            source.clip = EffectClip[Random.Range(0, 2)];
-            source.Play();
-            return;
-        }
 
         print("SoundNull: " + name);
     }
@@ -99,19 +83,13 @@ public class SoundManager : MonoBehaviour
 
     public void SetVolume(int Num, float volume)
     {
-        if (Num == 0)
-        {
+        if (Num == 1)
             BGMSource.volume = volume;
-
-            for (int i = 0; i < EffectSource.Length; ++i)
-                EffectSource[i].volume = volume;
-        }
-        else if (Num == 1)    // BGM
-            BGMSource.volume = volume;
-        else if (Num == 2)   // Effect
+        else if (Num == 2)
         {
             for (int i = 0; i < EffectSource.Length; ++i)
-                EffectSource[i].volume = volume;
+                if (EffectSource[i] != null)
+                    EffectSource[i].volume = volume;
         }
     }
 }

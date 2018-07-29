@@ -104,34 +104,37 @@ public class MurdererCtrl : MonoBehaviour
                     Ani.SetBool("isBackRun", false);
                 }
 
-                if (Input.GetMouseButtonDown(0))
+                if (!SettingManager.instance.Setting.activeSelf)
                 {
-                    if (State == State_Run && Ani.GetBool("isRun"))
-                        pv.RPC("AttackWRunAnim", PhotonTargets.All);
-                    else
-                        pv.RPC("AttackWAnim", PhotonTargets.All);
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        if (State == State_Run && Ani.GetBool("isRun"))
+                            pv.RPC("AttackWRunAnim", PhotonTargets.All);
+                        else
+                            pv.RPC("AttackWAnim", PhotonTargets.All);
 
-                    Ani.SetBool("isRun", false);
-                    Ani.SetBool("isBackRun", false);
+                        Ani.SetBool("isRun", false);
+                        Ani.SetBool("isBackRun", false);
 
-                    pv.RPC("AttackWTrue", PhotonTargets.All);
-                }
-                else if (Input.GetMouseButtonDown(1))
-                {
-                    if (State == State_Run && Ani.GetBool("isRun"))
-                        pv.RPC("AttackLRunAnim", PhotonTargets.All);
-                    else
-                        pv.RPC("AttackLAnim", PhotonTargets.All);
+                        pv.RPC("AttackWTrue", PhotonTargets.All);
+                    }
+                    else if (Input.GetMouseButtonDown(1))
+                    {
+                        if (State == State_Run && Ani.GetBool("isRun"))
+                            pv.RPC("AttackLRunAnim", PhotonTargets.All);
+                        else
+                            pv.RPC("AttackLAnim", PhotonTargets.All);
 
-                    Ani.SetBool("isRun", false);
-                    Ani.SetBool("isBackRun", false);
+                        Ani.SetBool("isRun", false);
+                        Ani.SetBool("isBackRun", false);
 
-                    pv.RPC("AttackLTrue", PhotonTargets.All);
-                }
-                else if (Input.GetKeyDown(KeyCode.E))
-                {
-                    State = State_Trap;
-                    pv.RPC("InstallAnim", PhotonTargets.All);
+                        pv.RPC("AttackLTrue", PhotonTargets.All);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        State = State_Trap;
+                        pv.RPC("InstallAnim", PhotonTargets.All);
+                    }
                 }
             }
             else if (State == State_AttackW || State == State_AttackL)

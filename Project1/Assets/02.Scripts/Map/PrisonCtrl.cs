@@ -8,19 +8,25 @@ public class PrisonCtrl : MonoBehaviour
     GameObject curSur;
 
     private Animator Ani;
-    Vector3 SpawnPoint;
+    private AudioSource Audio;
+    private Vector3 SpawnPoint;
 
     public int PrisonNum;
-    bool isOpen = false;
+    private bool isOpen = false;
 
-    GameObject[] Survivors = new GameObject[4];
-    bool isSurvivor = false;
+    private GameObject[] Survivors = new GameObject[4];
+    private bool isSurvivor = false;
 
     void Start()
     {
         pv = GetComponent<PhotonView>();
+
         Ani = GetComponent<Animator>();
         SpawnPoint = this.gameObject.transform.Find("PrisonSpawnPoint").transform.position;
+
+        Audio = GetComponent<AudioSource>();
+        Audio.Stop();
+        SoundManager.instance.SetEffect(Audio, "DoorOpen");
     }
 
     private void OnTriggerStay(Collider other)
@@ -99,6 +105,7 @@ public class PrisonCtrl : MonoBehaviour
     [PunRPC]
     void RPCOpenDoor()
     {
+        Audio.Play();
         Ani.SetTrigger("Open");
     }
 
