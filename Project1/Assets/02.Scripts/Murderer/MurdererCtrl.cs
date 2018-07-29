@@ -177,7 +177,10 @@ public class MurdererCtrl : MonoBehaviour
                 PlayerPrefs.SetInt("Result", 4);
             }
             else
+            {
                 PlayerPrefs.SetInt("Result", 1);
+                print("testgggggggg");
+            }
 
             pv.RPC("MurdererDie", PhotonTargets.AllBuffered);
         }

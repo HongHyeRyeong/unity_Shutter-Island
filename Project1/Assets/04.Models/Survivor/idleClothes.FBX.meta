@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: ed45d8bc72c61c8439480efeff4772ff
-timeCreated: 1522638814
+guid: f73f82e3f9135044d9b55345dfa9d2be
+timeCreated: 1522639031
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -62,10 +62,10 @@ ModelImporter:
     100108: Bip001 R UpperArm
     100110: Bip001 Spine
     100112: Bip001 Spine1
-    100114: low001
-    100116: low002
+    100114: //RootNode
+    100116: low001
     100118: Object10_01
-    100120: //RootNode
+    100120: low002
     400000: back
     400002: Bip001
     400004: Bip001 Footsteps
@@ -123,10 +123,10 @@ ModelImporter:
     400108: Bip001 R UpperArm
     400110: Bip001 Spine
     400112: Bip001 Spine1
-    400114: low001
-    400116: low002
+    400114: //RootNode
+    400116: low001
     400118: Object10_01
-    400120: //RootNode
+    400120: low002
     2100000: 'Material #31'
     2100002: 01 - Default
     2100004: No Name
@@ -138,7 +138,7 @@ ModelImporter:
     4300002: Object10_01
     4300004: back
     4300006: low002
-    7400000: SlowRun
+    7400000: Idle
     9500000: //RootNode
     13700000: low001
     13700002: low002
@@ -170,10 +170,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: SlowRun
+      name: Idle
       takeName: Take 001
-      firstFrame: 20
-      lastFrame: 40
+      firstFrame: 0
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -559,24 +559,24 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: SlowRun(Clone)
+    - name: IdleClothes(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: -0.006547114, z: 0, w: 0.9999786}
       scale: {x: 1, y: 1, z: 1}
     - name: Bip001
-      parentName: SlowRun(Clone)
+      parentName: IdleClothes(Clone)
       position: {x: 0.0028138564, y: -0.90176696, z: 0.021346655}
       rotation: {x: -0.50000036, y: 0.49999967, z: 0.49999967, w: 0.50000036}
       scale: {x: 1, y: 1, z: 1}
     - name: Bip001 Footsteps
       parentName: Bip001
-      position: {x: -0, y: 0, z: -0.62547857}
+      position: {x: -0, y: 0, z: -0.6263659}
       rotation: {x: 0, y: -0, z: -0.7071063, w: 0.70710725}
       scale: {x: 1, y: 1, z: 1}
     - name: Bip001 Pelvis
       parentName: Bip001
-      position: {x: -0.0000000018626451, y: 0, z: 1.525059}
+      position: {x: -0.0000000018626451, y: 0, z: 1.5250589}
       rotation: {x: 0.5, y: -0.5, z: -0.5, w: -0.5}
       scale: {x: 1.0000005, y: 1.0000005, z: 1.0000002}
     - name: Bip001 Spine
@@ -833,34 +833,34 @@ ModelImporter:
       parentName: Bip001 Spine
       position: {x: 0.14005122, y: -0.004261206, z: -0.17249472}
       rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
-      scale: {x: 1.0000017, y: 1.0000007, z: 1.0000014}
+      scale: {x: 1.0000017, y: 1.0000006, z: 1.0000012}
     - name: Bip001 R Calf
       parentName: Bip001 R Thigh
-      position: {x: -0.31573653, y: 0, z: 0}
+      position: {x: -0.31573647, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
-      scale: {x: 1.0000013, y: 1.0000021, z: 1.0000006}
+      scale: {x: 1.0000008, y: 1.000001, z: 1.0000001}
     - name: Bip001 R Foot
       parentName: Bip001 R Calf
-      position: {x: -0.19308925, y: 0, z: 0}
+      position: {x: -0.19308937, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
-      scale: {x: 1.0000011, y: 1.0000002, z: 1.0000011}
+      scale: {x: 1.0000002, y: 1, z: 1.0000005}
     - name: Bip001 R Toe0
       parentName: Bip001 R Foot
       position: {x: -0.09631055, y: 0.26959974, z: 0}
       rotation: {x: 0, y: 0, z: 0.7071068, w: -0.7071068}
-      scale: {x: 1.0000005, y: 1, z: 1.0000004}
+      scale: {x: 1.0000007, y: 1.0000001, z: 1.0000008}
     - name: Bip001 R Toe0Nub
       parentName: Bip001 R Toe0
-      position: {x: -0.08094315, y: 0, z: -0.00000001525879}
+      position: {x: -0.08094318, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: low001
-      parentName: SlowRun(Clone)
+      parentName: IdleClothes(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
     - name: low002
-      parentName: SlowRun(Clone)
+      parentName: IdleClothes(Clone)
       position: {x: -0, y: 1.1368684e-16, z: 0.887836}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}

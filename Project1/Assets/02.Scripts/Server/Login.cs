@@ -38,7 +38,7 @@ public class Login : MonoBehaviour
 
     void Start()
     {
-        Screen.SetResolution(1920, 1080, false);
+        Screen.SetResolution(1920, 1080, true);
 
         LoginURL = "wjddus0424.dothome.co.kr/Login.php";
         CreateURL = "wjddus0424.dothome.co.kr/CreateAccount.php";
