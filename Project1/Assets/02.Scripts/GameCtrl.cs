@@ -50,6 +50,8 @@ public class GameCtrl : MonoBehaviour
 
     [SerializeField]
     public GameObject Fade;
+    [SerializeField]
+    public Image Hit;
 
     // fps
     float deltaTime = 0.0f;
@@ -283,6 +285,32 @@ public class GameCtrl : MonoBehaviour
     {
         MurdererScore += score;
         print(MurdererScore);
+    }
+
+    public IEnumerator StartHit(float delay)
+    {
+        Color c = Hit.color;
+        c.a = 0;
+        Hit.color = c;
+
+        while (Hit.color.a <= 1)
+        {
+            c.a += Time.deltaTime * 0.5f;
+            Hit.color = c;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(delay);
+
+        c.a = 1;
+        Hit.color = c;
+
+        while (Hit.color.a >= 0)
+        {
+            c.a -= Time.deltaTime * 0.5f;
+            Hit.color = c;
+            yield return null;
+        }
     }
 
     public IEnumerator StartFade(bool start)

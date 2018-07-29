@@ -231,6 +231,7 @@ public class MurdererCtrl : MonoBehaviour
             Ani.SetBool("isBackRun", false);
 
             MurdererUICtrl.instance.DispHP(Hp);
+            StartCoroutine(GameCtrl.instance.StartHit(2));
         }
         GameCtrl.instance.DisMurHP(Hp);
     }

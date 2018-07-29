@@ -315,11 +315,6 @@ public class SurvivorCtrl : MonoBehaviour
     {
         if (!Prison)
         {
-            if (GameCtrl.instance.Murderer == null)
-            {
-                GameCtrl.instance.Murderer = m;
-            }
-
             if (State == State_AttackW || State == State_AttackL)
             {
                 if (State == MurdererAttack)
@@ -366,7 +361,10 @@ public class SurvivorCtrl : MonoBehaviour
 
         Hp -= 50f;
         if (pv.isMine)
+        {
             SurvivorUICtrl.instance.DispHP(Hp);
+            StartCoroutine(GameCtrl.instance.StartHit(2));
+        }
 
         if(Hp <= 0)
         {
