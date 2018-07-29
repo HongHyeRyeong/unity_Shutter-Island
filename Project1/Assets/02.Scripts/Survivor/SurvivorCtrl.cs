@@ -354,10 +354,9 @@ public class SurvivorCtrl : MonoBehaviour
 
     void DamageByMurderer()
     {
+        Trap = false;
         pv.RPC("AttackEnd", PhotonTargets.All);
         GameCtrl.instance.SetMurdererScore(100);
-
-        Trap = false;
 
         Hp -= 50f;
         if (pv.isMine)
@@ -385,7 +384,7 @@ public class SurvivorCtrl : MonoBehaviour
 
             if (Life == 0)
             {
-                inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
+                Prison = false;
 
                 State = State_Die;
                 pv.RPC("DieAnim", PhotonTargets.All);
@@ -544,7 +543,7 @@ public class SurvivorCtrl : MonoBehaviour
         Prison = false;
         PrisonTP = false;
 
-        Hp = 50;
+        Hp = 100;
         if (pv.isMine)
             SurvivorUICtrl.instance.DispHP(Hp);
     }
