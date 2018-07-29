@@ -186,27 +186,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60d448098bf0e864f83d4c4d2bb0734f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1101 &1101009577393358432
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_Conditions: []
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 0}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 1
-  serializedVersion: 3
-  m_TransitionDuration: 0.25
-  m_TransitionOffset: 0
-  m_ExitTime: 1
-  m_HasExitTime: 1
-  m_HasFixedDuration: 1
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
 --- !u!1101 &1101021872312014068
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1087,8 +1066,7 @@ AnimatorState:
   m_Name: Die
   m_Speed: 0.5
   m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: 1101009577393358432}
+  m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0

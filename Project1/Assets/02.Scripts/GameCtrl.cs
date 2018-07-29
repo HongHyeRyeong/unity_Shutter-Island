@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameCtrl : MonoBehaviour
 {
@@ -36,6 +37,8 @@ public class GameCtrl : MonoBehaviour
     // Murderer
     public GameObject MurdererTrap;
     private int TrapNum = 5;
+    public int SurvivorNum = 0;
+    public int AllSurNum = 0;
 
     // item
     int[] hat = new int[] { 10, 4, 2 };
@@ -156,6 +159,8 @@ public class GameCtrl : MonoBehaviour
         StartCoroutine(StartFade(true));
 
         //StartCoroutine(DisFPS());
+
+        GetConnectPlayerCount();
     }
 
     IEnumerator FindMurderer()
@@ -167,6 +172,34 @@ public class GameCtrl : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    void GetConnectPlayerCount()
+    {
+        Room currRoom = PhotonNetwork.room;
+
+        print("all" + AllSurNum);
+        print("sur" + SurvivorNum);
+    }
+
+    void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+    {
+        AllSurNum += 1;
+        SurvivorNum += 1;
+
+        GetConnectPlayerCount();
+    }
+
+    void OnPhotonPlayerDisconnected(PhotonPlayer outPlayer)
+    {
+        SurvivorNum -= 1;
+
+        if (Character == 2 && AllSurNum > 0 && SurvivorNum == 0)
+        {
+            Murderer.GetComponent<MurdererCtrl>().MurdererWin();
+        }
+
+        GetConnectPlayerCount();
     }
 
     public void MachineComplete()
@@ -366,5 +399,15 @@ public class GameCtrl : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void ExitRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    void OnLeftRoom()
+    {
+        SceneManager.LoadScene("3. Result");
     }
 }

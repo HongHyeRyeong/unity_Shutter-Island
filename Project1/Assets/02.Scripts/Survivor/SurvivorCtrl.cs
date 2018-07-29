@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.SceneManagement;
 
 public class SurvivorCtrl : MonoBehaviour
 {
@@ -386,10 +385,7 @@ public class SurvivorCtrl : MonoBehaviour
             {
                 Prison = false;
 
-                State = State_Die;
-                pv.RPC("DieAnim", PhotonTargets.All);
-
-                GameCtrl.instance.SetMurdererScore(2000);
+                SurvivorDead();
             }
         }
         else
@@ -487,12 +483,7 @@ public class SurvivorCtrl : MonoBehaviour
             Prison = false;
             inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
 
-            State = State_Die;
-            pv.RPC("DieAnim", PhotonTargets.All);
-
-            GameCtrl.instance.SetMurdererScore(2000);
-
-            StartCoroutine(SurvivorDie());
+            SurvivorDead();
         }
 
         if (PrisonTP == false)
@@ -530,10 +521,7 @@ public class SurvivorCtrl : MonoBehaviour
                 Prison = false;
                 inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
 
-                State = State_Die;
-                pv.RPC("DieAnim", PhotonTargets.All);
-
-                GameCtrl.instance.SetMurdererScore(2000);
+                SurvivorDead();
             }
         }
     }
@@ -712,6 +700,18 @@ public class SurvivorCtrl : MonoBehaviour
         }
     }
 
+    public void SurvivorDead()
+    {
+        State = State_Die;
+        Ani.SetBool("isSlowRun", false);
+        Ani.SetBool("isRun", false);
+        pv.RPC("DieAnim", PhotonTargets.All);
+
+        GameCtrl.instance.SetMurdererScore(2000);
+
+        StartCoroutine(SurvivorDie());
+    }
+
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         // 로컬 플레이어의 정보 송신
@@ -761,6 +761,6 @@ public class SurvivorCtrl : MonoBehaviour
     {
         yield return new WaitForSeconds(2.0f);
 
-        SceneManager.LoadScene("3. Result");
+        GameCtrl.instance.ExitRoom();
     }
 }

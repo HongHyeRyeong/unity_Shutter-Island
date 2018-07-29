@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MurdererCtrl : MonoBehaviour
 {
@@ -344,13 +343,18 @@ public class MurdererCtrl : MonoBehaviour
     [PunRPC]
     public void MurdererDie()
     {
-        StartCoroutine(MurdererDieCoroutine());
+        StartCoroutine(NextSceneCoroutine());
     }
 
-    IEnumerator MurdererDieCoroutine()
+    public void MurdererWin()
+    {
+        StartCoroutine(NextSceneCoroutine());
+    }
+
+    IEnumerator NextSceneCoroutine()
     {
         yield return new WaitForSeconds(2.0f);
 
-        SceneManager.LoadScene("3. Result");
+        GameCtrl.instance.ExitRoom();
     }
 }
