@@ -17,7 +17,14 @@ public class SettingManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
+        {
             Setting.SetActive(!Setting.activeSelf);
+
+            if (Setting.activeSelf)
+                Cursor.lockState = CursorLockMode.None;
+            else
+                Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     public void BGMVolume(Slider bgm)
