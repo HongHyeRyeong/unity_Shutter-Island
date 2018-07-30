@@ -179,7 +179,6 @@ public class MurdererCtrl : MonoBehaviour
             else
             {
                 PlayerPrefs.SetInt("Result", 1);
-                print("testgggggggg");
             }
 
             pv.RPC("MurdererDie", PhotonTargets.AllBuffered);

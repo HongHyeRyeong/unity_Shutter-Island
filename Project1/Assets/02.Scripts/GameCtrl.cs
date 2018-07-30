@@ -205,6 +205,20 @@ public class GameCtrl : MonoBehaviour
         GetConnectPlayerCount();
     }
 
+    void OnMasterClientSwitched()
+    {
+        StartCoroutine(MurdererForceEnd());
+    }
+
+    IEnumerator MurdererForceEnd()
+    {
+        PlayerPrefs.SetInt("Result", 1);
+
+        yield return new WaitForSeconds(2.0f);
+
+        GameCtrl.instance.ExitRoom();
+    }
+
     public void MachineComplete()
     {
         MachineCompleteNum++;

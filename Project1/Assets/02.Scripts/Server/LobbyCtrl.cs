@@ -25,6 +25,8 @@ public class LobbyCtrl : MonoBehaviour
 
     void Start()
     {
+        Screen.SetResolution(1920, 1080, true);
+
         instance = this;
 
         SoundManager.instance.SetBGM("Lobby2-Last Stand");

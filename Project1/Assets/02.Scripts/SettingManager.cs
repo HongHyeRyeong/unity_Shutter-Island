@@ -9,6 +9,8 @@ public class SettingManager : MonoBehaviour
 
     public GameObject Setting;
 
+    public bool MurdererQuit = false;
+
     void Start()
     {
         instance = this;
