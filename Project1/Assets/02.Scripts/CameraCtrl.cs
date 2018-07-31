@@ -5,32 +5,36 @@ using UnityEngine;
 public class CameraCtrl : MonoBehaviour
 {
     public static CameraCtrl instance;
+
+    [HideInInspector]
     public Camera MainCam;
+    private CameraFilter_Attack FilterAttack;
 
     [SerializeField]
     private Material SkyboxDay;
     [SerializeField]
     private Material SkyboxNight;
-    private CameraFilter_Attack FilterAttack;
 
     // Survivor
+    [HideInInspector]
     public Transform targetSurvivorComPivot;
 
-    float dist = 5.0f;
-    float height = 3f;
+    private float dist = 5.0f;
+    private float height = 3f;
 
     //Murderer
+    [HideInInspector]
     public Transform targetMurderer;
+    [HideInInspector]
     public Transform targetMurdererCamPivot;
 
     private int saveState = -1;
     private float MouseY;
 
-    float time = 0;
-
     private void Awake()
     {
         instance = this;
+        MainCam = GetComponent<Camera>();
         FilterAttack = GetComponent<CameraFilter_Attack>();
 
         // SkyBox
@@ -78,11 +82,7 @@ public class CameraCtrl : MonoBehaviour
                     {
                         saveState = state;
                         MainCam.cullingMask = -1;
-
-                        time = 0;
                     }
-
-                    time += Time.deltaTime;
 
                     transform.position = Vector3.Lerp(transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,
@@ -99,11 +99,7 @@ public class CameraCtrl : MonoBehaviour
                     {
                         saveState = state;
                         MainCam.cullingMask = ~(1 << 10);
-
-                        time = 0;
                     }
-
-                    time += Time.deltaTime;
 
                     transform.position = Vector3.Lerp(transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,

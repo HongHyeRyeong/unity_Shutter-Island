@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.31340495, g: 0.33917922, b: 0.38172752, a: 1}
+  m_IndirectSpecularColor: {r: 0.31340677, g: 0.33918002, b: 0.38172776, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -57468,6 +57468,7 @@ MonoBehaviour:
   MurdererUI: {fileID: 83244731}
   isStart: 0
   Character: 0
+  Result: 0
   SurvivorFootPrints: {fileID: 1035940607}
   FootPrint: {fileID: 1999113944256596, guid: e33a4612c9f3aab419505c926c089df4, type: 2}
   MurdererTrap: {fileID: 157076160}
@@ -57504,6 +57505,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Setting: {fileID: 1624553116}
+  SoundSlider:
+  - {fileID: 490117497}
+  - {fileID: 2095318013}
+  MurdererQuit: 0
 --- !u!1 &850016616
 GameObject:
   m_ObjectHideFlags: 0

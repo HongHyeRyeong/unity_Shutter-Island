@@ -12,6 +12,7 @@ public class SurvivorCtrl : MonoBehaviour
     //
     private Animator Ani;
     private Transform trModel;
+    private SurvivorItem Item;
 
     private int State = 0;
     private int Life = 2;
@@ -67,14 +68,14 @@ public class SurvivorCtrl : MonoBehaviour
         currPos = transform.position;
         currRot = transform.rotation;
 
-        Ani = this.gameObject.transform.Find("SurvivorModel").GetComponent<Animator>();
+        Ani = transform.Find("SurvivorModel").GetComponent<Animator>();
+        trModel = transform.Find("SurvivorModel").GetComponent<Transform>();
+        Item = GetComponent<SurvivorItem>();
 
         if (pv.isMine)
         {
-            trModel = this.gameObject.transform.Find("SurvivorModel").GetComponent<Transform>();
-
             CameraCtrl.instance.transform.position = transform.position;
-            CameraCtrl.instance.targetSurvivorComPivot = this.gameObject.transform.Find("SurvivorCamPivot");
+            CameraCtrl.instance.targetSurvivorComPivot = transform.Find("SurvivorCamPivot");
 
             if (LobbyCtrl.instance.SurStat == 1)
             {
@@ -213,7 +214,7 @@ public class SurvivorCtrl : MonoBehaviour
 
                     MoveSpeed = 7f;
                     Stamina -= Time.deltaTime;
-                    GameCtrl.instance.UseFootPrint(this.transform.position);
+                    GameCtrl.instance.UseFootPrint(transform.position);
 
                     if (Stamina < 0)
                         Stamina = 0;
@@ -416,7 +417,7 @@ public class SurvivorCtrl : MonoBehaviour
 
     public void PrisonStay(GameObject prison)
     {
-        if (GetComponent<SurvivorItem>().ItemGet(5) == 1)
+        if (Item.ItemGet(5) == 1)
         {
             if (Input.GetKey(KeyCode.R))
             {
@@ -436,7 +437,7 @@ public class SurvivorCtrl : MonoBehaviour
                         SurvivorUICtrl.instance.Time.SetActive(false);
                     }
 
-                    GetComponent<SurvivorItem>().ItemSet(5, 0);
+                    Item.ItemSet(5, 0);
 
                     prison.GetComponent<PrisonCtrl>().OpenDoor();
                     PrisonTime = 3f;
@@ -519,8 +520,6 @@ public class SurvivorCtrl : MonoBehaviour
             else
             {
                 Prison = false;
-                inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
-
                 SurvivorDead();
             }
         }
@@ -544,16 +543,17 @@ public class SurvivorCtrl : MonoBehaviour
             {
                 if (State == 0 || State == 1 || State == 2 || State == 5)
                 {
-                    GameObject machine = other.gameObject.GetComponent<MachineRangeCtrl>().Machine;
+                    MachineRangeCtrl machineRangeCtrl = other.gameObject.GetComponent<MachineRangeCtrl>();
+                    MachineCtrl machineCtrl = machineRangeCtrl.Machine.GetComponent<MachineCtrl>();
 
-                    if (machine.gameObject.GetComponent<MachineCtrl>().GetComplete())
+                    if (machineCtrl.GetComplete())
                         return;
 
-                    machine.GetComponent<MachineCtrl>().DisHUD(transform.position);
+                    machineCtrl.DisHUD(transform.position);
 
-                    if (other.gameObject.GetComponent<MachineRangeCtrl>().GetMachineUse())
+                    if (machineRangeCtrl.GetMachineUse())
                     {
-                        if (WorkMachine == machine.gameObject.GetComponent<MachineCtrl>().MachineNum)
+                        if (WorkMachine == machineCtrl.MachineNum)
                         {
                             if (Input.GetKey(KeyCode.R))
                             {
@@ -567,7 +567,7 @@ public class SurvivorCtrl : MonoBehaviour
                                     SaveRot = other.transform.eulerAngles;
                                 }
 
-                                bool complete = machine.gameObject.GetComponent<MachineCtrl>().Install(Time.deltaTime * WorkSpeed);
+                                bool complete = machineCtrl.Install(Time.deltaTime * WorkSpeed);
 
                                 if (complete)
                                 {
@@ -576,7 +576,7 @@ public class SurvivorCtrl : MonoBehaviour
                                     WorkMachine = 0;
                                     GameCtrl.instance.SetSurvivorScore(200);
 
-                                    other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(false);
+                                    machineRangeCtrl.SetMachineUse(false);
                                 }
                             }
                             else
@@ -585,13 +585,13 @@ public class SurvivorCtrl : MonoBehaviour
                                 Ani.SetBool("isRepair", false);
                                 WorkMachine = 0;
 
-                                other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(false);
+                                machineRangeCtrl.SetMachineUse(false);
                             }
                         }
                     }
                     else
                     {
-                        if (machine.gameObject.GetComponent<MachineCtrl>().GetGadgetUse())
+                        if (machineCtrl.GetGadgetUse())
                         {
                             if (pv.isMine)
                             {
@@ -605,13 +605,13 @@ public class SurvivorCtrl : MonoBehaviour
                                 {
                                     SurvivorUICtrl.instance.Message.SetActive(false);
                                 }
-                                other.gameObject.GetComponent<MachineRangeCtrl>().SetMachineUse(true);
-                                WorkMachine = machine.gameObject.GetComponent<MachineCtrl>().MachineNum;
+                                machineRangeCtrl.SetMachineUse(true);
+                                WorkMachine = machineCtrl.MachineNum;
                             }
                         }
                         else
                         {
-                            int GadgetNum = GetComponent<SurvivorItem>().ItemGet(4);
+                            int GadgetNum = Item.ItemGet(4);
 
                             if (GadgetNum > 0)
                             {
@@ -627,8 +627,8 @@ public class SurvivorCtrl : MonoBehaviour
                                     {
                                         SurvivorUICtrl.instance.Message.SetActive(false);
                                     }
-                                    machine.gameObject.GetComponent<MachineCtrl>().SetGadgetUse(true);
-                                    GetComponent<SurvivorItem>().ItemSet(4, GadgetNum - 1);
+                                    machineCtrl.SetGadgetUse(true);
+                                    Item.ItemSet(4, GadgetNum - 1);
                                 }
                             }
                         }

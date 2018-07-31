@@ -13,31 +13,31 @@ public class MachineCtrl : MonoBehaviour
     //
     private Animator Ani;
 
-    GameObject HUD;
-    Image imgHUD;
-    Text txtHUD;
-
-    GameObject CompleteLight;
-    GameObject Flare;
+    private GameObject HUD;
+    private Image imgHUD;
+    private Text txtHUD;
+    private GameObject CompleteLight;
+    private  GameObject Flare;
 
     public int MachineNum;
-    float MachineGauge = 0;
-    bool Complete = false;
+    private float MachineGauge = 0;
+    private  bool Complete = false;
 
-    bool GadgetUse = false;
-    float GadgetGauge = 10f;
-    int GadgetNum = 0;
+    private bool GadgetUse = false;
+    private float GadgetGauge = 10f;
+    private int GadgetNum = 0;
 
     void Start()
     {
         pv = GetComponent<PhotonView>();
 
         Ani = GetComponent<Animator>();
-        HUD = this.gameObject.transform.Find("HUDMachine").gameObject;
+
+        HUD = transform.Find("HUDMachine").gameObject;
         imgHUD = HUD.transform.Find("imgHUDMachine").GetComponent<Image>();
         txtHUD = HUD.transform.Find("txtHUDMachine").GetComponent<Text>();
-        CompleteLight = this.gameObject.transform.Find("Completelight").gameObject;
-        Flare = this.gameObject.transform.Find("Flare").gameObject;
+        CompleteLight = transform.Find("Completelight").gameObject;
+        Flare = transform.Find("Flare").gameObject;
     }
 
     public bool Install(float work)
@@ -70,12 +70,6 @@ public class MachineCtrl : MonoBehaviour
     }
 
     [PunRPC]
-    public void MachineInstallAnim()
-    {
-        Ani.SetTrigger("Install");
-    }
-
-    [PunRPC]
     public void MachineOneComplete()
     {
         GadgetUse = false;
@@ -95,6 +89,12 @@ public class MachineCtrl : MonoBehaviour
 
         Ani.SetTrigger("Complete");
         GameCtrl.instance.MachineComplete();
+    }
+
+    [PunRPC]
+    public void MachineInstallAnim()
+    {
+        Ani.SetTrigger("Install");
     }
 
     public void DisHUD(Vector3 pos)

@@ -6,7 +6,7 @@ public class FootPrintCtrl : MonoBehaviour
 {
     private PhotonView pv = null;
 
-    float UseTime = 5.0f;
+    private float UseTime = 5.0f;
 
     void Start()
     {

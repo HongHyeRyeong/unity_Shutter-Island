@@ -10,7 +10,7 @@ public class MachineRangeCtrl : MonoBehaviour
 
     //
     public GameObject Machine;
-    bool Use = false;
+    private bool Use = false;
 
     void Start()
     {

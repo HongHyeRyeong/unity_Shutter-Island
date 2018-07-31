@@ -23,7 +23,8 @@ public class SoundManager : MonoBehaviour
         BGMSource.playOnAwake = false;
         BGMSource.loop = true;
 
-        //SetVolume(0, 1);  // 나중에 저장해서 받아온걸로 변경
+        SetVolume(1, PlayerPrefs.GetFloat("BGM", 1));
+        SetVolume(2, PlayerPrefs.GetFloat("Effect", 1));
     }
 
     public void SetBGM(string name)
@@ -47,38 +48,19 @@ public class SoundManager : MonoBehaviour
         BGMSource.Play();
     }
 
-    public void SetEffect(AudioSource source, string name)
+    public void SetEffect(bool set, AudioSource source, string name)
     {
         for (int i = 0; i < EffectClip.Length; ++i)
             if (EffectClip[i].name == name)
             {
-                EffectSource[EffectSourceNum++] = source;
+                if (!set)
+                    EffectSource[EffectSourceNum++] = source;
                 source.clip = EffectClip[i];
+                source.volume = PlayerPrefs.GetFloat("Effect");
                 return;
             }
 
         print("SoundNull: " + name);
-    }
-
-    AudioSource GetEmptyEffectSource()  // 빈오디오소스 받아오기
-    {
-        int MaxIndex = 0;
-        float MaxProgress = 0;
-
-        for (int i = 0; i < EffectSource.Length; ++i)
-        {
-            if (!EffectSource[i].isPlaying)
-                return EffectSource[i];
-
-            float progress = EffectSource[i].time / EffectSource[i].clip.length;
-
-            if (progress > MaxProgress && !EffectSource[i].loop)    // 다 사용중이라면 제일 많이 플레이된 오디오소스
-            {
-                MaxIndex = i;
-                MaxProgress = progress;
-            }
-        }
-        return EffectSource[MaxIndex];
     }
 
     public void SetVolume(int Num, float volume)

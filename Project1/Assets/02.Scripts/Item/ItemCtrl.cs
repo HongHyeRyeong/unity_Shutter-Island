@@ -9,17 +9,13 @@ public class ItemCtrl : MonoBehaviour
     public int ItemType;
     public int ItemLevel;
 
-    int includeNum;
+    private int includeNum = -1;
 
     private void Start()
     {
         pv = GetComponent<PhotonView>();
 
-        includeNum = -1;
-
-        GameObject items;
-        items = GameObject.Find("Items");
-        this.transform.parent = items.transform;
+        transform.parent = ItemsCtrl.instance.Items.transform;
     }
 
     private void OnTriggerEnter(Collider other)

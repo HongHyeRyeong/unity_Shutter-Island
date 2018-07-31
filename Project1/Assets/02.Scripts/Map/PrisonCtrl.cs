@@ -26,7 +26,7 @@ public class PrisonCtrl : MonoBehaviour
 
         Audio = GetComponent<AudioSource>();
         Audio.Stop();
-        SoundManager.instance.SetEffect(Audio, "DoorOpen");
+        SoundManager.instance.SetEffect(false, Audio, "DoorOpen");
     }
 
     private void OnTriggerStay(Collider other)

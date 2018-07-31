@@ -4,29 +4,25 @@ using UnityEngine;
 
 public class SurvivorItem : MonoBehaviour
 {
-    private SurvivorCtrl ctrl;
-
-    GameObject Hat;
-    GameObject Clothes;
-    GameObject Bag;
-
     private PhotonView pv = null;
 
+    private SurvivorCtrl ctrl;
+
+    private GameObject Hat;
+    private GameObject Clothes;
+    private GameObject Bag;
+
     // type 1~5 순서
-    bool[] ItemHat = new bool[3] { false, false, false };
-    bool[] ItemClothes = new bool[3] { false, false, false };
-    bool[] ItemBag = new bool[2] { false, false };
-    int ItemGadget = 0;
-    int ItemMaxGadget = 2;
-    bool ItemKey = false;
+    private bool[] ItemHat = new bool[3] { false, false, false };
+    private bool[] ItemClothes = new bool[3] { false, false, false };
+    private bool[] ItemBag = new bool[2] { false, false };
+    private int ItemGadget = 0;
+    private int ItemMaxGadget = 2;
+    private bool ItemKey = false;
 
-    int currhattype = 1;
-    int currclothestype = 2;
-    int currbagtype = 3;
-
-    GameObject saveItem;
-    int saveType = -1;
-    int saveLevel = -1;
+    private GameObject saveItem;
+    private int saveType = -1;
+    private int saveLevel = -1;
 
     private void Start()
     {
@@ -34,9 +30,9 @@ public class SurvivorItem : MonoBehaviour
 
         ctrl = GetComponent<SurvivorCtrl>();
 
-        Hat = this.gameObject.transform.Find("SurvivorModel/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/ItemHat").gameObject;
-        Clothes = this.gameObject.transform.Find("SurvivorModel/ItemClothes").gameObject;
-        Bag = this.gameObject.transform.Find("SurvivorModel/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/ItemBag").gameObject;
+        Hat = transform.Find("SurvivorModel/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/ItemHat").gameObject;
+        Clothes = transform.Find("SurvivorModel/ItemClothes").gameObject;
+        Bag = transform.Find("SurvivorModel/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/ItemBag").gameObject;
     }
 
     void SurvivorByItem(int type, int level)
@@ -77,7 +73,7 @@ public class SurvivorItem : MonoBehaviour
                 while (ItemGadget > ItemMaxGadget)
                 {
                     ItemGadget--;
-                    ItemsCtrl.instance.SetItem(this.transform.position, 4, 0);
+                    ItemsCtrl.instance.SetItem(transform.position, 4, 0);
                 }
             }
 

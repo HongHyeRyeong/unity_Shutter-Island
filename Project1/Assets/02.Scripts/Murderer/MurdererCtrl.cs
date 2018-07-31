@@ -25,7 +25,7 @@ public class MurdererCtrl : MonoBehaviour
 
     private float MouseX;
 
-    float AttackRunTime = 0;
+    private float AttackRunTime = 0;
 
     //
     const int State_Die = -1;

@@ -6,7 +6,6 @@ public class ItemsCtrl : MonoBehaviour
 {
     public static ItemsCtrl instance;
 
-    [SerializeField]
     public GameObject Items;
 
     private void Start()

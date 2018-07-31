@@ -8,18 +8,19 @@ public class GameCtrl : MonoBehaviour
 {
     public static GameCtrl instance;
 
+    [HideInInspector]
     public GameObject Survivor;
+    [HideInInspector]
     public GameObject Murderer;
 
-    [SerializeField]
     public GameObject SurvivorUI;
-    [SerializeField]
     public GameObject MurdererUI;
 
     // inGame
+    [HideInInspector]
     public bool isStart = false;
+    [HideInInspector]
     public int Character;
-    private int Skill = 1;
 
     private int MachineCompleteNum = 0;
     private int PrisonSurNum = 0;
@@ -44,24 +45,24 @@ public class GameCtrl : MonoBehaviour
     public int AllSurNum = 0;
 
     // item
-    int[] hat = new int[] { 10, 4, 2 };
-    int[] Clothes = new int[] { 10, 4, 2 };
-    int[] Bag = new int[] { 10, 4 };
-    int GadgetNum = 35;
-    int keyNum = 10;
+    private int[] hat = new int[] { 10, 4, 2 };
+    private int[] Clothes = new int[] { 10, 4, 2 };
+    private int[] Bag = new int[] { 10, 4 };
+    private int GadgetNum = 35;
+    private int keyNum = 10;
 
     // score
     int SurvivorScore = 0;
     int MurdererScore = 0;
 
     [SerializeField]
-    public GameObject Fade;
+    private GameObject Fade;
     [SerializeField]
-    public Image Hit;
+    private Image Hit;
 
     // fps
-    float deltaTime = 0.0f;
-    float fps;
+    private float deltaTime = 0.0f;
+    private float fps;
 
     private void Awake()
     {
@@ -271,10 +272,7 @@ public class GameCtrl : MonoBehaviour
     public void DisMurHP(float hp)
     {
         if (Character == 1)
-        {
-            print("GameCtrl: " + hp);
             SurvivorUICtrl.instance.DisMurHP(hp);
-        }
     }
 
     public void UseFootPrint(Vector3 SurPos)
