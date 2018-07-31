@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SettingManager : MonoBehaviour
 {
@@ -24,6 +25,9 @@ public class SettingManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Setting.SetActive(!Setting.activeSelf);
+
+            if (SceneManager.GetActiveScene().name == "1. Lobby" || SceneManager.GetActiveScene().name == "3. Result")
+                return;
 
             if (Setting.activeSelf)
                 Cursor.lockState = CursorLockMode.None;

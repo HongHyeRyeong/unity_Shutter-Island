@@ -208,16 +208,8 @@ public class GameCtrl : MonoBehaviour
 
     void OnMasterClientSwitched()
     {
-        StartCoroutine(MurdererForceEnd());
-    }
-
-    IEnumerator MurdererForceEnd()
-    {
         PlayerPrefs.SetInt("Result", 1);
-
-        yield return new WaitForSeconds(2.0f);
-
-        GameCtrl.instance.ExitRoom();
+        StartCoroutine(GameCtrl.instance.StartFade(false));
     }
 
     public void MachineComplete()
@@ -397,6 +389,7 @@ public class GameCtrl : MonoBehaviour
 
                 yield return null;
             }
+            ExitRoom();
         }
     }
 

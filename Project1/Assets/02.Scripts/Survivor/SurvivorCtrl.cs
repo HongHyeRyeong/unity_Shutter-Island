@@ -709,7 +709,7 @@ public class SurvivorCtrl : MonoBehaviour
 
         GameCtrl.instance.SetMurdererScore(2000);
 
-        StartCoroutine(SurvivorDie());
+        SurvivorDie();
     }
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -757,12 +757,9 @@ public class SurvivorCtrl : MonoBehaviour
         Ani.SetTrigger("trTrap");
     }
 
-    IEnumerator SurvivorDie()
+    void SurvivorDie()
     {
         PlayerPrefs.SetInt("Result", 2);
-
-        yield return new WaitForSeconds(2.0f);
-
-        GameCtrl.instance.ExitRoom();
+        StartCoroutine(GameCtrl.instance.StartFade(false));
     }
 }

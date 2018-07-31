@@ -355,19 +355,12 @@ public class MurdererCtrl : MonoBehaviour
     [PunRPC]
     public void MurdererDie()
     {
-        StartCoroutine(NextSceneCoroutine());
+        StartCoroutine(GameCtrl.instance.StartFade(false));
     }
 
     public void MurdererWin()
     {
         PlayerPrefs.SetInt("Result", 3);
-        StartCoroutine(NextSceneCoroutine());
-    }
-
-    IEnumerator NextSceneCoroutine()
-    {
-        yield return new WaitForSeconds(2.0f);
-
-        GameCtrl.instance.ExitRoom();
+        StartCoroutine(GameCtrl.instance.StartFade(false));
     }
 }
