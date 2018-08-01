@@ -98,7 +98,7 @@ public class CameraCtrl : MonoBehaviour
                     if (saveState != state)
                     {
                         saveState = state;
-                        MainCam.cullingMask = ~(1 << 11);
+                        MainCam.cullingMask = ~(1 << 10);
                     }
 
                     transform.position = Vector3.Lerp(transform.position, new Vector3(

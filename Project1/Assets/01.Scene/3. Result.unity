@@ -4675,7 +4675,7 @@ MonoBehaviour:
   videoPlayer: {fileID: 1956146975}
   videoClip:
   - {fileID: 32900000, guid: 9c9aa47c873f94646af429ceddf604a1, type: 3}
-  - {fileID: 32900000, guid: 9c9aa47c873f94646af429ceddf604a1, type: 3}
+  - {fileID: 32900000, guid: 07c3270fcfcb8ae4b9a8fb3faf2e9f5c, type: 3}
   Survivor:
   - {fileID: 124821289}
   - {fileID: 1289693794}

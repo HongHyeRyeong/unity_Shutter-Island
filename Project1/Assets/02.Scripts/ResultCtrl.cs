@@ -41,9 +41,9 @@ public class ResultCtrl : MonoBehaviour
 
         Result = PlayerPrefs.GetInt("Result", 0);
 
-            if (Result == 1 || Result == 3)
+            if (Result == 1 || Result == 4)
             videoPlayer.clip = videoClip[0];
-        else if (Result == 2 || Result == 4)
+        else if (Result == 2 || Result == 3)
             videoPlayer.clip = videoClip[1];
 
         videoPlayer.Play();

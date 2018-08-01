@@ -118,4 +118,6 @@ MonoBehaviour:
   - ChangeMaterial1
   - ChangeMaterial2
   - ChangeMaterial3
+  - DownAnim
+  - DownFrontAnim
   DisableAutoOpenWizard: 1
