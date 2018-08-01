@@ -80,14 +80,17 @@ public class SurvivorCtrl : MonoBehaviour
             if (LobbyCtrl.instance.SurStat == 1)
             {
                 Stamina = 6f;
+                pv.RPC("ChangeMaterial1", PhotonTargets.AllBuffered);
             }
             else if (LobbyCtrl.instance.SurStat == 2)
             {
                 WorkSpeed = 1.1f;
+                pv.RPC("ChangeMaterial2", PhotonTargets.AllBuffered);
             }
             else if (LobbyCtrl.instance.SurStat == 3)
             {
                 Power = 15f;
+                pv.RPC("ChangeMaterial3", PhotonTargets.AllBuffered);
             }
 
             maxStamina = Stamina;
@@ -99,6 +102,27 @@ public class SurvivorCtrl : MonoBehaviour
 
             SoundManager.instance.SetBGM("Ingame6-In My Nightmares");
         }
+    }
+
+    [PunRPC]
+    public void ChangeMaterial1()
+    {
+        SkinnedMeshRenderer meshrender = transform.Find("SurvivorModel/low001").GetComponent<SkinnedMeshRenderer>();
+        meshrender.material = GameCtrl.instance.Msurvivor[0];
+    }
+
+    [PunRPC]
+    public void ChangeMaterial2()
+    {
+        SkinnedMeshRenderer meshrender = transform.Find("SurvivorModel/low001").GetComponent<SkinnedMeshRenderer>();
+        meshrender.material = GameCtrl.instance.Msurvivor[1];
+    }
+
+    [PunRPC]
+    public void ChangeMaterial3()
+    {
+        SkinnedMeshRenderer meshrender = transform.Find("SurvivorModel/low001").GetComponent<SkinnedMeshRenderer>();
+        meshrender.material = GameCtrl.instance.Msurvivor[2];
     }
 
     void Update()

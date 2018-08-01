@@ -275,6 +275,11 @@ MonoBehaviour:
   instantiationId: 3
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!137 &124821291 stripped
+SkinnedMeshRenderer:
+  m_PrefabParentObject: {fileID: 13700000, guid: 1ce625dbeb806224fb62a618d1547b33,
+    type: 3}
+  m_PrefabInternal: {fileID: 124821288}
 --- !u!1 &134593238
 GameObject:
   m_ObjectHideFlags: 0
@@ -2930,6 +2935,11 @@ MonoBehaviour:
   instantiationId: 2
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!137 &1289693796 stripped
+SkinnedMeshRenderer:
+  m_PrefabParentObject: {fileID: 13700000, guid: f3d4b93ad839b5a49aff9e00eeeccc5f,
+    type: 3}
+  m_PrefabInternal: {fileID: 1289693793}
 --- !u!1 &1294778362
 GameObject:
   m_ObjectHideFlags: 0
@@ -4675,6 +4685,13 @@ MonoBehaviour:
   - {fileID: 1536586844}
   - {fileID: 68398702}
   - {fileID: 1599814907}
+  Msurvivor:
+  - {fileID: 2100000, guid: 25ff5fe36700d3043855693f6cf2dd58, type: 2}
+  - {fileID: 2100000, guid: 5e6a977dea82a764e9633e8f2163a793, type: 2}
+  - {fileID: 2100000, guid: 199fe0943136def46b2f19e77ccebb49, type: 2}
+  MRsurvivor:
+  - {fileID: 124821291}
+  - {fileID: 1289693796}
   SurvivorScore:
   - {fileID: 765653412}
   - {fileID: 1857720331}
@@ -5054,7 +5071,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400140, guid: 17a09dc5fa9a07a468617549487af478, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3
+      value: -1.3
       objectReference: {fileID: 0}
     - target: {fileID: 400140, guid: 17a09dc5fa9a07a468617549487af478, type: 3}
       propertyPath: m_LocalPosition.z

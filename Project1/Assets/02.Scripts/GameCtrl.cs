@@ -12,6 +12,7 @@ public class GameCtrl : MonoBehaviour
     public GameObject Survivor;
     [HideInInspector]
     public GameObject Murderer;
+    public Material[] Msurvivor = new Material[3];
 
     public GameObject SurvivorUI;
     public GameObject MurdererUI;

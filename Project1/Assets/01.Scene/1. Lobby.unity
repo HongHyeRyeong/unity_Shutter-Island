@@ -3566,7 +3566,7 @@ Prefab:
     - target: {fileID: 9500000, guid: 4a3fbd6b980ffda4aa89e742db4cf013, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: bea56e3b1d5e95843b0764322cc98916, type: 2}
+      objectReference: {fileID: 9100000, guid: 2260198ca4a229e4bb6321d0829ce29d, type: 2}
     - target: {fileID: 2300000, guid: 4a3fbd6b980ffda4aa89e742db4cf013, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -3898,6 +3898,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4a3fbd6b980ffda4aa89e742db4cf013, type: 3}
   m_IsPrefabParent: 0
+--- !u!137 &1411102640 stripped
+SkinnedMeshRenderer:
+  m_PrefabParentObject: {fileID: 13700000, guid: 41d8878c9746a0c4c96eb7c3bf15c764,
+    type: 3}
+  m_PrefabInternal: {fileID: 1163863267}
 --- !u!1 &1444931389
 GameObject:
   m_ObjectHideFlags: 0
@@ -4024,17 +4029,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   survivor:
-  - {fileID: 1306261852}
+  - {fileID: 1057673964}
   - {fileID: 393939352}
   - {fileID: 835545274}
-  - {fileID: 1057673964}
+  - {fileID: 1306261852}
   murderer:
-  - {fileID: 1300045152}
-  - {fileID: 749836160}
   - {fileID: 1821390156}
+  - {fileID: 749836160}
+  - {fileID: 1300045152}
   Join:
   - {fileID: 720279272}
   - {fileID: 602957538}
+  Msurvivor:
+  - {fileID: 2100000, guid: 25ff5fe36700d3043855693f6cf2dd58, type: 2}
+  - {fileID: 2100000, guid: 5e6a977dea82a764e9633e8f2163a793, type: 2}
+  - {fileID: 2100000, guid: 199fe0943136def46b2f19e77ccebb49, type: 2}
+  MRsurvivor: {fileID: 1411102640}
   SelSur: 0
   SurStat: -1
   Map: -1

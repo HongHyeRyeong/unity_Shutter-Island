@@ -12,7 +12,8 @@ public class PhotonInit : MonoBehaviour
     public GameObject scrollContents;
     public GameObject roomItem;
 
-    public int Map = -1;
+    [HideInInspector]
+    public int Map = 0;
     int[] itemrand = new int[46];
     int[] gadgetrand = new int[35];
     int[] keyrand = new int[10];
@@ -21,7 +22,6 @@ public class PhotonInit : MonoBehaviour
 
     string roomname;
 
-    // Use this for initialization
     void Awake()
     {
         instance = this;
@@ -155,9 +155,7 @@ public class PhotonInit : MonoBehaviour
     void OnReceivedRoomListUpdate()
     {
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ROOM_ITEM"))
-        {
             Destroy(obj);
-        }
 
         int rowCount = 0;
 
@@ -185,19 +183,19 @@ public class PhotonInit : MonoBehaviour
                 random[i] = (float)roomData.cp["random" + (i + 1)];
 
             roomData.DispRoomData();
-
             scrollContents.GetComponent<GridLayoutGroup>().constraintCount = ++rowCount;
-
             roomData.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(delegate { OnClickRoomItem(roomData.roomName); });
         }
     }
 
     void OnClickRoomItem(string roomName)
     {
-        roomname = roomName;
-
-        LobbyCtrl.instance.SurRoomSelect = true;
-        StartCoroutine(LobbyCtrl.instance.SelectMap(0, true));
+        if (LobbyCtrl.instance.SurStat != 0)
+        {
+            roomname = roomName;
+            LobbyCtrl.instance.SurRoomSelect = true;
+            StartCoroutine(LobbyCtrl.instance.SelectMap(0, true));
+        }
     }
 
     // 생존자가 방에 들어갈 때 함수

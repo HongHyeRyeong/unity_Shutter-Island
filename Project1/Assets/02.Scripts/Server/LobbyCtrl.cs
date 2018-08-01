@@ -8,26 +8,38 @@ public class LobbyCtrl : MonoBehaviour
     public static LobbyCtrl instance;
 
     [SerializeField]
-    public GameObject[] survivor;
+    private GameObject[] survivor;
     [SerializeField]
-    public GameObject[] murderer;
+    private GameObject[] murderer;
     [SerializeField]
-    public RectTransform[] Join;
+    private RectTransform[] Join;
+    [SerializeField]
+    private Material[] Msurvivor = new Material[3];
+    [SerializeField]
+    private SkinnedMeshRenderer MRsurvivor;
 
-    public bool SelSur = false;
-    public int SurStat = -1;
-    public int Map = -1;
-
-    public bool SurRoomSelect = false;
+    [HideInInspector]
+    public bool SelSur;
+    [HideInInspector]
+    public int SurStat;
+    [HideInInspector]
+    public int Map;
+    [HideInInspector]
+    public bool SurRoomSelect;
 
     [SerializeField]
-    public GameObject Fade;
+    private GameObject Fade;
 
     void Start()
     {
         Screen.SetResolution(1920, 1080, true);
 
         instance = this;
+
+        SelSur = false;
+        SurStat = 0;
+        Map = 0;
+        SurRoomSelect = false;
 
         SoundManager.instance.SetBGM("Lobby2-Last Stand");
         StartCoroutine(StartFade(true));
@@ -37,11 +49,13 @@ public class LobbyCtrl : MonoBehaviour
     {
         if (cha == 1)        // 생존자
         {
-            if (Map != -1)
+            if (Map != 0)
+            {
                 StartCoroutine(SelectMap(1, false));
+            }
 
             SelSur = true;
-            Map = -1;
+            Map = 0;
         }
         else if (cha == 2)   // 살인마
         {
@@ -52,7 +66,8 @@ public class LobbyCtrl : MonoBehaviour
             }
 
             SelSur = false;
-            SurStat = -1;
+            SurStat = 0;
+            MRsurvivor.material = Msurvivor[0];
         }
 
         for (int i = 0; i < survivor.Length; ++i)
@@ -65,6 +80,7 @@ public class LobbyCtrl : MonoBehaviour
     public void OnClickSurvivor(int i)
     {
         SurStat = i;
+        MRsurvivor.material = Msurvivor[i - 1];
     }
 
     public void OnClickMap(int i)

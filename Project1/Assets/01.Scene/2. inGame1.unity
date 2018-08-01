@@ -57464,6 +57464,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Survivor: {fileID: 0}
   Murderer: {fileID: 0}
+  Msurvivor:
+  - {fileID: 2100000, guid: 25ff5fe36700d3043855693f6cf2dd58, type: 2}
+  - {fileID: 2100000, guid: 5e6a977dea82a764e9633e8f2163a793, type: 2}
+  - {fileID: 2100000, guid: 199fe0943136def46b2f19e77ccebb49, type: 2}
   SurvivorUI: {fileID: 342060749}
   MurdererUI: {fileID: 83244731}
   isStart: 0

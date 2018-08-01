@@ -114,4 +114,8 @@ MonoBehaviour:
   - DamageToMurdererM
   - MurdererDieCoroutine
   - MurdererDie
+  - ChangeMaterial
+  - ChangeMaterial1
+  - ChangeMaterial2
+  - ChangeMaterial3
   DisableAutoOpenWizard: 1
