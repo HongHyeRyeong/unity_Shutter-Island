@@ -36,6 +36,7 @@ public class ResultCtrl : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
 
         Result = PlayerPrefs.GetInt("Result", 0);
+        Result = 4;
 
         if (Result == 1 || Result == 3)
             videoPlayer.clip = videoClip[0];
@@ -68,7 +69,6 @@ public class ResultCtrl : MonoBehaviour
     {
         isVideo = false;
         UI.SetActive(true);
-        StartCoroutine(StartFade(true));
 
         if (Result == 1 || Result == 2)
         {
@@ -82,9 +82,19 @@ public class ResultCtrl : MonoBehaviour
         }
         else if (Result == 3 || Result == 4)
         {
+            if (Result == 3)
+            {
+                Murderer[0].transform.eulerAngles = new Vector3(Murderer[0].transform.eulerAngles.x, Murderer[0].transform.eulerAngles.y - 30, Murderer[0].transform.eulerAngles.z);
+                Murderer[0].GetComponent<Animator>().SetBool("isWin", true);
+            }
+            else
+                Murderer[0].GetComponent<Animator>().SetBool("isWin", false);
+
             for (int i = 0; i < Murderer.Length; ++i)
                 Murderer[i].SetActive(true);
         }
+
+        StartCoroutine(StartFade(true));
     }
 
     IEnumerator StartFade(bool start)
