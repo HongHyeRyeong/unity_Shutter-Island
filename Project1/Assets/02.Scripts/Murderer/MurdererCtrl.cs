@@ -173,11 +173,11 @@ public class MurdererCtrl : MonoBehaviour
 
             if(pv.isMine)
             {
-                GameCtrl.instance.SetSurvivorScore(2000);
                 PlayerPrefs.SetInt("Result", 4);
             }
             else
             {
+                GameCtrl.instance.SetSurvivorScore(2000);
                 PlayerPrefs.SetInt("Result", 1);
             }
 

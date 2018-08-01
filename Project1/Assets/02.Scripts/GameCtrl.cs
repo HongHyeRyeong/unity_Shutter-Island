@@ -318,14 +318,20 @@ public class GameCtrl : MonoBehaviour
 
     public void SetSurvivorScore(int score)
     {
-        SurvivorScore += score;
-        print(SurvivorScore);
+        if(Character == 1)
+        {
+            SurvivorScore += score;
+            print("Survivor : " + SurvivorScore);
+        }
     }
 
     public void SetMurdererScore(int score)
     {
-        MurdererScore += score;
-        print(MurdererScore);
+        if (Character == 2)
+        {
+            MurdererScore += score;
+            print("Murderer : " + MurdererScore);
+        }
     }
 
     public IEnumerator StartHit(float delay)
@@ -412,6 +418,11 @@ public class GameCtrl : MonoBehaviour
 
     public void ExitRoom()
     {
+        if (Character == 1)
+            PlayerPrefs.SetInt("SurTotal", SurvivorScore);
+        else if (Character == 2)
+            PlayerPrefs.SetInt("MurTotal", MurdererScore);
+
         PhotonNetwork.LeaveRoom();
     }
 

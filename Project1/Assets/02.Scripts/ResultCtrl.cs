@@ -9,6 +9,9 @@ public class ResultCtrl : MonoBehaviour
 {
     // 1: 생존자 승리, 2: 생존자 패배, 3: 살인마 승리, 4: 살인마 패배
     private int Result;
+    private int SurTotal;
+    private int MurTotal;
+
     private bool isVideo = true;
 
     [SerializeField]
@@ -41,15 +44,25 @@ public class ResultCtrl : MonoBehaviour
 
         Result = PlayerPrefs.GetInt("Result", 0);
 
-            if (Result == 1 || Result == 4)
+        if (Result == 1 || Result == 4)
             videoPlayer.clip = videoClip[0];
         else if (Result == 2 || Result == 3)
             videoPlayer.clip = videoClip[1];
+
+        if (Result == 1 || Result == 2)
+            SurTotal = PlayerPrefs.GetInt("SurTotal", 0);
+
+        CheckSurvivorScore();
 
         videoPlayer.Play();
         StartCoroutine(VidioPlaying());
 
         StartCoroutine(StartFade(true));
+    }
+
+    void CheckSurvivorScore()
+    {
+        SurvivorScore[4].text = SurTotal.ToString();
     }
 
     IEnumerator VidioPlaying()
