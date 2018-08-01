@@ -78,12 +78,16 @@ public class ResultCtrl : MonoBehaviour
             if (Result == 1)
             {
                 Survivor[0].SetActive(true);
-                MRsurvivor[0].material = Msurvivor[LobbyCtrl.instance.SurStat - 1];
+
+                if (LobbyCtrl.instance.SurStat != 0)
+                    MRsurvivor[0].material = Msurvivor[LobbyCtrl.instance.SurStat - 1];
             }
             else
             {
                 Survivor[1].SetActive(true);
-                MRsurvivor[1].material = Msurvivor[LobbyCtrl.instance.SurStat - 1];
+
+                if (LobbyCtrl.instance.SurStat != 0)
+                    MRsurvivor[1].material = Msurvivor[LobbyCtrl.instance.SurStat - 1];
             }
 
             for (int i = 2; i < Survivor.Length; ++i)

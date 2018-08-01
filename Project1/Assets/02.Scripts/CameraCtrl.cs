@@ -87,7 +87,7 @@ public class CameraCtrl : MonoBehaviour
                     transform.position = Vector3.Lerp(transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,
                         targetMurderer.transform.position.y + 2.4f,
-                        targetMurdererCamPivot.transform.position.z), Time.deltaTime * 10);
+                        targetMurdererCamPivot.transform.position.z), Time.deltaTime * 15);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;
                     MouseY = ClampAngle(MouseY, -30, 60);
@@ -98,13 +98,13 @@ public class CameraCtrl : MonoBehaviour
                     if (saveState != state)
                     {
                         saveState = state;
-                        MainCam.cullingMask = ~(1 << 10);
+                        MainCam.cullingMask = ~(1 << 11);
                     }
 
                     transform.position = Vector3.Lerp(transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,
                         targetMurderer.transform.position.y + 2.4f,
-                        targetMurdererCamPivot.transform.position.z), Time.deltaTime * 10);
+                        targetMurdererCamPivot.transform.position.z), Time.deltaTime * 15);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;
                     MouseY = ClampAngle(MouseY, -30, 60);

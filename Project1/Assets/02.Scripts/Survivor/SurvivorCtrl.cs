@@ -29,7 +29,7 @@ public class SurvivorCtrl : MonoBehaviour
     int Attack = 0;
     int WorkMachine = 0;
 
-    float AttackTime = 1f;
+    float AttackTime = 0.5f;
     float PrisonTime = 3f;
 
     bool Prison = false;
@@ -155,14 +155,14 @@ public class SurvivorCtrl : MonoBehaviour
                     if (Input.GetMouseButtonDown(0))
                     {
                         State = State_AttackW;
-                        Ani.SetTrigger("trAttackW");
+                        pv.RPC("AttackWAnim", PhotonTargets.All);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
                     }
                     else if (Input.GetMouseButtonDown(1))
                     {
                         State = State_AttackL;
-                        Ani.SetTrigger("trAttackL");
+                        pv.RPC("AttackLAnim", PhotonTargets.All);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
                     }
@@ -195,7 +195,7 @@ public class SurvivorCtrl : MonoBehaviour
 
             if (State == State_Idle || State == State_Run || State == State_SlowRun)
                 transform.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
-            else if(State == State_Repair || State == State_Trap)
+            else if (State == State_Repair || State == State_Trap)
             {
                 transform.Rotate(Vector3.up * Time.deltaTime * 100 * Input.GetAxis("Mouse X"));
                 trModel.rotation = Quaternion.Euler(SaveRot);
@@ -334,7 +334,7 @@ public class SurvivorCtrl : MonoBehaviour
     {
         GameCtrl.instance.Murderer.GetComponent<MurdererCtrl>().DamageByPlayer(Power);
     }
-    
+
     public void AttackByMurderer(GameObject m, int MurdererAttack)
     {
         if (!Prison)
@@ -346,14 +346,14 @@ public class SurvivorCtrl : MonoBehaviour
                     if (State == State_AttackW)
                     {
                         State = State_ParryToMurdererW;
-                        Ani.SetTrigger("trAttackW");
+                        pv.RPC("AttackWAnim", PhotonTargets.All);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
                     }
                     else
                     {
                         State = State_ParryToMurdererL;
-                        Ani.SetTrigger("trAttackL");
+                        pv.RPC("AttackLAnim", PhotonTargets.All);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
                     }
@@ -371,7 +371,7 @@ public class SurvivorCtrl : MonoBehaviour
             else
             {
                 Attack = MurdererAttack;
-                AttackTime = 1f;
+                AttackTime = 0.5f;
             }
         }
     }
@@ -382,14 +382,14 @@ public class SurvivorCtrl : MonoBehaviour
         pv.RPC("AttackEnd", PhotonTargets.All);
         GameCtrl.instance.SetMurdererScore(100);
 
-        Hp -= 50f;
+        Hp -= 5f;
         if (pv.isMine)
         {
             SurvivorUICtrl.instance.DispHP(Hp);
             StartCoroutine(GameCtrl.instance.StartHit(2));
         }
 
-        if(Hp <= 0)
+        if (Hp <= 0)
         {
             State = State_Idle;
             Ani.SetBool("isSlowRun", false);
@@ -416,9 +416,50 @@ public class SurvivorCtrl : MonoBehaviour
         else
         {
             State = State_Hit;
-            Ani.SetTrigger("trHit");
+
+            float dir = transform.InverseTransformDirection(trModel.forward).z * GameCtrl.instance.Murderer.transform.forward.z;
+
+            if (dir >= 0)
+            {
+                pv.RPC("DownFrontAnim", PhotonTargets.All);
+                StartCoroutine(Knockback(true));
+            }
+            else
+            {
+                pv.RPC("DownAnim", PhotonTargets.All);
+                StartCoroutine(Knockback(false));
+            }
+
             Ani.SetBool("isSlowRun", false);
             Ani.SetBool("isRun", false);
+        }
+    }
+
+    IEnumerator Knockback(bool front)
+    {
+        float AttackRunTime = 0;
+
+        if (front)
+        {
+            while (AttackRunTime < 1)
+            {
+                AttackRunTime += Time.deltaTime;
+                float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.6f;
+                transform.Translate(transform.InverseTransformDirection(trModel.forward).normalized * newTime * newTime);
+
+                yield return null;
+            }
+        }
+        else
+        {
+            while (AttackRunTime < 1)
+            {
+                AttackRunTime += Time.deltaTime;
+                float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.6f;
+                transform.Translate(-1 * transform.InverseTransformDirection(trModel.forward).normalized * newTime * newTime);
+
+                yield return null;
+            }
         }
     }
 
@@ -430,11 +471,11 @@ public class SurvivorCtrl : MonoBehaviour
 
         Trap = true;
 
-        if(pv.isMine)
+        if (pv.isMine)
             SaveRot = trModel.eulerAngles;
 
         State = State_Trap;
-        Ani.SetTrigger("trTrap");
+        pv.RPC("TrapAnim", PhotonTargets.All);
         Ani.SetBool("isSlowRun", false);
         Ani.SetBool("isRun", false);
     }
@@ -500,7 +541,7 @@ public class SurvivorCtrl : MonoBehaviour
     void PrisonTrue()
     {
         Hp -= 1.5f * Time.deltaTime;
-        if(pv.isMine)
+        if (pv.isMine)
             SurvivorUICtrl.instance.DispHP(Hp);
 
         if (Hp <= 0)
@@ -749,6 +790,30 @@ public class SurvivorCtrl : MonoBehaviour
             currPos = (Vector3)stream.ReceiveNext();
             currRot = (Quaternion)stream.ReceiveNext();
         }
+    }
+
+    [PunRPC]
+    public void AttackWAnim()
+    {
+        Ani.SetTrigger("trAttackW");
+    }
+
+    [PunRPC]
+    public void AttackLAnim()
+    {
+        Ani.SetTrigger("trAttackL");
+    }
+
+    [PunRPC]
+    public void DownFrontAnim()
+    {
+        Ani.SetTrigger("trDownFront");  // 같은 방향
+    }
+
+    [PunRPC]
+    public void DownAnim()
+    {
+        Ani.SetTrigger("trDown");   // 서로 반대 방향
     }
 
     [PunRPC]
