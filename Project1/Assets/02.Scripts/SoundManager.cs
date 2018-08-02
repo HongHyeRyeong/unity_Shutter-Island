@@ -77,16 +77,15 @@ public class SoundManager : MonoBehaviour
     public void PlayEffect(string name)
     {
         for (int i = 0; i < EffectClip.Length; ++i)
-        {
             if (EffectSource[i] != null)
                 if (EffectClip[i].name == name)
                 {
                     AudioSource source = GetEmptyEffectSource();
                     source.clip = EffectClip[i];
+                    source.volume = PlayerPrefs.GetFloat("Effect");
                     source.Play();
                     return;
                 }
-        }
 
         print("SoundNull: " + name);
     }

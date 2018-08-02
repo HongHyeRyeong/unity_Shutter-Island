@@ -12,8 +12,6 @@ public class SettingManager : MonoBehaviour
     [SerializeField]
     private Slider[] SoundSlider = new Slider[2];
 
-    public bool MurdererQuit = false;
-
     void Start()
     {
         instance = this;

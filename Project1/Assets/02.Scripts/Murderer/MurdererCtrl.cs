@@ -159,7 +159,7 @@ public class MurdererCtrl : MonoBehaviour
             }
             else
             {
-                if (Audio.clip.name == "MFootStep")
+                if (Audio.isPlaying && Audio.clip.name == "MFootStep")
                     pv.RPC("EffectStop", PhotonTargets.All);
             }
 

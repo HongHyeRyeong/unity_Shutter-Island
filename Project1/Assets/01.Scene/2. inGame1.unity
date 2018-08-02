@@ -123452,7 +123452,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0b533815dfcb33540b66509d5f5547a2, type: 3}
   - {fileID: 8300000, guid: 0187373db7b638a4e80af850225ab23b, type: 3}
   - {fileID: 8300000, guid: 6acc1453ee4434e4290612d1988d49a9, type: 3}
-  - {fileID: 8300000, guid: a055bd829716e1a4f821362319764fd5, type: 3}
+  - {fileID: 8300000, guid: 97f2770b382d1524ca1aa65b68bf1ee0, type: 3}
 --- !u!1001 &1677447770
 Prefab:
   m_ObjectHideFlags: 0

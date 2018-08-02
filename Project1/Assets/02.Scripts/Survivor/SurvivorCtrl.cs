@@ -11,6 +11,7 @@ public class SurvivorCtrl : MonoBehaviour
 
     //
     private Animator Ani;
+    private AudioSource Audio;
     private Transform trModel;
     private SurvivorItem Item;
 
@@ -71,6 +72,10 @@ public class SurvivorCtrl : MonoBehaviour
         Ani = transform.Find("SurvivorModel").GetComponent<Animator>();
         trModel = transform.Find("SurvivorModel").GetComponent<Transform>();
         Item = GetComponent<SurvivorItem>();
+
+        Audio = GetComponent<AudioSource>();
+        Audio.Stop();
+        SoundManager.instance.SetEffect(false, Audio, "SFootStep");
 
         if (pv.isMine)
         {
@@ -191,6 +196,14 @@ public class SurvivorCtrl : MonoBehaviour
 
                 Quaternion rot = Quaternion.Euler(0, angle, 0);
                 trModel.rotation = Quaternion.Slerp(trModel.rotation, rot, Time.deltaTime * 10f);
+
+                if (!Audio.isPlaying)
+                    pv.RPC("EffectPlayLoop", PhotonTargets.All);
+            }
+            else
+            {
+                if (Audio.isPlaying && Audio.clip.name == "SFootStep")
+                    pv.RPC("EffectStop", PhotonTargets.All);
             }
 
             if (State == State_Idle || State == State_Run || State == State_SlowRun)
@@ -346,14 +359,14 @@ public class SurvivorCtrl : MonoBehaviour
                     if (State == State_AttackW)
                     {
                         State = State_ParryToMurdererW;
-                        pv.RPC("AttackWAnim", PhotonTargets.All);
+                        pv.RPC("ParryWAnim", PhotonTargets.All);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
                     }
                     else
                     {
                         State = State_ParryToMurdererL;
-                        pv.RPC("AttackLAnim", PhotonTargets.All);
+                        pv.RPC("ParryLAnim", PhotonTargets.All);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
                     }
@@ -794,6 +807,20 @@ public class SurvivorCtrl : MonoBehaviour
             currPos = (Vector3)stream.ReceiveNext();
             currRot = (Quaternion)stream.ReceiveNext();
         }
+    }
+
+    [PunRPC]
+    public void EffectPlayLoop()
+    {
+        Audio.loop = true;
+        SoundManager.instance.SetEffect(true, Audio, "SFootStep");
+        Audio.Play();
+    }
+
+    [PunRPC]
+    public void EffectStop()
+    {
+        Audio.Stop();
     }
 
     [PunRPC]
