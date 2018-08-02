@@ -12,6 +12,7 @@ public class MachineCtrl : MonoBehaviour
 
     //
     private Animator Ani;
+    private AudioSource Audio;
 
     private GameObject HUD;
     private Image imgHUD;
@@ -32,6 +33,10 @@ public class MachineCtrl : MonoBehaviour
         pv = GetComponent<PhotonView>();
 
         Ani = GetComponent<Animator>();
+
+        Audio = GetComponent<AudioSource>();
+        Audio.Stop();
+        SoundManager.instance.SetEffect(false, Audio, "Install");
 
         HUD = transform.Find("HUDMachine").gameObject;
         imgHUD = HUD.transform.Find("imgHUDMachine").GetComponent<Image>();
@@ -67,6 +72,9 @@ public class MachineCtrl : MonoBehaviour
     {
         MachineGauge += currWork;
         GadgetGauge -= currWork;
+
+        if (!Audio.isPlaying)
+            Audio.Play();
     }
 
     [PunRPC]
@@ -87,6 +95,9 @@ public class MachineCtrl : MonoBehaviour
         CompleteLight.SetActive(true);
         Flare.SetActive(false);
 
+        SoundManager.instance.SetEffect(true, Audio, "MachineComplete");
+        Audio.Play();
+
         Ani.SetTrigger("Complete");
         GameCtrl.instance.MachineComplete();
     }
@@ -95,6 +106,17 @@ public class MachineCtrl : MonoBehaviour
     public void MachineInstallAnim()
     {
         Ani.SetTrigger("Install");
+    }
+
+    public void MachineStop()
+    {
+        pv.RPC("RPCMachineStop", PhotonTargets.All);
+    }
+
+    [PunRPC]
+    void RPCMachineStop()
+    {
+        Audio.Stop();
     }
 
     public void DisHUD(Vector3 pos)

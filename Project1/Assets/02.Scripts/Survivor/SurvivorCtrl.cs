@@ -636,20 +636,24 @@ public class SurvivorCtrl : MonoBehaviour
 
                                 if (complete)
                                 {
+                                    WorkMachine = 0;
+
                                     State = State_Idle;
                                     Ani.SetBool("isRepair", false);
-                                    WorkMachine = 0;
-                                    GameCtrl.instance.SetSurvivorScore(200);
-
+                                    
                                     machineRangeCtrl.SetMachineUse(false);
+
+                                    GameCtrl.instance.SetSurvivorScore(200);
                                 }
                             }
                             else
                             {
-                                State = State_Idle;
-                                Ani.SetBool("isRepair", false);
                                 WorkMachine = 0;
 
+                                State = State_Idle;
+                                Ani.SetBool("isRepair", false);
+
+                                machineCtrl.MachineStop();
                                 machineRangeCtrl.SetMachineUse(false);
                             }
                         }

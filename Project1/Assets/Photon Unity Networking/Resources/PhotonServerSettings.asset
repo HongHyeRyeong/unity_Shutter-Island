@@ -120,4 +120,8 @@ MonoBehaviour:
   - ChangeMaterial3
   - DownAnim
   - DownFrontAnim
+  - RPCMachineStop
+  - EffectPlay
+  - EffectPlayLoop
+  - EffectStop
   DisableAutoOpenWizard: 1

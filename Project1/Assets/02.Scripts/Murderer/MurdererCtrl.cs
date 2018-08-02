@@ -8,11 +8,11 @@ public class MurdererCtrl : MonoBehaviour
 
     private Vector3 currPos = Vector3.zero;
     private Quaternion currRot = Quaternion.identity;
-
     GameObject curSurvivor;
 
     //
     private Animator Ani;
+    private AudioSource Audio;
     public GameObject ParticleTrail;
     
     private GameObject[] TrapItems;
@@ -39,16 +39,17 @@ public class MurdererCtrl : MonoBehaviour
     void Start()
     {
         pv = GetComponent<PhotonView>();
-        Ani = GetComponent<Animator>();
-
-        // 데이터 전송 타입 설정
         pv.synchronization = ViewSynchronization.UnreliableOnChange;
-
-        // PhotonView Observed Components 속성에 Ctrl 스크립트 연결
         pv.ObservedComponents[1] = this;
 
         currPos = transform.position;
         currRot = transform.rotation;
+
+        Ani = GetComponent<Animator>();
+
+        Audio = GetComponent<AudioSource>();
+        Audio.Stop();
+        SoundManager.instance.SetEffect(false, Audio, "MFootStep");
 
         TrapItems = new GameObject[GameCtrl.instance.MurdererTrap.transform.childCount];
         for (int i = 0; i < TrapItems.Length; ++i)
@@ -152,6 +153,14 @@ public class MurdererCtrl : MonoBehaviour
             {
                 Vector3 Pos = new Vector3(h, 0, v);
                 transform.Translate(Pos.normalized * MoveSpeed * Time.deltaTime);
+
+                if (!Audio.isPlaying)
+                    pv.RPC("EffectPlayLoop", PhotonTargets.All);
+            }
+            else
+            {
+                if (Audio.clip.name == "MFootStep")
+                    pv.RPC("EffectStop", PhotonTargets.All);
             }
 
             if (State != State_Parry && State != State_Trap)
@@ -293,39 +302,73 @@ public class MurdererCtrl : MonoBehaviour
     }
 
     [PunRPC]
-    public void InstallAnim()
+    public void EffectPlayLoop()
     {
-        Ani.SetTrigger("trInstall");
+        Audio.loop = true;
+        SoundManager.instance.SetEffect(true, Audio, "MFootStep");
+        Audio.Play();
+    }
+
+    [PunRPC]
+    public void EffectStop()
+    {
+        Audio.Stop();
     }
 
     [PunRPC]
     public void AttackWAnim()
     {
         Ani.SetTrigger("trAttackW");
+
+        Audio.loop = false;
+        SoundManager.instance.SetEffect(true, Audio, "Slash");
+        Audio.Play();
     }
 
     [PunRPC]
     public void AttackLAnim()
     {
         Ani.SetTrigger("trAttackL");
+
+        Audio.loop = false;
+        SoundManager.instance.SetEffect(true, Audio, "Slash");
+        Audio.Play();
     }
 
     [PunRPC]
     public void AttackWRunAnim()
     {
         Ani.SetTrigger("trAttackWRun");
+
+        Audio.loop = false;
+        SoundManager.instance.SetEffect(true, Audio, "Slash");
+        Audio.Play();
     }
 
     [PunRPC]
     public void AttackLRunAnim()
     {
         Ani.SetTrigger("trAttackLRun");
+
+        Audio.loop = false;
+        SoundManager.instance.SetEffect(true, Audio, "Slash");
+        Audio.Play();
     }
 
     [PunRPC]
     public void ParryAnim()
     {
         Ani.SetTrigger("trParry");
+
+        Audio.loop = false;
+        SoundManager.instance.SetEffect(true, Audio, "Counterhit");
+        Audio.Play();
+    }
+
+    [PunRPC]
+    public void InstallAnim()
+    {
+        Ani.SetTrigger("trInstall");
     }
 
     [PunRPC]
