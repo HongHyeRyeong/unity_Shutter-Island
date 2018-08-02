@@ -22,7 +22,7 @@ public class ResultCtrl : MonoBehaviour
     [SerializeField]
     private VideoPlayer videoPlayer;
     [SerializeField]
-    private VideoClip[] videoClip = new VideoClip[2];   // 0: 생존자 승리, 1: 살인마 승리
+    private VideoClip[] videoClip = new VideoClip[2];
 
     [SerializeField]
     private GameObject[] Survivor;
@@ -45,9 +45,9 @@ public class ResultCtrl : MonoBehaviour
         Result = PlayerPrefs.GetInt("Result", 0);
 
         if (Result == 1 || Result == 4)
-            videoPlayer.clip = videoClip[0];
+            videoPlayer.clip = videoClip[0];    // 생존자 승리
         else if (Result == 2 || Result == 3)
-            videoPlayer.clip = videoClip[1];
+            videoPlayer.clip = videoClip[1];    // 살인마 승리
 
         if (Result == 1 || Result == 2)
             SurTotal = PlayerPrefs.GetInt("SurTotal", 0);
@@ -67,18 +67,17 @@ public class ResultCtrl : MonoBehaviour
 
     IEnumerator VidioPlaying()
     {
-        yield return new WaitForSeconds(1);
-
-        while (true)
-        {
-            if (!videoPlayer.isPlaying)
-            {
-                StartCoroutine(StartFade(false));
-                break;
-            }
-
+        // 비디오가 시작했는 지 검사
+        while (!videoPlayer.isPlaying)
             yield return null;
-        }
+
+        yield return new WaitForEndOfFrame();
+
+        // 비디오가 시작한 후 끝났는 지 검사
+        while (videoPlayer.isPlaying)
+            yield return null;
+
+        StartCoroutine(StartFade(false));
     }
 
     void VideioEnd()
@@ -91,16 +90,12 @@ public class ResultCtrl : MonoBehaviour
             if (Result == 1)
             {
                 Survivor[0].SetActive(true);
-
-                if (LobbyCtrl.instance.SurStat != 0)
-                    MRsurvivor[0].material = Msurvivor[LobbyCtrl.instance.SurStat - 1];
+                MRsurvivor[0].material = Msurvivor[LobbyCtrl.instance.SurStat - 1];
             }
             else
             {
                 Survivor[1].SetActive(true);
-
-                if (LobbyCtrl.instance.SurStat != 0)
-                    MRsurvivor[1].material = Msurvivor[LobbyCtrl.instance.SurStat - 1];
+                MRsurvivor[1].material = Msurvivor[LobbyCtrl.instance.SurStat - 1];
             }
 
             for (int i = 2; i < Survivor.Length; ++i)

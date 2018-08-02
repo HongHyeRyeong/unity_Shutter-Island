@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 54284492853445832}
   - component: {fileID: 114560940482552874}
   - component: {fileID: 114018140344383320}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: ItemClothes3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: e665acc77cb6ee546850d5d07872443f, type: 2}
   m_StaticBatchInfo:

@@ -10,6 +10,7 @@ TagManager:
   - Spawn
   - Prison
   - ROOM_ITEM
+  - ItemPut
   layers:
   - Default
   - TransparentFX
@@ -20,11 +21,11 @@ TagManager:
   - 
   - 
   - Map
-  - Item
+  - Character
   - Murderer
   - Survivor
-  - 
-  - 
+  - Attack
+  - Item
   - 
   - 
   - 

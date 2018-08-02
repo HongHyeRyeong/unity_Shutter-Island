@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 33334793865667488}
   - component: {fileID: 23021415557471706}
   - component: {fileID: 65558434542887810}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: Object003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 33657281040362788}
   - component: {fileID: 23359046955183188}
   - component: {fileID: 65204827067930388}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: Object002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 33497336586656422}
   - component: {fileID: 23745772693853092}
   - component: {fileID: 65131870170770372}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: Object004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 32ef51e779f9cc24a98789394e18b2c6, type: 2}
   m_StaticBatchInfo:
@@ -189,7 +188,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 32ef51e779f9cc24a98789394e18b2c6, type: 2}
   m_StaticBatchInfo:
@@ -224,7 +222,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 32ef51e779f9cc24a98789394e18b2c6, type: 2}
   m_StaticBatchInfo:
@@ -347,7 +344,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114778712602373052
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -368,7 +364,7 @@ MonoBehaviour:
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
-  - {fileID: 4000772376040812}
+  - {fileID: 95954562723135260}
   - {fileID: 114869336874070888}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0

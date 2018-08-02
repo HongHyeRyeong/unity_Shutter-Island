@@ -29,7 +29,7 @@ public class SurvivorCtrl : MonoBehaviour
     int Attack = 0;
     int WorkMachine = 0;
 
-    float AttackTime = 0.5f;
+    float AttackTime = 0.8f;
     float PrisonTime = 3f;
 
     bool Prison = false;
@@ -335,7 +335,7 @@ public class SurvivorCtrl : MonoBehaviour
         GameCtrl.instance.Murderer.GetComponent<MurdererCtrl>().DamageByPlayer(Power);
     }
 
-    public void AttackByMurderer(GameObject m, int MurdererAttack)
+    public void AttackByMurderer(int MurdererAttack)
     {
         if (!Prison)
         {
@@ -371,7 +371,7 @@ public class SurvivorCtrl : MonoBehaviour
             else
             {
                 Attack = MurdererAttack;
-                AttackTime = 0.5f;
+                AttackTime = 0.8f;
             }
         }
     }
@@ -444,7 +444,7 @@ public class SurvivorCtrl : MonoBehaviour
             while (AttackRunTime < 1)
             {
                 AttackRunTime += Time.deltaTime;
-                float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.6f;
+                float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.7f;
                 transform.Translate(transform.InverseTransformDirection(trModel.forward).normalized * newTime * newTime);
 
                 yield return null;
@@ -455,7 +455,7 @@ public class SurvivorCtrl : MonoBehaviour
             while (AttackRunTime < 1)
             {
                 AttackRunTime += Time.deltaTime;
-                float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.6f;
+                float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.7f;
                 transform.Translate(-1 * transform.InverseTransformDirection(trModel.forward).normalized * newTime * newTime);
 
                 yield return null;
