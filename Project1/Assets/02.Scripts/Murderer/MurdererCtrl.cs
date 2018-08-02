@@ -27,6 +27,8 @@ public class MurdererCtrl : MonoBehaviour
 
     private float AttackRunTime = 0;
 
+    private bool isMurDie = false;
+
     //
     const int State_Die = -1;
     const int State_Idle = 0;
@@ -175,7 +177,7 @@ public class MurdererCtrl : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, currRot, Time.deltaTime * 10.0f);
         }
 
-        if (Hp <= 0)
+        if (Hp <= 0 && !isMurDie)
         {
             State = State_Die;
             pv.RPC("DieAnim", PhotonTargets.All);
@@ -186,11 +188,14 @@ public class MurdererCtrl : MonoBehaviour
             }
             else
             {
+                GameCtrl.instance.SurvivorScore[3] += 2000;
                 GameCtrl.instance.SetSurvivorScore(2000);
                 PlayerPrefs.SetInt("Result", 1);
             }
 
             pv.RPC("MurdererDie", PhotonTargets.AllBuffered);
+
+            isMurDie = true;
         }
     }
 

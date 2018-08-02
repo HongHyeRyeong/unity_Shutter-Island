@@ -9,8 +9,8 @@ public class ResultCtrl : MonoBehaviour
 {
     // 1: 생존자 승리, 2: 생존자 패배, 3: 살인마 승리, 4: 살인마 패배
     private int Result;
-    private int SurTotal;
-    private int MurTotal;
+    private int[] SurScore = new int[5];
+    private int[] MurScore = new int[5];
 
     private bool isVideo = true;
 
@@ -50,9 +50,17 @@ public class ResultCtrl : MonoBehaviour
             videoPlayer.clip = videoClip[1];    // 살인마 승리
 
         if (Result == 1 || Result == 2)
-            SurTotal = PlayerPrefs.GetInt("SurTotal", 0);
-
-        CheckSurvivorScore();
+        {
+            for (int i = 0; i < 5; ++i)
+                SurScore[i] = PlayerPrefs.GetInt("SurScore" + i, 0);
+            CheckSurvivorScore();
+        }
+        else if (Result == 3 || Result == 4)
+        {
+            for (int i = 0; i < 5; ++i)
+                MurScore[i] = PlayerPrefs.GetInt("MurScore" + i, 0);
+            CheckMurdererScore();
+        }
 
         videoPlayer.Play();
         StartCoroutine(VidioPlaying());
@@ -62,7 +70,14 @@ public class ResultCtrl : MonoBehaviour
 
     void CheckSurvivorScore()
     {
-        SurvivorScore[4].text = SurTotal.ToString();
+        for (int i = 0; i < 5; ++i)
+            SurvivorScore[i].text = SurScore[i].ToString();
+    }
+    
+    void CheckMurdererScore()
+    {
+        for (int i = 0; i < 5; ++i)
+            MurdererScore[i].text = MurScore[i].ToString();
     }
 
     IEnumerator VidioPlaying()

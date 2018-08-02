@@ -53,8 +53,8 @@ public class GameCtrl : MonoBehaviour
     private int keyNum = 10;
 
     // score
-    int SurvivorScore = 0;
-    int MurdererScore = 0;
+    public int[] SurvivorScore = new int[5];
+    public int[] MurdererScore = new int[5];
 
     [SerializeField]
     private GameObject Fade;
@@ -320,7 +320,7 @@ public class GameCtrl : MonoBehaviour
     {
         if(Character == 1)
         {
-            SurvivorScore += score;
+            SurvivorScore[4] += score;
             print("Survivor : " + SurvivorScore);
         }
     }
@@ -329,7 +329,7 @@ public class GameCtrl : MonoBehaviour
     {
         if (Character == 2)
         {
-            MurdererScore += score;
+            MurdererScore[4] += score;
             print("Murderer : " + MurdererScore);
         }
     }
@@ -419,9 +419,15 @@ public class GameCtrl : MonoBehaviour
     public void ExitRoom()
     {
         if (Character == 1)
-            PlayerPrefs.SetInt("SurTotal", SurvivorScore);
+        {
+            for(int i = 0; i < 5; ++i)
+                PlayerPrefs.SetInt("SurScore" + i, SurvivorScore[i]);
+        }
         else if (Character == 2)
-            PlayerPrefs.SetInt("MurTotal", MurdererScore);
+        {
+            for (int i = 0; i < 5; ++i)
+                PlayerPrefs.SetInt("MurScore" + i, MurdererScore[i]);
+        }
 
         PhotonNetwork.LeaveRoom();
     }

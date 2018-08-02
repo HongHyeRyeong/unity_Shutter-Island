@@ -305,6 +305,7 @@ public class SurvivorCtrl : MonoBehaviour
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
 
+                        GameCtrl.instance.SurvivorScore[0] += 100;
                         GameCtrl.instance.SetSurvivorScore(100);
                     }
                 }
@@ -323,6 +324,7 @@ public class SurvivorCtrl : MonoBehaviour
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
 
+                        GameCtrl.instance.SurvivorScore[0] += 100;
                         GameCtrl.instance.SetSurvivorScore(100);
                     }
 
@@ -393,6 +395,7 @@ public class SurvivorCtrl : MonoBehaviour
     {
         Trap = false;
         pv.RPC("AttackEnd", PhotonTargets.All);
+        GameCtrl.instance.MurdererScore[0] += 100;
         GameCtrl.instance.SetMurdererScore(100);
 
         Hp -= 5f;
@@ -417,6 +420,7 @@ public class SurvivorCtrl : MonoBehaviour
                 SurvivorUICtrl.instance.DispHP(Hp);
             }
 
+            GameCtrl.instance.MurdererScore[1] += 500;
             GameCtrl.instance.SetMurdererScore(500);
 
             if (Life == 0)
@@ -520,6 +524,7 @@ public class SurvivorCtrl : MonoBehaviour
                     prison.GetComponent<PrisonCtrl>().OpenDoor();
                     PrisonTime = 3f;
 
+                    GameCtrl.instance.SurvivorScore[2] += 500;
                     GameCtrl.instance.SetSurvivorScore(500);
                 }
             }
@@ -656,6 +661,7 @@ public class SurvivorCtrl : MonoBehaviour
                                     
                                     machineRangeCtrl.SetMachineUse(false);
 
+                                    GameCtrl.instance.SurvivorScore[1] += 200;
                                     GameCtrl.instance.SetSurvivorScore(200);
                                 }
                             }
@@ -789,7 +795,8 @@ public class SurvivorCtrl : MonoBehaviour
         Ani.SetBool("isRun", false);
         pv.RPC("DieAnim", PhotonTargets.All);
 
-        GameCtrl.instance.SetMurdererScore(2000);
+        GameCtrl.instance.MurdererScore[3] += 1500;
+        GameCtrl.instance.SetMurdererScore(1500);
 
         SurvivorDie();
     }

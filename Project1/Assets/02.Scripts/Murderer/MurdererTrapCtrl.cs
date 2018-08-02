@@ -42,6 +42,9 @@ public class MurdererTrapCtrl : Photon.MonoBehaviour
                 Use = true;
                 Survivor = other.gameObject;
 
+                GameCtrl.instance.MurdererScore[2] += 200;
+                GameCtrl.instance.SetMurdererScore(200);
+
                 pv.RPC("CaughtAnim", PhotonTargets.AllBuffered);
                 other.gameObject.GetComponent<SurvivorCtrl>().TrapOn();
 
