@@ -85,6 +85,9 @@ public class ResultCtrl : MonoBehaviour
         isVideo = false;
         UI.SetActive(true);
 
+        SoundManager.instance.SetBGM("Ending2-Battle Lines");
+        SoundManager.instance.CreateEffect();
+
         if (Result == 1 || Result == 2)
         {
             if (Result == 1)
@@ -166,6 +169,8 @@ public class ResultCtrl : MonoBehaviour
 
     public void OnClickExitBtn()
     {
+        PlayerPrefs.SetInt("Result", 0);
+        SoundManager.instance.PlayEffect("Click");
         StartCoroutine(StartFade(false));
     }
 }

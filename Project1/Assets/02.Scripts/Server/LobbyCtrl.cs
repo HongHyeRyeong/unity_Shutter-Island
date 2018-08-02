@@ -42,6 +42,7 @@ public class LobbyCtrl : MonoBehaviour
         SurRoomSelect = false;
 
         SoundManager.instance.SetBGM("Lobby2-Last Stand");
+        SoundManager.instance.CreateEffect();
         StartCoroutine(StartFade(true));
     }
 
@@ -75,18 +76,24 @@ public class LobbyCtrl : MonoBehaviour
 
         for (int i = 0; i < murderer.Length; ++i)
             murderer[i].SetActive(!SelSur);
+
+        SoundManager.instance.PlayEffect("Click");
     }
 
     public void OnClickSurvivor(int i)
     {
         SurStat = i;
         MRsurvivor.material = Msurvivor[i - 1];
+
+        SoundManager.instance.PlayEffect("Click");
     }
 
     public void OnClickMap(int i)
     {
         Map = i;
         StartCoroutine(SelectMap(1, true));
+
+        SoundManager.instance.PlayEffect("Click");
     }
 
     public IEnumerator SelectMap(int cha, bool use)

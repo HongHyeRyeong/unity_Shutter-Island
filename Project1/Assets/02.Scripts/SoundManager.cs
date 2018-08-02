@@ -63,6 +63,56 @@ public class SoundManager : MonoBehaviour
         print("SoundNull: " + name);
     }
 
+    // 로비, 결과 효과음
+    public void CreateEffect()
+    {
+        for (int i = 0; i < 3; ++i)
+        {
+            EffectSource[i] = gameObject.AddComponent<AudioSource>();
+            EffectSource[i].playOnAwake = false;
+        }
+    }
+
+    // 로비, 결과 효과음 플레이
+    public void PlayEffect(string name)
+    {
+        for (int i = 0; i < EffectClip.Length; ++i)
+        {
+            if (EffectSource[i] != null)
+                if (EffectClip[i].name == name)
+                {
+                    AudioSource source = GetEmptyEffectSource();
+                    source.clip = EffectClip[i];
+                    source.Play();
+                    return;
+                }
+        }
+
+        print("SoundNull: " + name);
+    }
+
+    // 빈오디오소스 받아오기
+    AudioSource GetEmptyEffectSource()
+    {
+        int MaxIndex = 0;
+        float MaxProgress = 0;
+
+        for (int i = 0; i < EffectSource.Length; ++i)
+        {
+            if (!EffectSource[i].isPlaying)
+                return EffectSource[i];
+
+            float progress = EffectSource[i].time / EffectSource[i].clip.length;
+
+            if (progress > MaxProgress && !EffectSource[i].loop)    // 다 사용중이라면 제일 많이 플레이된 오디오소스
+            {
+                MaxIndex = i;
+                MaxProgress = progress;
+            }
+        }
+        return EffectSource[MaxIndex];
+    }
+
     public void SetVolume(int Num, float volume)
     {
         if (Num == 1)

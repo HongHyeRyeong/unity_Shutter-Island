@@ -95,6 +95,7 @@ public class PhotonInit : MonoBehaviour
     {
         if (LobbyCtrl.instance.Map != 0)
         {
+            SoundManager.instance.PlayEffect("ClickStart");
             StartCoroutine(LobbyCtrl.instance.StartFade(false));
 
             if (LobbyCtrl.instance.Map == 1)
@@ -203,6 +204,7 @@ public class PhotonInit : MonoBehaviour
     {
         if (LobbyCtrl.instance.SurStat != 0)
         {
+            SoundManager.instance.PlayEffect("ClickStart");
             StartCoroutine(LobbyCtrl.instance.StartFade(false));
             PhotonNetwork.JoinRoom(roomname);
         }
