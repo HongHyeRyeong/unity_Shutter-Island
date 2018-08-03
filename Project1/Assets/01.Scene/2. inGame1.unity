@@ -92039,6 +92039,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainCam: {fileID: 1305429267}
+  FilterAttack: {fileID: 1305429264}
   SkyboxDay: {fileID: 2100000, guid: e391f00234292cc4f935308c11cf0e54, type: 2}
   SkyboxNight: {fileID: 2100000, guid: d4454f71d85928744be7771e2143dab7, type: 2}
   targetSurvivorComPivot: {fileID: 0}

@@ -4,14 +4,10 @@ using UnityEngine;
 
 public class SurvivorAnimCtrl : MonoBehaviour
 {
+    [SerializeField]
     private SurvivorCtrl parentCtrl;
+    [SerializeField]
     private SurvivorItem parentItem;
-
-    void Start()
-    {
-        parentCtrl = transform.parent.GetComponent<SurvivorCtrl>();
-        parentItem = transform.parent.GetComponent<SurvivorItem>();
-    }
 
     public void SetState(int s)
     {

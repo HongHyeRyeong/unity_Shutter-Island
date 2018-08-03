@@ -5,27 +5,23 @@ using Photon;
 
 public class MurdererTrapCtrl : Photon.MonoBehaviour
 {
+    [SerializeField]
     private PhotonView pv = null;
-
+    [SerializeField]
     private Animator Anim;
 
+    [HideInInspector]
     public int SetNum = -1;
 
-    private bool Use = false;       // 트랩이 발동중인지
-    private GameObject Survivor;    // 트랩에 걸린 생존자
+    private bool Use = false;              // 트랩이 발동중인지
+    private GameObject Survivor = null;    // 트랩에 걸린 생존자
 
     private void Start()
     {
-        // PhotonView 컴포넌트 할당
-        pv = GetComponent<PhotonView>();
         // 데이터 전송 타입 설정
         pv.synchronization = ViewSynchronization.UnreliableOnChange;
-
         // PhotonView Observed Components 속성에 Ctrl 스크립트 연결
         pv.ObservedComponents[0] = this;
-
-        Anim = gameObject.GetComponent<Animator>();
-        Survivor = null;
     }
 
     private void OnTriggerStay(Collider other)

@@ -4,14 +4,10 @@ using UnityEngine;
 
 public class FootPrintCtrl : MonoBehaviour
 {
+    [SerializeField]
     private PhotonView pv = null;
 
     private float UseTime = 5.0f;
-
-    void Start()
-    {
-        pv = GetComponent<PhotonView>();
-    }
 
     public IEnumerator Use()
     {

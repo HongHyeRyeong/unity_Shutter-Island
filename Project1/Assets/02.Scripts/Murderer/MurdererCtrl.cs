@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MurdererCtrl : MonoBehaviour
 {
+    [SerializeField]
     private PhotonView pv = null;
 
     private Vector3 currPos = Vector3.zero;
@@ -11,10 +12,15 @@ public class MurdererCtrl : MonoBehaviour
     GameObject curSurvivor;
 
     //
+    [SerializeField]
     private Animator Ani;
+    [SerializeField]
     private AudioSource Audio;
-    public GameObject ParticleTrail;
-    
+    [SerializeField]
+    private Transform MurdererCamPivot;
+    [SerializeField]
+    private GameObject ParticleTrail;
+
     private GameObject[] TrapItems;
     private int TrapSetNum = 0;
 
@@ -24,9 +30,7 @@ public class MurdererCtrl : MonoBehaviour
     private bool isAttack = false;
 
     private float MouseX;
-
     private float AttackRunTime = 0;
-
     private bool isMurDie = false;
 
     //
@@ -40,16 +44,12 @@ public class MurdererCtrl : MonoBehaviour
 
     void Start()
     {
-        pv = GetComponent<PhotonView>();
         pv.synchronization = ViewSynchronization.UnreliableOnChange;
         pv.ObservedComponents[1] = this;
 
         currPos = transform.position;
         currRot = transform.rotation;
 
-        Ani = GetComponent<Animator>();
-
-        Audio = GetComponent<AudioSource>();
         Audio.Stop();
         SoundManager.instance.SetEffect(false, Audio, "MFootStep");
 
@@ -64,7 +64,8 @@ public class MurdererCtrl : MonoBehaviour
         {
             CameraCtrl.instance.transform.position = transform.position;
             CameraCtrl.instance.targetMurderer = this.gameObject.transform;
-            CameraCtrl.instance.targetMurdererCamPivot = this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head/MurdererCamPivot").transform;
+            CameraCtrl.instance.targetMurdererCamPivot = MurdererCamPivot;
+            CameraCtrl.instance.MurCtrl = this;
 
             MouseX = 180;
 

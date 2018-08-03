@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class SurvivorItem : MonoBehaviour
 {
+    [SerializeField]
     private PhotonView pv = null;
-
+    [SerializeField]
     private SurvivorCtrl ctrl;
 
+    [SerializeField]
     private GameObject Hat;
+    [SerializeField]
     private GameObject Clothes;
+    [SerializeField]
     private GameObject Bag;
 
     // type 1~5 순서
@@ -23,17 +27,6 @@ public class SurvivorItem : MonoBehaviour
     private GameObject saveItem;
     private int saveType = -1;
     private int saveLevel = -1;
-
-    private void Start()
-    {
-        pv = GetComponent<PhotonView>();
-
-        ctrl = GetComponent<SurvivorCtrl>();
-
-        Hat = transform.Find("SurvivorModel/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/ItemHat").gameObject;
-        Clothes = transform.Find("SurvivorModel/ItemClothes").gameObject;
-        Bag = transform.Find("SurvivorModel/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/ItemBag").gameObject;
-    }
 
     void SurvivorByItem(int type, int level)
     {

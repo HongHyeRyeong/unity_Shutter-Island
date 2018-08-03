@@ -1519,7 +1519,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1266354928646998}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.48, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4340522247716368}
@@ -2555,6 +2555,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd1d9a19d71c63040987440a7a2a1424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pv: {fileID: 114487899276913832}
+  Ani: {fileID: 95620250947825466}
+  trModel: {fileID: 4340522247716368}
+  Audio: {fileID: 82979189975331008}
+  Item: {fileID: 114469038206761618}
+  MeshRen: {fileID: 137602566060383484}
   Trap: 0
 --- !u!114 &114469038206761618
 MonoBehaviour:
@@ -2567,6 +2573,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c689f955e3800e4fbebda200c1afd5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pv: {fileID: 114487899276913832}
+  ctrl: {fileID: 114337623108998074}
+  Hat: {fileID: 1591801321990052}
+  Clothes: {fileID: 1171503778752130}
+  Bag: {fileID: 1369263045110764}
 --- !u!114 &114487899276913832
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2604,6 +2615,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3948d0c2ed403f542a0a3839dc4c7487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentCtrl: {fileID: 114337623108998074}
+  parentItem: {fileID: 114469038206761618}
 --- !u!114 &114831926840431748
 MonoBehaviour:
   m_ObjectHideFlags: 1

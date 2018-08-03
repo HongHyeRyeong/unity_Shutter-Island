@@ -10,10 +10,16 @@ public class SurvivorCtrl : MonoBehaviour
     private Quaternion currRot = Quaternion.identity;
 
     //
+    [SerializeField]
     private Animator Ani;
-    private AudioSource Audio;
+    [SerializeField]
     private Transform trModel;
+    [SerializeField]
+    private AudioSource Audio;
+    [SerializeField]
     private SurvivorItem Item;
+    [SerializeField]
+    private SkinnedMeshRenderer MeshRen;
 
     private int State = 0;
     private int Life = 2;
@@ -37,6 +43,7 @@ public class SurvivorCtrl : MonoBehaviour
     bool PrisonTP = false;
     GameObject inPrison = null;
 
+    [HideInInspector]
     public bool Trap = false;
 
     private Vector3 SaveRot;
@@ -57,8 +64,6 @@ public class SurvivorCtrl : MonoBehaviour
 
     void Start()
     {
-        // PhotonView 컴포넌트 할당
-        pv = GetComponent<PhotonView>();
         // 데이터 전송 타입 설정
         pv.synchronization = ViewSynchronization.UnreliableOnChange;
 
@@ -69,11 +74,6 @@ public class SurvivorCtrl : MonoBehaviour
         currPos = transform.position;
         currRot = transform.rotation;
 
-        Ani = transform.Find("SurvivorModel").GetComponent<Animator>();
-        trModel = transform.Find("SurvivorModel").GetComponent<Transform>();
-        Item = GetComponent<SurvivorItem>();
-
-        Audio = GetComponent<AudioSource>();
         Audio.Stop();
         SoundManager.instance.SetEffect(false, Audio, "SFootStep");
 
@@ -112,22 +112,19 @@ public class SurvivorCtrl : MonoBehaviour
     [PunRPC]
     public void ChangeMaterial1()
     {
-        SkinnedMeshRenderer meshrender = transform.Find("SurvivorModel/low001").GetComponent<SkinnedMeshRenderer>();
-        meshrender.material = GameCtrl.instance.Msurvivor[0];
+        MeshRen.material = GameCtrl.instance.Msurvivor[0];
     }
 
     [PunRPC]
     public void ChangeMaterial2()
     {
-        SkinnedMeshRenderer meshrender = transform.Find("SurvivorModel/low001").GetComponent<SkinnedMeshRenderer>();
-        meshrender.material = GameCtrl.instance.Msurvivor[1];
+        MeshRen.material = GameCtrl.instance.Msurvivor[1];
     }
 
     [PunRPC]
     public void ChangeMaterial3()
     {
-        SkinnedMeshRenderer meshrender = transform.Find("SurvivorModel/low001").GetComponent<SkinnedMeshRenderer>();
-        meshrender.material = GameCtrl.instance.Msurvivor[2];
+        MeshRen.material = GameCtrl.instance.Msurvivor[2];
     }
 
     void Update()

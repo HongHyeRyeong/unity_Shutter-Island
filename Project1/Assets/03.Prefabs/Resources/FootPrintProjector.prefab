@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f3cebb2592ca78428d267169d02b87f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pv: {fileID: 114244876145270772}
 --- !u!119 &119964249427714174
 Projector:
   m_ObjectHideFlags: 1

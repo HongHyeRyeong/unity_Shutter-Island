@@ -5,9 +5,9 @@ using UnityEngine;
 public class CameraCtrl : MonoBehaviour
 {
     public static CameraCtrl instance;
-
-    [HideInInspector]
+    
     public Camera MainCam;
+    [SerializeField]
     private CameraFilter_Attack FilterAttack;
 
     [SerializeField]
@@ -27,6 +27,8 @@ public class CameraCtrl : MonoBehaviour
     public Transform targetMurderer;
     [HideInInspector]
     public Transform targetMurdererCamPivot;
+    [HideInInspector]
+    public MurdererCtrl MurCtrl;
 
     private int saveState = -1;
     private float MouseY;
@@ -34,8 +36,6 @@ public class CameraCtrl : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        MainCam = GetComponent<Camera>();
-        FilterAttack = GetComponent<CameraFilter_Attack>();
 
         // SkyBox
         int sky = Random.Range(1, 3);
@@ -74,14 +74,14 @@ public class CameraCtrl : MonoBehaviour
         {
             if (targetMurdererCamPivot)
             {
-                int state = targetMurderer.GetComponent<MurdererCtrl>().GetState();
+                int state = MurCtrl.GetState();
 
                 if (state == 0)
                 {
                     if (saveState != state)
                     {
                         saveState = state;
-                        MainCam.cullingMask = -1;
+                        MainCam.cullingMask = ~(1 << 10);
                     }
 
                     transform.position = Vector3.Lerp(transform.position, new Vector3(
@@ -104,7 +104,7 @@ public class CameraCtrl : MonoBehaviour
                     transform.position = Vector3.Lerp(transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,
                         targetMurderer.transform.position.y + 2.4f,
-                        targetMurdererCamPivot.transform.position.z), Time.deltaTime * 15);
+                        targetMurderer.transform.position.z), Time.deltaTime * 15);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;
                     MouseY = ClampAngle(MouseY, -30, 60);
