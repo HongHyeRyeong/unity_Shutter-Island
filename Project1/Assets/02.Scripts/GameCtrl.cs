@@ -27,11 +27,14 @@ public class GameCtrl : MonoBehaviour
     private int PrisonSurNum = 0;
 
     // 1이면 생존자 승리, 2이면 생존자 패배, 3이면 살인마 승리, 4이면 살인마 패배
+    [HideInInspector]
     public int Result = 0;
 
     // Survivor
     [SerializeField]
-    private GameObject SurvivorFootPrints;
+    private GameObject SurSpawns;
+    [SerializeField]
+    private GameObject SurFootPrints;
     [SerializeField]
     private GameObject FootPrint;
     private GameObject[] FootPrints = new GameObject[3000];
@@ -42,10 +45,14 @@ public class GameCtrl : MonoBehaviour
     // Murderer
     public GameObject MurdererTrap;
     private int TrapNum = 5;
+    [HideInInspector]
     public int SurvivorNum = 0;
+    [HideInInspector]
     public int AllSurNum = 0;
 
     // item
+    [SerializeField]
+    private GameObject ItemSpawns;
     private int[] hat = new int[] { 10, 4, 2 };
     private int[] Clothes = new int[] { 10, 4, 2 };
     private int[] Bag = new int[] { 10, 4 };
@@ -53,17 +60,15 @@ public class GameCtrl : MonoBehaviour
     private int keyNum = 10;
 
     // score
+    [HideInInspector]
     public int[] SurvivorScore = new int[5];
+    [HideInInspector]
     public int[] MurdererScore = new int[5];
 
     [SerializeField]
     private GameObject Fade;
     [SerializeField]
     private Image Hit;
-
-    // fps
-    private float deltaTime = 0.0f;
-    private float fps;
 
     private void Awake()
     {
@@ -77,11 +82,14 @@ public class GameCtrl : MonoBehaviour
             Character = 1;
             SurvivorUI.SetActive(true);
 
+            // 랜덤 스폰
+            Transform[] spawns = SurSpawns.GetComponentsInChildren<Transform>();
+
             // 맵에 따라 다른 생성 위치
             if (PhotonInit.instance.Map == 1)
-                Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(-37, 0.0f, 36), Quaternion.identity, 0);
+                Survivor = PhotonNetwork.Instantiate("Survivor", spawns[Random.Range(1, spawns.Length)].position, Quaternion.identity, 0);
             else
-                Survivor = PhotonNetwork.Instantiate("Survivor", new Vector3(80, 0.0f, 36), Quaternion.identity, 0);
+                Survivor = PhotonNetwork.Instantiate("Survivor", spawns[Random.Range(1, spawns.Length)].position, Quaternion.identity, 0);
 
             StartCoroutine(FindMurderer());
         }
@@ -93,12 +101,12 @@ public class GameCtrl : MonoBehaviour
 
             // 맵에 따라 다른 생성 위치
             if (PhotonInit.instance.Map == 1)
-                Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(10, 0.0f, 67), Quaternion.identity, 0);
+                Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(3.5f, 5.5f, 83), Quaternion.Euler(0, 180, 0), 0);
             else
-                Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(80, 0.0f, 36), Quaternion.identity, 0);
+                Murderer = PhotonNetwork.Instantiate("Murderer", new Vector3(36, 0.0f, 51), Quaternion.Euler(0, 180, 0), 0);
 
             // 아이템 생성
-            GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawn");
+            Transform[] spawns = ItemSpawns.GetComponentsInChildren<Transform>();
 
             int hatNum = hat[0] + hat[1] + hat[2];
             int clothesNum = Clothes[0] + Clothes[1] + Clothes[2];
@@ -108,9 +116,9 @@ public class GameCtrl : MonoBehaviour
             for (int i = 0; i < itemnum; ++i)
             {
                 Vector3 pos = new Vector3(
-                    spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.x + PlayerPrefs.GetFloat("random" + (i + 1)),
-                    spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.y,
-                    spawns[PlayerPrefs.GetInt("itemrand" + (i + 1))].transform.position.z + PlayerPrefs.GetFloat("random" + (i + 47)));
+                    spawns[PlayerPrefs.GetInt("itemrand" + (i + 1)) + 1].position.x + PlayerPrefs.GetFloat("random" + (i + 1)),
+                    spawns[PlayerPrefs.GetInt("itemrand" + (i + 1)) + 1].position.y,
+                    spawns[PlayerPrefs.GetInt("itemrand" + (i + 1)) + 1].position.z + PlayerPrefs.GetFloat("random" + (i + 47)));
 
                 if (i < hatNum)
                 {
@@ -142,9 +150,9 @@ public class GameCtrl : MonoBehaviour
             for (int i = 0; i < GadgetNum; ++i)
             {
                 Vector3 pos = new Vector3(
-                    spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47))].transform.position.x + PlayerPrefs.GetFloat("random" + (i + 93)),
-                    spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47))].transform.position.y,
-                    spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47))].transform.position.z + PlayerPrefs.GetFloat("random" + (i + 128)));
+                    spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47)) + 1].position.x + PlayerPrefs.GetFloat("random" + (i + 93)),
+                    spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47)) + 1].position.y,
+                    spawns[PlayerPrefs.GetInt("gadgetrand" + (i + 47)) + 1].position.z + PlayerPrefs.GetFloat("random" + (i + 128)));
 
                 PhotonNetwork.Instantiate("ItemGadget", pos, Quaternion.Euler(-90, 0, 0), 0);
             }
@@ -152,9 +160,9 @@ public class GameCtrl : MonoBehaviour
             for (int i = 0; i < keyNum; ++i)
             {
                 Vector3 pos = new Vector3(
-                    spawns[PlayerPrefs.GetInt("keyrand" + (i + 82))].transform.position.x + PlayerPrefs.GetFloat("random1" + (i + 163)),
-                    spawns[PlayerPrefs.GetInt("keyrand" + (i + 82))].transform.position.y,
-                    spawns[PlayerPrefs.GetInt("keyrand" + (i + 82))].transform.position.z + PlayerPrefs.GetFloat("random2" + (i + 173)));
+                    spawns[PlayerPrefs.GetInt("keyrand" + (i + 82)) + 1].position.x + PlayerPrefs.GetFloat("random1" + (i + 163)),
+                    spawns[PlayerPrefs.GetInt("keyrand" + (i + 82)) + 1].position.y,
+                    spawns[PlayerPrefs.GetInt("keyrand" + (i + 82)) + 1].position.z + PlayerPrefs.GetFloat("random2" + (i + 173)));
 
                 PhotonNetwork.Instantiate("ItemKey", pos, Quaternion.identity, 0);
             }
@@ -163,9 +171,9 @@ public class GameCtrl : MonoBehaviour
         savedelay = delay;
         StartCoroutine(StartFade(true));
 
-        //StartCoroutine(DisFPS());
-
         GetConnectPlayerCount();
+
+        //StartCoroutine(DisFPS());
     }
 
     IEnumerator FindMurderer()
@@ -297,7 +305,7 @@ public class GameCtrl : MonoBehaviour
         {
             FootPrints[++FootPrintsNum] = PhotonNetwork.Instantiate("FootPrintProjector", Pos,
                 Quaternion.Euler(90, 0, Random.Range(0, 360)), 0);
-            FootPrints[FootPrintsNum].transform.parent = SurvivorFootPrints.transform;
+            FootPrints[FootPrintsNum].transform.parent = SurFootPrints.transform;
             StartCoroutine(FootPrints[FootPrintsNum].GetComponent<FootPrintCtrl>().Use());
         }
     }
@@ -402,15 +410,20 @@ public class GameCtrl : MonoBehaviour
 
     IEnumerator DisFPS()
     {
+        float deltaTime = 0.0f;
+        float fps;
+
         while (true)
         {
             deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
             fps = 1.0f / deltaTime;
 
-            if (Character == 1)
-                SurvivorUICtrl.instance.DisFPS(fps);
-            else if (Character == 2)
-                MurdererUICtrl.instance.DisFPS(fps);
+            print(fps);
+
+            //if (Character == 1)
+            //    SurvivorUICtrl.instance.DisFPS(fps);
+            //else if (Character == 2)
+            //    MurdererUICtrl.instance.DisFPS(fps);
 
             yield return null;
         }

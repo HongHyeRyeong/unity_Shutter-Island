@@ -7,10 +7,8 @@ TagManager:
   - Murderer
   - Survivor
   - Machine
-  - Spawn
   - Prison
   - ROOM_ITEM
-  - ItemPut
   layers:
   - Default
   - TransparentFX

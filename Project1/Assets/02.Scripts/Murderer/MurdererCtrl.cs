@@ -66,6 +66,8 @@ public class MurdererCtrl : MonoBehaviour
             CameraCtrl.instance.targetMurderer = this.gameObject.transform;
             CameraCtrl.instance.targetMurdererCamPivot = this.gameObject.transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head/MurdererCamPivot").transform;
 
+            MouseX = 180;
+
             SoundManager.instance.SetBGM("Ingame6-In My Nightmares");
         }
     }
@@ -89,7 +91,7 @@ public class MurdererCtrl : MonoBehaviour
 
                     if (v < 0)
                     {
-                        MoveSpeed = 3f;
+                        MoveSpeed = 4f;
                         Ani.SetBool("isBackRun", true);
                         Ani.SetBool("isRun", false);
                     }

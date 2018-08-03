@@ -32,17 +32,13 @@ public class PrisonCtrl : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Survivor" && isSurvivor)
-        {
             other.gameObject.GetComponent<SurvivorCtrl>().PrisonStay(this.gameObject);
-        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Survivor" && isSurvivor)
-        {
             other.gameObject.GetComponent<SurvivorCtrl>().PrisonExit();
-        }
     }
 
     public void SurvivorEnter(GameObject survivor)

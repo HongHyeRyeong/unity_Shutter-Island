@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SurvivorCtrl : MonoBehaviour
 {
-    private PhotonView pv = null;   // PhotonView 컴포넌트를 할당할 변수
+    public PhotonView pv = null;   // PhotonView 컴포넌트를 할당할 변수
 
     // 위치 정보를 송수신할 때 사용할 변수 선언 및 초기값 설정
     private Vector3 currPos = Vector3.zero;
