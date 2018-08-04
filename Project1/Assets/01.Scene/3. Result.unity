@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 8
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -38,8 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
-  m_UseRadianceAmbientProbe: 0
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -55,10 +54,11 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
-    serializedVersion: 10
+    serializedVersion: 9
     m_Resolution: 2
     m_BakeResolution: 40
-    m_AtlasSize: 1024
+    m_TextureWidth: 1024
+    m_TextureHeight: 1024
     m_AO: 0
     m_AOMaxDistance: 1
     m_CompAOExponent: 1
@@ -4674,7 +4674,7 @@ MonoBehaviour:
   Fade: {fileID: 177561561}
   videoPlayer: {fileID: 1956146975}
   videoClip:
-  - {fileID: 32900000, guid: 9c9aa47c873f94646af429ceddf604a1, type: 3}
+  - {fileID: 32900000, guid: d9e1789755c92614fb588028e16823dc, type: 3}
   - {fileID: 32900000, guid: 07c3270fcfcb8ae4b9a8fb3faf2e9f5c, type: 3}
   Survivor:
   - {fileID: 124821289}
@@ -4740,7 +4740,7 @@ VideoPlayer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1956146971}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 9c9aa47c873f94646af429ceddf604a1, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: d9e1789755c92614fb588028e16823dc, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 144516312}
