@@ -124,4 +124,6 @@ MonoBehaviour:
   - EffectPlay
   - EffectPlayLoop
   - EffectStop
+  - ItemPutOff
+  - ItemPutOn
   DisableAutoOpenWizard: 1

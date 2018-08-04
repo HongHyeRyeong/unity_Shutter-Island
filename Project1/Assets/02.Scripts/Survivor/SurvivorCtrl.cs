@@ -19,6 +19,8 @@ public class SurvivorCtrl : MonoBehaviour
     [SerializeField]
     private SurvivorItem Item;
     [SerializeField]
+    private Transform SurvivorComPivot;
+    [SerializeField]
     private SkinnedMeshRenderer MeshRen;
 
     private int State = 0;
@@ -80,23 +82,16 @@ public class SurvivorCtrl : MonoBehaviour
         if (pv.isMine)
         {
             CameraCtrl.instance.transform.position = transform.position;
-            CameraCtrl.instance.targetSurvivorComPivot = transform.Find("SurvivorCamPivot");
+            CameraCtrl.instance.targetSurvivorComPivot = SurvivorComPivot;
 
             if (LobbyCtrl.instance.SurStat == 1)
-            {
                 Stamina = 6f;
-                pv.RPC("ChangeMaterial1", PhotonTargets.AllBuffered);
-            }
             else if (LobbyCtrl.instance.SurStat == 2)
-            {
                 WorkSpeed = 1.1f;
-                pv.RPC("ChangeMaterial2", PhotonTargets.AllBuffered);
-            }
             else if (LobbyCtrl.instance.SurStat == 3)
-            {
                 Power = 15f;
-                pv.RPC("ChangeMaterial3", PhotonTargets.AllBuffered);
-            }
+
+            pv.RPC("ChangeMaterial", PhotonTargets.AllBuffered, LobbyCtrl.instance.SurStat - 1);
 
             maxStamina = Stamina;
             saveStamina = Stamina;
@@ -110,21 +105,9 @@ public class SurvivorCtrl : MonoBehaviour
     }
 
     [PunRPC]
-    public void ChangeMaterial1()
+    public void ChangeMaterial(int num)
     {
-        MeshRen.material = GameCtrl.instance.Msurvivor[0];
-    }
-
-    [PunRPC]
-    public void ChangeMaterial2()
-    {
-        MeshRen.material = GameCtrl.instance.Msurvivor[1];
-    }
-
-    [PunRPC]
-    public void ChangeMaterial3()
-    {
-        MeshRen.material = GameCtrl.instance.Msurvivor[2];
+        MeshRen.material = GameCtrl.instance.Msurvivor[num];
     }
 
     void Update()

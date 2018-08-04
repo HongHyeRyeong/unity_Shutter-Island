@@ -59687,20 +59687,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aedbd75733f4b847b2419a2b27a024a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStart: 0
+  Character: 0
+  Result: 0
   Survivor: {fileID: 0}
-  Murderer: {fileID: 0}
+  SurSpawns: {fileID: 53620046}
+  SurvivorUI: {fileID: 342060749}
   Msurvivor:
   - {fileID: 2100000, guid: 25ff5fe36700d3043855693f6cf2dd58, type: 2}
   - {fileID: 2100000, guid: 5e6a977dea82a764e9633e8f2163a793, type: 2}
   - {fileID: 2100000, guid: 199fe0943136def46b2f19e77ccebb49, type: 2}
-  SurvivorUI: {fileID: 342060749}
-  MurdererUI: {fileID: 83244731}
-  isStart: 0
-  Character: 0
-  Result: 0
-  SurSpawns: {fileID: 53620046}
+  MsurvivorItem:
+  - {fileID: 2100000, guid: 575bec5dae755df45a5553263ce2b532, type: 2}
+  - {fileID: 2100000, guid: dc8d8de72a223274a8473b2678d95b7f, type: 2}
+  - {fileID: 2100000, guid: e665acc77cb6ee546850d5d07872443f, type: 2}
   SurFootPrints: {fileID: 1035940607}
   FootPrint: {fileID: 1999113944256596, guid: e33a4612c9f3aab419505c926c089df4, type: 2}
+  Murderer: {fileID: 0}
+  MurdererUI: {fileID: 83244731}
   MurdererTrap: {fileID: 157076160}
   SurvivorNum: 0
   AllSurNum: 0
@@ -92045,6 +92049,7 @@ MonoBehaviour:
   targetSurvivorComPivot: {fileID: 0}
   targetMurderer: {fileID: 0}
   targetMurdererCamPivot: {fileID: 0}
+  MurCtrl: {fileID: 0}
 --- !u!1 &1305605370
 GameObject:
   m_ObjectHideFlags: 0

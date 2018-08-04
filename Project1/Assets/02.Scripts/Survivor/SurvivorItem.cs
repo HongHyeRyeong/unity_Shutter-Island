@@ -10,11 +10,11 @@ public class SurvivorItem : MonoBehaviour
     private SurvivorCtrl ctrl;
 
     [SerializeField]
-    private GameObject Hat;
+    private GameObject[] Item = new GameObject[3];
     [SerializeField]
-    private GameObject Clothes;
+    private MeshRenderer[] MeshRenItem = new MeshRenderer[2];
     [SerializeField]
-    private GameObject Bag;
+    private SkinnedMeshRenderer MeshRenItemC;
 
     // type 1~5 순서
     private bool[] ItemHat = new bool[3] { false, false, false };
@@ -130,7 +130,7 @@ public class SurvivorItem : MonoBehaviour
             ItemHat[level - 1] = true;
             SurvivorByItem(type, level);
 
-            pv.RPC("HatEquip", PhotonTargets.AllBuffered, type, level);
+            pv.RPC("ItemPutOn", PhotonTargets.AllBuffered, type, level);
             SurvivorUICtrl.instance.UpdateItemInformation(type);
         }
         else if (type == 2)
@@ -142,7 +142,7 @@ public class SurvivorItem : MonoBehaviour
             ItemClothes[level - 1] = true;
             SurvivorByItem(type, level);
 
-            pv.RPC("ClothesEquip", PhotonTargets.AllBuffered, type, level);
+            pv.RPC("ItemPutOn", PhotonTargets.AllBuffered, type, level);
             SurvivorUICtrl.instance.UpdateItemInformation(type);
         }
         else if (type == 3)
@@ -154,7 +154,7 @@ public class SurvivorItem : MonoBehaviour
             ItemBag[level - 1] = true;
             SurvivorByItem(type, level);
 
-            pv.RPC("BagEquip", PhotonTargets.AllBuffered, type, level);
+            pv.RPC("ItemPutOn", PhotonTargets.AllBuffered, type, level);
             SurvivorUICtrl.instance.UpdateItemInformation(type);
         }
         else if (type == 4)
@@ -169,6 +169,19 @@ public class SurvivorItem : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    public void ItemPutOn(int type, int level)
+    {
+        Item[type - 1].SetActive(true);
+
+        if (type == 1)
+            MeshRenItem[0].material = GameCtrl.instance.MsurvivorItem[level - 1];
+        else if (type == 2)
+            MeshRenItemC.material = GameCtrl.instance.MsurvivorItem[level - 1];
+        else if (type == 3)
+            MeshRenItem[1].material = GameCtrl.instance.MsurvivorItem[level - 1];
+    }
+
     public void ItemPut(int type)
     {
         if (type == 1)
@@ -181,7 +194,7 @@ public class SurvivorItem : MonoBehaviour
                     ctrl.SetState(4);
 
                     int level = i + 1;
-                    pv.RPC("HatTakeOff", PhotonTargets.AllBuffered, type, level);
+                    pv.RPC("ItemPutOff", PhotonTargets.AllBuffered, type, level);
 
                     break;
                 }
@@ -197,7 +210,7 @@ public class SurvivorItem : MonoBehaviour
                     ctrl.SetState(4);
 
                     int level = i + 1;
-                    pv.RPC("ClothesTakeOff", PhotonTargets.AllBuffered, type, level);
+                    pv.RPC("ItemPutOff", PhotonTargets.AllBuffered, type, level);
 
                     break;
                 }
@@ -213,7 +226,7 @@ public class SurvivorItem : MonoBehaviour
                     ctrl.SetState(4);
 
                     int level = i + 1;
-                    pv.RPC("BagTakeOff", PhotonTargets.AllBuffered, type, level);
+                    pv.RPC("ItemPutOff", PhotonTargets.AllBuffered, type, level);
 
                     break;
                 }
@@ -221,6 +234,13 @@ public class SurvivorItem : MonoBehaviour
         }
 
         SurvivorByItem(type, 0);
+    }
+
+    [PunRPC]
+    public void ItemPutOff(int type, int level)
+    {
+        Item[type - 1].SetActive(false);
+        ItemsCtrl.instance.SetItem(this.transform.position, type, level);
     }
 
     public int ItemGet(int type)
@@ -273,44 +293,5 @@ public class SurvivorItem : MonoBehaviour
                 ItemKey = false;
             SurvivorUICtrl.instance.DisKey(ItemKey);
         }
-    }
-
-    [PunRPC]
-    public void HatEquip(int type, int level)
-    {
-        Hat.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
-    }
-
-    [PunRPC]
-    public void ClothesEquip(int type, int level)
-    {
-        Clothes.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
-    }
-
-    [PunRPC]
-    public void BagEquip(int type, int level)
-    {
-        Bag.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(true);
-    }
-
-    [PunRPC]
-    public void HatTakeOff(int type, int level)
-    {
-        Hat.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-        ItemsCtrl.instance.SetItem(this.transform.position, type, level);
-    }
-
-    [PunRPC]
-    public void ClothesTakeOff(int type, int level)
-    {
-        Clothes.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-        ItemsCtrl.instance.SetItem(this.transform.position, type, level);
-    }
-
-    [PunRPC]
-    public void BagTakeOff(int type, int level)
-    {
-        Bag.transform.Find("Item" + type.ToString() + level.ToString()).gameObject.SetActive(false);
-        ItemsCtrl.instance.SetItem(this.transform.position, type, level);
     }
 }

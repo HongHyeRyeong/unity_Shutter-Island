@@ -8,15 +8,6 @@ public class GameCtrl : MonoBehaviour
 {
     public static GameCtrl instance;
 
-    [HideInInspector]
-    public GameObject Survivor;
-    [HideInInspector]
-    public GameObject Murderer;
-    public Material[] Msurvivor = new Material[3];
-
-    public GameObject SurvivorUI;
-    public GameObject MurdererUI;
-
     // inGame
     [HideInInspector]
     public bool isStart = false;
@@ -31,8 +22,14 @@ public class GameCtrl : MonoBehaviour
     public int Result = 0;
 
     // Survivor
+    [HideInInspector]
+    public GameObject Survivor;
     [SerializeField]
     private GameObject SurSpawns;
+    public GameObject SurvivorUI;
+    public Material[] Msurvivor = new Material[3];
+    public Material[] MsurvivorItem = new Material[3];
+
     [SerializeField]
     private GameObject SurFootPrints;
     [SerializeField]
@@ -43,8 +40,13 @@ public class GameCtrl : MonoBehaviour
     private float savedelay;
 
     // Murderer
+    [HideInInspector]
+    public GameObject Murderer;
+    public GameObject MurdererUI;
+
     public GameObject MurdererTrap;
     private int TrapNum = 5;
+
     [HideInInspector]
     public int SurvivorNum = 0;
     [HideInInspector]
