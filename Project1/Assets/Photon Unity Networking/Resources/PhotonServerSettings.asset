@@ -126,4 +126,5 @@ MonoBehaviour:
   - EffectStop
   - ItemPutOff
   - ItemPutOn
+  - SetMurdererScore
   DisableAutoOpenWizard: 1

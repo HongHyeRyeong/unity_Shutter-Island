@@ -192,9 +192,6 @@ public class GameCtrl : MonoBehaviour
     void GetConnectPlayerCount()
     {
         Room currRoom = PhotonNetwork.room;
-
-        print("all" + AllSurNum);
-        print("sur" + SurvivorNum);
     }
 
     void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
@@ -239,8 +236,8 @@ public class GameCtrl : MonoBehaviour
     {
         if (Character == 1)
             SurvivorUICtrl.instance.DisPrison(pos, num);
-        else if (Character == 2)
-            MurdererUICtrl.instance.DisPrison(pos, num);
+        //else if (Character == 2)
+        //    MurdererUICtrl.instance.DisPrison(pos, num);
     }
 
     public void DisSurPrison(int num)

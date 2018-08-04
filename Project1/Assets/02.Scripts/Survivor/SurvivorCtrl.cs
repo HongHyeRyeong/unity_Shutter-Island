@@ -375,10 +375,10 @@ public class SurvivorCtrl : MonoBehaviour
     {
         Trap = false;
         pv.RPC("AttackEnd", PhotonTargets.All);
-        GameCtrl.instance.MurdererScore[0] += 100;
-        GameCtrl.instance.SetMurdererScore(100);
 
-        Hp -= 5f;
+        pv.RPC("SetMurdererScore", PhotonTargets.AllBuffered, 0, 100);
+
+        Hp -= 50f;
         if (pv.isMine)
         {
             SurvivorUICtrl.instance.DispHP(Hp);
@@ -400,8 +400,7 @@ public class SurvivorCtrl : MonoBehaviour
                 SurvivorUICtrl.instance.DispHP(Hp);
             }
 
-            GameCtrl.instance.MurdererScore[1] += 500;
-            GameCtrl.instance.SetMurdererScore(500);
+            pv.RPC("SetMurdererScore", PhotonTargets.AllBuffered, 1, 500);
 
             if (Life == 0)
             {
@@ -775,8 +774,8 @@ public class SurvivorCtrl : MonoBehaviour
         Ani.SetBool("isRun", false);
         pv.RPC("DieAnim", PhotonTargets.All);
 
-        GameCtrl.instance.MurdererScore[3] += 1500;
-        GameCtrl.instance.SetMurdererScore(1500);
+        pv.RPC("SetMurdererScore", PhotonTargets.AllBuffered, 3, 1500);
+        print("1500");
 
         SurvivorDie();
     }
@@ -862,6 +861,13 @@ public class SurvivorCtrl : MonoBehaviour
     public void TrapAnim()
     {
         Ani.SetTrigger("trTrap");
+    }
+
+    [PunRPC]
+    public void SetMurdererScore(int idx, int score)
+    {
+        GameCtrl.instance.MurdererScore[idx] += score;
+        GameCtrl.instance.SetMurdererScore(score);
     }
 
     void SurvivorDie()
