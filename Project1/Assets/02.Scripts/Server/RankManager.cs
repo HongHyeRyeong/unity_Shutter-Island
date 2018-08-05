@@ -17,9 +17,12 @@ public class RankManager : MonoBehaviour
     private int Check;
     private int SurScore;
     private int MurScore;
+    private int SurRank;
+    private int MurRank;
 
     //
-    public string RankURL;
+    public string SurRankURL;
+    public string MurRankURL;
 
     void Start()
     {
@@ -29,7 +32,11 @@ public class RankManager : MonoBehaviour
 
         if (ResultCtrl.instance != null)
         {
-            //RankURL = "wjddus0424.dothome.co.kr/RankUp.php";
+            int.TryParse(SurRankTxt.text, out SurRank);
+            int.TryParse(MurRankTxt.text, out MurRank);
+
+            SurRankURL = "wjddus0424.dothome.co.kr/SurvivorRankUp.php";
+                MurRankURL = "wjddus0424.dothome.co.kr/MurdererRankUp.php";
 
             Check = ResultCtrl.instance.GetCheck();
 
@@ -38,26 +45,44 @@ public class RankManager : MonoBehaviour
             else if (Check == 3 || Check == 4)
                 MurScore = ResultCtrl.instance.GetMurdererTotalScore();
 
-            //if (SurScore >= 10000)
-            //    StartCoroutine(SurRankUp());
-            //else if (MurScore >= 10000)
-            //    StartCoroutine(MurRankUp());
+            if (SurScore >= 10000)
+            {
+                SurRank++;
+
+                //StartCoroutine(SurRankUp());
+            }
+            else if (MurScore >= 10000)
+            {
+                MurRank++;
+                
+                //StartCoroutine(MurRankUp());
+            }
         }
     }
 
     IEnumerator SurRankUp()
     {
         WWWForm form = new WWWForm();
+        form.AddField("SurvivorRank", SurRank);
 
-        WWW webRequest = new WWW(RankURL, form);
+        WWW webRequest = new WWW(SurRankURL, form);
         yield return webRequest;
+
+        print(webRequest.text);
+
+        yield return null;
     }
 
     IEnumerator MurRankUp()
     {
         WWWForm form = new WWWForm();
+        form.AddField("MurdererRank", MurRank);
 
-        WWW webRequest = new WWW(RankURL, form);
+        WWW webRequest = new WWW(MurRankURL, form);
         yield return webRequest;
+
+        print(webRequest.text);
+
+        yield return null;
     }
 }
