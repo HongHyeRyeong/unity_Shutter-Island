@@ -159,17 +159,16 @@ public class Login : MonoBehaviour
         IDInputField.text = "";
         PWInputField.text = "";
 
-        print("dd");
         LoginPanelObj.SetActive(false);
         CreateAccountPanelObj.SetActive(true);
     }
 
     public void CreateAccountButton()
     {
+        StartCoroutine(CreateGo());
+
         NewIDInputField.text = "";
         NewPWInputField.text = "";
-
-        StartCoroutine(CreateGo());
 
         CreateAccountPanelObj.SetActive(false);
         LoginPanelObj.SetActive(true);
