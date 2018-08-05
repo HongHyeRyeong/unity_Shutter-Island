@@ -378,7 +378,7 @@ public class SurvivorCtrl : MonoBehaviour
 
         pv.RPC("SetMurdererScore", PhotonTargets.AllBuffered, 0, 100);
 
-        Hp -= 5f;
+        Hp -= 50f;
         if (pv.isMine)
         {
             SurvivorUICtrl.instance.DispHP(Hp);

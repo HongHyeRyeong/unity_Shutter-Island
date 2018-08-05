@@ -19,7 +19,7 @@ public class CameraCtrl : MonoBehaviour
     [HideInInspector]
     public Transform targetSurvivorComPivot;
 
-    private float dist = 5.0f;
+    private float dist = 3.5f;
     private float height = 3f;
 
     //Murderer
@@ -54,10 +54,10 @@ public class CameraCtrl : MonoBehaviour
         {
             if (targetSurvivorComPivot)
             {
-                dist -= 0.5f * Input.mouseScrollDelta.y;
+                //dist -= 0.5f * Input.mouseScrollDelta.y;
 
-                if (dist < 4) dist = 4;
-                else if (dist >= 7) dist = 7;
+                //if (dist < 4) dist = 4;
+                //else if (dist >= 7) dist = 7;
 
                 Vector3 pos = targetSurvivorComPivot.position;
                 pos.y += 1.5f;
