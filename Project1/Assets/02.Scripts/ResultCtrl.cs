@@ -7,6 +7,8 @@ using UnityEngine.Video;
 
 public class ResultCtrl : MonoBehaviour
 {
+    public static ResultCtrl instance;
+
     // 1: 생존자 승리, 2: 생존자 패배, 3: 살인마 승리, 4: 살인마 패배
     private int Result;
     private int[] SurScore = new int[5];
@@ -40,6 +42,8 @@ public class ResultCtrl : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
+
         Cursor.lockState = CursorLockMode.None;
 
         Result = PlayerPrefs.GetInt("Result", 0);
@@ -78,6 +82,21 @@ public class ResultCtrl : MonoBehaviour
     {
         for (int i = 0; i < 5; ++i)
             MurdererScore[i].text = MurScore[i].ToString();
+    }
+
+    public int GetCheck()
+    {
+        return Result;
+    }
+
+    public int GetSurvivorTotalScore()
+    {
+        return SurScore[4];
+    }
+
+    public int GetMurdererTotalScore()
+    {
+        return MurScore[4];
     }
 
     IEnumerator VidioPlaying()
