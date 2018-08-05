@@ -420,6 +420,7 @@ GameObject:
   - component: {fileID: 95986854098820796}
   - component: {fileID: 54713772702280904}
   - component: {fileID: 65784373463757272}
+  - component: {fileID: 65703209033400384}
   - component: {fileID: 114143822987314078}
   - component: {fileID: 114389938009609356}
   - component: {fileID: 114063133570671824}
@@ -2416,6 +2417,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.03, y: 0.03, z: 0.1}
   m_Center: {x: 0.06, y: 0, z: -0.1}
+--- !u!65 &65703209033400384
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1375817868459444}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5, z: 1}
+  m_Center: {x: 0, y: 2.3, z: 0.2}
 --- !u!65 &65784373463757272
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -2426,7 +2439,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
+  m_Size: {x: 1.2, y: 2, z: 1.2}
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!82 &82705238366075164
 AudioSource:
@@ -2589,6 +2602,7 @@ MonoBehaviour:
   pv: {fileID: 114389938009609356}
   Ani: {fileID: 95986854098820796}
   Audio: {fileID: 82705238366075164}
+  CamCollider: {fileID: 65703209033400384}
   MurdererCamPivot: {fileID: 4916636947920952}
   ParticleTrail: {fileID: 1912350814678226}
 --- !u!114 &114389938009609356

@@ -9,6 +9,11 @@ public class FootPrintCtrl : MonoBehaviour
 
     private float UseTime = 5.0f;
 
+    private void Start()
+    {
+        transform.parent = GameCtrl.instance.SurFootPrints.transform;
+    }
+
     public IEnumerator Use()
     {
         float time = UseTime;

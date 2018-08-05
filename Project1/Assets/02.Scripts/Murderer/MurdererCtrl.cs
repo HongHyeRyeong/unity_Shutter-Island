@@ -17,6 +17,8 @@ public class MurdererCtrl : MonoBehaviour
     [SerializeField]
     private AudioSource Audio;
     [SerializeField]
+    private BoxCollider CamCollider;
+    [SerializeField]
     private Transform MurdererCamPivot;
     [SerializeField]
     private GameObject ParticleTrail;
@@ -83,12 +85,26 @@ public class MurdererCtrl : MonoBehaviour
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
 
+            Vector3 center = CamCollider.center;
+
+            if(center.z != 0.2f)
+            {
+                center.z = 0.2f;
+                CamCollider.center = center;
+            }
+
             // State
             if (State == State_Idle || State == State_Run)
             {
                 if (v != 0 || h != 0)
                 {
                     State = State_Run;
+
+                    if (center.z != 1.4f)
+                    {
+                        center.z = 1.4f;
+                        CamCollider.center = center;
+                    }
 
                     if (v < 0)
                     {

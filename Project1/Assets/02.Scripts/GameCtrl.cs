@@ -30,8 +30,7 @@ public class GameCtrl : MonoBehaviour
     public Material[] Msurvivor = new Material[3];
     public Material[] MsurvivorItem = new Material[3];
 
-    [SerializeField]
-    private GameObject SurFootPrints;
+    public GameObject SurFootPrints;
     [SerializeField]
     private GameObject FootPrint;
     private GameObject[] FootPrints = new GameObject[3000];
@@ -304,7 +303,6 @@ public class GameCtrl : MonoBehaviour
         {
             FootPrints[++FootPrintsNum] = PhotonNetwork.Instantiate("FootPrintProjector", Pos,
                 Quaternion.Euler(90, 0, Random.Range(0, 360)), 0);
-            FootPrints[FootPrintsNum].transform.parent = SurFootPrints.transform;
             StartCoroutine(FootPrints[FootPrintsNum].GetComponent<FootPrintCtrl>().Use());
         }
     }
