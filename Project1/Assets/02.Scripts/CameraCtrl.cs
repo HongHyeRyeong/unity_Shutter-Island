@@ -119,12 +119,12 @@ public class CameraCtrl : MonoBehaviour
                         saveState = state;
                         MainCam.cullingMask = -1;
 
-                        if (state == 2)
-                            angleX = 0;
-                        else if (state == 3)
+                        if (state == 3)
                             angleX = 90;
+                        else if (state == 10 || state == 11)
+                            angleX = 20;
                         else
-                            angleX = 35;
+                            angleX = 0;
 
                         time = 0;
                     }

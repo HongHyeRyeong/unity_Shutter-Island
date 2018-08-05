@@ -378,7 +378,7 @@ public class SurvivorCtrl : MonoBehaviour
 
         pv.RPC("SetMurdererScore", PhotonTargets.AllBuffered, 0, 100);
 
-        Hp -= 50f;
+        Hp -= 5f;
         if (pv.isMine)
         {
             SurvivorUICtrl.instance.DispHP(Hp);
@@ -405,7 +405,6 @@ public class SurvivorCtrl : MonoBehaviour
             if (Life == 0)
             {
                 Prison = false;
-
                 SurvivorDead();
             }
         }
@@ -433,29 +432,23 @@ public class SurvivorCtrl : MonoBehaviour
 
     IEnumerator Knockback(bool front)
     {
+        Quaternion rot = GameCtrl.instance.Murderer.transform.rotation;
+        if (!front)
+            rot = Quaternion.Euler(rot.x, rot.y + 180, rot.z);
+
+        Vector3 forword = GameCtrl.instance.Murderer.transform.forward;
+
         float AttackRunTime = 0;
-
-        if (front)
+        
+        while (AttackRunTime < 1)
         {
-            while (AttackRunTime < 1)
-            {
-                AttackRunTime += Time.deltaTime;
-                float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.7f;
-                transform.Translate(transform.InverseTransformDirection(trModel.forward).normalized * newTime * newTime);
+            trModel.rotation = Quaternion.Slerp(trModel.rotation, rot, Time.deltaTime * 50f);
 
-                yield return null;
-            }
-        }
-        else
-        {
-            while (AttackRunTime < 1)
-            {
-                AttackRunTime += Time.deltaTime;
-                float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.7f;
-                transform.Translate(-1 * transform.InverseTransformDirection(trModel.forward).normalized * newTime * newTime);
+            AttackRunTime += Time.deltaTime;
+            float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.7f;
+            transform.Translate(forword * newTime * newTime);
 
-                yield return null;
-            }
+            yield return null;
         }
     }
 

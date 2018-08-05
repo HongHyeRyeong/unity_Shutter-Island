@@ -73,7 +73,7 @@ public class MurdererCtrl : MonoBehaviour
         }
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (pv.isMine)
         {
