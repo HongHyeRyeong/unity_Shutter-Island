@@ -82,12 +82,17 @@ public class MurdererCtrl : MonoBehaviour
             if (!GameCtrl.instance.isStart)
                 return;
 
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
+            float h = 0;
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+                h = Input.GetAxis("Horizontal");
+
+            float v = 0;
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+                v = Input.GetAxis("Vertical");
 
             Vector3 center = CamCollider.center;
 
-            if(center.z != 0.2f)
+            if (center.z != 0.2f)
             {
                 center.z = 0.2f;
                 CamCollider.center = center;
@@ -130,7 +135,6 @@ public class MurdererCtrl : MonoBehaviour
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
-                        print(State);
                         if (State == State_Run && MoveSpeed == 6)
                             pv.RPC("AttackWRunAnim", PhotonTargets.All);
                         else
@@ -165,7 +169,7 @@ public class MurdererCtrl : MonoBehaviour
                 if (Ani.GetCurrentAnimatorStateInfo(0).IsName("AttackWRun") || Ani.GetCurrentAnimatorStateInfo(0).IsName("AttackLRun"))
                 {
                     AttackRunTime += Time.deltaTime;
-                    float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.4f;
+                    float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.5f;
                     transform.Translate(new Vector3(0, 0, 1) * newTime * newTime);
                 }
             }
@@ -202,7 +206,7 @@ public class MurdererCtrl : MonoBehaviour
             State = State_Die;
             pv.RPC("DieAnim", PhotonTargets.All);
 
-            if(pv.isMine)
+            if (pv.isMine)
             {
                 PlayerPrefs.SetInt("Result", 4);
             }

@@ -110,7 +110,7 @@ public class CameraCtrl : MonoBehaviour
 
                     transform.position = Vector3.Lerp(transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,
-                        targetMurderer.transform.position.y + 2.35f,
+                        targetMurderer.transform.position.y + 2.25f,
                         targetMurdererCamPivot.transform.position.z), Time.deltaTime * 20);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;

@@ -117,8 +117,13 @@ public class SurvivorCtrl : MonoBehaviour
             if (!GameCtrl.instance.isStart)
                 return;
 
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
+            float h = 0;
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+                h = Input.GetAxis("Horizontal");
+
+            float v = 0;
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+                v = Input.GetAxis("Vertical");
 
             // State
             if (State == State_Idle || State == State_SlowRun || State == State_Run)
