@@ -59,7 +59,7 @@ public class PrisonCtrl : MonoBehaviour
     {
         isSurvivor = true;
 
-        while (true)
+        while (!isSurvivor)
         {
             GameCtrl.instance.DisPrison(transform.position, PrisonNum);
             yield return new WaitForEndOfFrame();

@@ -281,16 +281,13 @@ public class SurvivorUICtrl : MonoBehaviour
     public void DispItemHUD(Vector3 pos, int type, int level)
     {
         HUDItem.SetActive(true);
-        pos.y += 2.5f;
-        HUDItem.transform.position = pos;
+        HUDItem.transform.position = pos + Vector3.up * 2.5f;
 
-        Vector3 survivorPos = GameCtrl.instance.Survivor.transform.position;
+        Vector3 CamPos = CameraCtrl.instance.MainCam.transform.position;
+        CamPos.y = HUDItem.transform.position.y;
 
-        survivorPos.y = HUDItem.transform.position.y;
-        Vector3 vec = survivorPos - HUDItem.transform.position;
-        vec.Normalize();
-
-        HUDItem.transform.rotation = Quaternion.LookRotation(vec);
+        Vector3 dir = CamPos - HUDItem.transform.position;
+        HUDItem.transform.rotation = Quaternion.LookRotation(dir.normalized);
 
         if (type == 1)
             txtHUDItem.text = "Hat Level " + level.ToString();

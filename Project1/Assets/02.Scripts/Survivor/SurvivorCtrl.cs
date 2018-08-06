@@ -267,6 +267,8 @@ public class SurvivorCtrl : MonoBehaviour
         if (Attack != 0)
         {
             AttackTime -= Time.deltaTime;
+            if (pv.isMine)
+                SurvivorUICtrl.instance.DisTime(AttackTime, 0.8f);
 
             if (AttackTime > 0)
             {
@@ -284,6 +286,9 @@ public class SurvivorCtrl : MonoBehaviour
                         pv.RPC("DamageToMurderer", PhotonTargets.All);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
+
+                        if (pv.isMine)
+                            SurvivorUICtrl.instance.Time.SetActive(false);
 
                         GameCtrl.instance.SurvivorScore[0] += 100;
                         GameCtrl.instance.SetSurvivorScore(100);
@@ -303,6 +308,9 @@ public class SurvivorCtrl : MonoBehaviour
                         pv.RPC("DamageToMurderer", PhotonTargets.All);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
+
+                        if (pv.isMine)
+                            SurvivorUICtrl.instance.Time.SetActive(false);
 
                         GameCtrl.instance.SurvivorScore[0] += 100;
                         GameCtrl.instance.SetSurvivorScore(100);
@@ -353,6 +361,9 @@ public class SurvivorCtrl : MonoBehaviour
                         Ani.SetBool("isRun", false);
                     }
                     pv.RPC("DamageToMurderer", PhotonTargets.All);
+
+                    if (pv.isMine)
+                        SurvivorUICtrl.instance.Time.SetActive(false);
                 }
                 else
                 {
@@ -382,6 +393,7 @@ public class SurvivorCtrl : MonoBehaviour
         if (pv.isMine)
         {
             SurvivorUICtrl.instance.DispHP(Hp);
+            SurvivorUICtrl.instance.Time.SetActive(false);
             StartCoroutine(GameCtrl.instance.StartHit(2));
         }
 
@@ -412,7 +424,7 @@ public class SurvivorCtrl : MonoBehaviour
         {
             State = State_Hit;
 
-            float dir = transform.InverseTransformDirection(trModel.forward).z * GameCtrl.instance.Murderer.transform.forward.z;
+            float dir = trModel.forward.z * GameCtrl.instance.Murderer.transform.forward.z;
 
             if (dir >= 0)
             {
@@ -432,9 +444,10 @@ public class SurvivorCtrl : MonoBehaviour
 
     IEnumerator Knockback(bool front)
     {
+        transform.rotation = Quaternion.identity;
         Quaternion rot = GameCtrl.instance.Murderer.transform.rotation;
         if (!front)
-            rot = Quaternion.Euler(rot.x, rot.y + 180, rot.z);
+            rot = Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y + 180, rot.eulerAngles.z);
 
         Vector3 forword = GameCtrl.instance.Murderer.transform.forward;
 
@@ -487,9 +500,7 @@ public class SurvivorCtrl : MonoBehaviour
                 if (PrisonTime < 0)
                 {
                     if (pv.isMine)
-                    {
                         SurvivorUICtrl.instance.Time.SetActive(false);
-                    }
 
                     Item.ItemSet(5, 0);
 

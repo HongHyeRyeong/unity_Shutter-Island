@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraCtrl : MonoBehaviour
 {
     public static CameraCtrl instance;
-    
+
     public Camera MainCam;
     [SerializeField]
     private CameraFilter_Attack FilterAttack;
@@ -19,7 +19,7 @@ public class CameraCtrl : MonoBehaviour
     [HideInInspector]
     public Transform targetSurvivorComPivot;
 
-    private float dist = 3.5f;
+    private float dist = 4f;
     private float height = 3f;
 
     //Murderer
@@ -59,11 +59,16 @@ public class CameraCtrl : MonoBehaviour
                 //if (dist < 4) dist = 4;
                 //else if (dist >= 7) dist = 7;
 
-                Vector3 pos = targetSurvivorComPivot.position;
-                pos.y += 1.5f;
-
+                dist = 4;
                 height -= Input.GetAxis("Mouse Y") * Time.deltaTime * 10;
                 height = ClampAngle(height, 0, 4);
+
+                Vector3 pos = targetSurvivorComPivot.position;
+
+                // 맵과 충돌
+                RaycastHit hitinfo;
+                if (Physics.Raycast(pos, transform.forward * -1, out hitinfo, dist, (1 << LayerMask.NameToLayer("Map"))))
+                    dist = hitinfo.distance - 0.1f;    // 충동한 점의 거리
 
                 transform.position = Vector3.Lerp(transform.position,
                     pos - (targetSurvivorComPivot.forward * dist) + (Vector3.up * height),
@@ -88,7 +93,7 @@ public class CameraCtrl : MonoBehaviour
 
                     transform.position = Vector3.Lerp(transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,
-                        targetMurderer.transform.position.y + 2.4f,
+                        targetMurderer.transform.position.y + 2.35f,
                         targetMurdererCamPivot.transform.position.z), Time.deltaTime * 20);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;
@@ -105,7 +110,7 @@ public class CameraCtrl : MonoBehaviour
 
                     transform.position = Vector3.Lerp(transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,
-                        targetMurderer.transform.position.y + 2.2f,
+                        targetMurderer.transform.position.y + 2.35f,
                         targetMurdererCamPivot.transform.position.z), Time.deltaTime * 20);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;

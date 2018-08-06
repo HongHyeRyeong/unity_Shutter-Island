@@ -130,7 +130,8 @@ public class MurdererCtrl : MonoBehaviour
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
-                        if (State == State_Run && Ani.GetBool("isRun"))
+                        print(State);
+                        if (State == State_Run && MoveSpeed == 6)
                             pv.RPC("AttackWRunAnim", PhotonTargets.All);
                         else
                             pv.RPC("AttackWAnim", PhotonTargets.All);
@@ -142,7 +143,7 @@ public class MurdererCtrl : MonoBehaviour
                     }
                     else if (Input.GetMouseButtonDown(1))
                     {
-                        if (State == State_Run && Ani.GetBool("isRun"))
+                        if (State == State_Run && MoveSpeed == 6)
                             pv.RPC("AttackLRunAnim", PhotonTargets.All);
                         else
                             pv.RPC("AttackLAnim", PhotonTargets.All);
