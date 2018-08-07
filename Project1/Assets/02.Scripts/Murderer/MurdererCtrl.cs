@@ -203,6 +203,8 @@ public class MurdererCtrl : MonoBehaviour
 
         if (Hp <= 0 && !isMurDie)
         {
+            isMurDie = true;
+
             State = State_Die;
             pv.RPC("DieAnim", PhotonTargets.All);
 
@@ -216,10 +218,6 @@ public class MurdererCtrl : MonoBehaviour
                 GameCtrl.instance.SetSurvivorScore(2000);
                 PlayerPrefs.SetInt("Result", 1);
             }
-
-            pv.RPC("MurdererDie", PhotonTargets.AllBuffered);
-
-            isMurDie = true;
         }
     }
 
@@ -312,7 +310,13 @@ public class MurdererCtrl : MonoBehaviour
         ParticleTrail.SetActive(false);
 
         if (State == State_Die)
-            gameObject.SetActive(false);
+            pv.RPC("MurdererDie", PhotonTargets.AllBuffered);
+    }
+
+    [PunRPC]
+    public void MurdererDie()
+    {
+        StartCoroutine(GameCtrl.instance.StartFade(false));
     }
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -422,12 +426,6 @@ public class MurdererCtrl : MonoBehaviour
         isAttack = true;
 
         ParticleTrail.SetActive(true);
-    }
-
-    [PunRPC]
-    public void MurdererDie()
-    {
-        StartCoroutine(GameCtrl.instance.StartFade(false));
     }
 
     public void MurdererWin()

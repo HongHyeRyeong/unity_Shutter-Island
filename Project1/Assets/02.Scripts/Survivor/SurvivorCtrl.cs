@@ -742,8 +742,8 @@ public class SurvivorCtrl : MonoBehaviour
         }
         else if (s == State_Die)
         {
-            State = State_Die;
-            //gameObject.SetActive(false);
+            PlayerPrefs.SetInt("Result", 2);
+            StartCoroutine(GameCtrl.instance.StartFade(false));
         }
         else
             State = State_Idle;
@@ -779,14 +779,11 @@ public class SurvivorCtrl : MonoBehaviour
     public void SurvivorDead()
     {
         State = State_Die;
+        pv.RPC("DieAnim", PhotonTargets.All);
         Ani.SetBool("isSlowRun", false);
         Ani.SetBool("isRun", false);
-        pv.RPC("DieAnim", PhotonTargets.All);
 
         pv.RPC("SetMurdererScore", PhotonTargets.AllBuffered, 3, 1500);
-        print("1500");
-
-        SurvivorDie();
     }
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -877,11 +874,5 @@ public class SurvivorCtrl : MonoBehaviour
     {
         GameCtrl.instance.MurdererScore[idx] += score;
         GameCtrl.instance.SetMurdererScore(score);
-    }
-
-    void SurvivorDie()
-    {
-        PlayerPrefs.SetInt("Result", 2);
-        StartCoroutine(GameCtrl.instance.StartFade(false));
     }
 }
