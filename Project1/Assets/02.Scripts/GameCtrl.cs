@@ -205,7 +205,11 @@ public class GameCtrl : MonoBehaviour
     {
         SurvivorNum -= 1;
 
-        if (Character == 2 && AllSurNum > 0 && SurvivorNum == 0)
+        if (Character == 2 && PlayerPrefs.GetInt("Result") == 4)
+        {
+            //
+        }
+        else if (Character == 2 && AllSurNum > 0 && SurvivorNum == 0)
         {
             Murderer.GetComponent<MurdererCtrl>().MurdererWin();
         }

@@ -14,6 +14,7 @@ public class RankManager : MonoBehaviour
     public Text MurRankTxt;
 
     //
+    private string UserName;
     private int Check;
     private int SurScore;
     private int MurScore;
@@ -27,6 +28,7 @@ public class RankManager : MonoBehaviour
     void Start()
     {
         UserID.text = Login.GetID();
+        UserName = UserID.text;
         SurRankTxt.text = Login.GetSurRank();
         MurRankTxt.text = Login.GetMurRank();
 
@@ -36,7 +38,7 @@ public class RankManager : MonoBehaviour
             int.TryParse(MurRankTxt.text, out MurRank);
 
             SurRankURL = "wjddus0424.dothome.co.kr/SurvivorRankUp.php";
-                MurRankURL = "wjddus0424.dothome.co.kr/MurdererRankUp.php";
+            MurRankURL = "wjddus0424.dothome.co.kr/MurdererRankUp.php";
 
             Check = ResultCtrl.instance.GetCheck();
 
@@ -47,15 +49,29 @@ public class RankManager : MonoBehaviour
 
             if (SurScore >= 10000)
             {
-                SurRank++;
+                if (SurRank > 1)
+                    SurRank--;
+                else if (SurRank == 1)
+                    SurRank = 1;
 
-                //StartCoroutine(SurRankUp());
+                print(SurRank);
+
+                Login.SetSurRank(SurRank.ToString());
+
+                StartCoroutine(SurRankUp());
             }
             else if (MurScore >= 10000)
             {
-                MurRank++;
-                
-                //StartCoroutine(MurRankUp());
+                if (MurRank > 1)
+                    MurRank--;
+                else if (MurRank == 1)
+                    MurRank = 1;
+
+                print(MurRank);
+
+                Login.SetMurRank(MurRank.ToString());
+
+                StartCoroutine(MurRankUp());
             }
         }
     }
@@ -63,6 +79,7 @@ public class RankManager : MonoBehaviour
     IEnumerator SurRankUp()
     {
         WWWForm form = new WWWForm();
+        form.AddField("user_id", UserName);
         form.AddField("SurvivorRank", SurRank);
 
         WWW webRequest = new WWW(SurRankURL, form);
@@ -76,6 +93,7 @@ public class RankManager : MonoBehaviour
     IEnumerator MurRankUp()
     {
         WWWForm form = new WWWForm();
+        form.AddField("user_id", UserName);
         form.AddField("MurdererRank", MurRank);
 
         WWW webRequest = new WWW(MurRankURL, form);

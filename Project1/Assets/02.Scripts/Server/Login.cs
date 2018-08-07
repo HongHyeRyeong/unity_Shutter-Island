@@ -154,6 +154,16 @@ public class Login : MonoBehaviour
         return MurRank;
     }
 
+    public static void SetSurRank(string rank)
+    {
+        SurRank = rank;
+    }
+
+    public static void SetMurRank(string rank)
+    {
+        MurRank = rank;
+    }
+
     public void OpenCreateAccountButton()
     {
         IDInputField.text = "";

@@ -119,19 +119,19 @@ public class PhotonInit : MonoBehaviour
 
             for (int i = 0; i < 46; ++i)
             {
-                itemrand[i] = Random.Range(0, 12);
+                itemrand[i] = Random.Range(0, 16);
                 roomOptions.customRoomPropertiesForLobby[i + 1] = "itemrand" + (i + 1);
                 roomOptions.customRoomProperties.Add("itemrand" + (i + 1), itemrand[i]);
             }
             for (int i = 0; i < 35; ++i)
             {
-                gadgetrand[i] = Random.Range(0, 12);
+                gadgetrand[i] = Random.Range(0, 16);
                 roomOptions.customRoomPropertiesForLobby[i + 47] = "gadgetrand" + (i + 47);
                 roomOptions.customRoomProperties.Add("gadgetrand" + (i + 47), gadgetrand[i]);
             }
             for (int i = 0; i < 10; ++i)
             {
-                keyrand[i] = Random.Range(0, 12);
+                keyrand[i] = Random.Range(0, 16);
                 roomOptions.customRoomPropertiesForLobby[i + 82] = "keyrand" + (i + 82);
                 roomOptions.customRoomProperties.Add("keyrand" + (i + 82), keyrand[i]);
             }
