@@ -10,11 +10,6 @@ public class CameraCtrl : MonoBehaviour
     [SerializeField]
     private CameraFilter_Attack FilterAttack;
 
-    [SerializeField]
-    private Material SkyboxDay;
-    [SerializeField]
-    private Material SkyboxNight;
-
     // Survivor
     [HideInInspector]
     public Transform targetSurvivorComPivot;
@@ -38,14 +33,6 @@ public class CameraCtrl : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
-        // SkyBox
-        int sky = Random.Range(1, 3);
-
-        if (sky == 1)
-            gameObject.AddComponent<Skybox>().material = SkyboxDay;
-        else
-            gameObject.AddComponent<Skybox>().material = SkyboxDay;
     }
 
     void LateUpdate()
