@@ -223,7 +223,7 @@ public class MurdererCtrl : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Survivor" && isAttack)
+        if (other.CompareTag("Survivor") && isAttack)
         {
             isAttack = false;
             other.transform.parent.GetComponent<SurvivorCtrl>().AttackByMurderer(State);

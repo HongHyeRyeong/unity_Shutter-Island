@@ -29,7 +29,7 @@ public class MurdererTrapCtrl : Photon.MonoBehaviour
         if (Use)
             return;
 
-        if (other.gameObject.tag == "Survivor")
+        if (other.CompareTag("Survivor"))
         {
             int state = other.gameObject.GetComponent<SurvivorCtrl>().GetState();
 

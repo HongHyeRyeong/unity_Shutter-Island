@@ -20,13 +20,13 @@ public class ItemCtrl : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Survivor" && other.gameObject.GetComponent<SurvivorCtrl>().pv.isMine)
+        if (other.CompareTag("Survivor") && other.gameObject.GetComponent<SurvivorCtrl>().pv.isMine)
             includeNum = SurvivorUICtrl.instance.SurvivorEnterItems(this.gameObject);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Survivor" && other.gameObject.GetComponent<SurvivorCtrl>().pv.isMine)
+        if (other.CompareTag("Survivor") && other.gameObject.GetComponent<SurvivorCtrl>().pv.isMine)
         {
             SurvivorUICtrl.instance.SurvivorExitItems(includeNum);
             includeNum = -1;

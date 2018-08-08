@@ -566,16 +566,16 @@ public class SurvivorCtrl : MonoBehaviour
             GameObject minObject = null;
             float minDist = 10000f;
 
-            foreach (GameObject respawn in respawns)
+            for (int i = 0; 0 < respawns.Length; ++i)
             {
-                if (respawn.GetComponent<PrisonCtrl>().GetOpen() == false)
+                if (respawns[i].GetComponent<PrisonCtrl>().GetOpen() == false)
                 {
-                    float dist = Vector3.Distance(transform.position, respawn.transform.position);
+                    float dist = Vector3.Distance(transform.position, respawns[i].transform.position);
 
                     if (dist < minDist)
                     {
                         minDist = dist;
-                        minObject = respawn;
+                        minObject = respawns[i];
                     }
                 }
             }
@@ -608,7 +608,7 @@ public class SurvivorCtrl : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Machine")
+        if (other.CompareTag("Machine"))
         {
             if (pv.isMine)
             {
@@ -646,7 +646,7 @@ public class SurvivorCtrl : MonoBehaviour
 
                                     State = State_Idle;
                                     Ani.SetBool("isRepair", false);
-                                    
+
                                     machineRangeCtrl.SetMachineUse(false);
 
                                     GameCtrl.instance.SurvivorScore[1] += 200;
@@ -716,7 +716,7 @@ public class SurvivorCtrl : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Machine")
+        if (other.CompareTag("Machine"))
         {
             if (pv.isMine)
             {
