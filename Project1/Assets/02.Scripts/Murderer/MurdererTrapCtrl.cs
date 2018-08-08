@@ -53,9 +53,9 @@ public class MurdererTrapCtrl : Photon.MonoBehaviour
     {
         SurvivorCtrl surCtrl = Survivor.GetComponent<SurvivorCtrl>();
 
-        while(true)
+        while (true)
         {
-            if(!surCtrl.Trap)
+            if (!surCtrl.Trap)
             {
                 Survivor = null;
                 pv.RPC("IdleAnim", PhotonTargets.AllBuffered);
@@ -76,7 +76,9 @@ public class MurdererTrapCtrl : Photon.MonoBehaviour
     {
         Use = false;
         gameObject.SetActive(false);
-        GameCtrl.instance.DisTrap(1);
+
+        if (Survivor == GameCtrl.instance.Survivor)
+            GameCtrl.instance.DisTrap(1);
     }
 
     [PunRPC]
