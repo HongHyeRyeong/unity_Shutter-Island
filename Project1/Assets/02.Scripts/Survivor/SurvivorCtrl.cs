@@ -562,20 +562,19 @@ public class SurvivorCtrl : MonoBehaviour
         {
             PrisonTP = true;
 
-            GameObject[] respawns = GameObject.FindGameObjectsWithTag("Prison");
             GameObject minObject = null;
             float minDist = 10000f;
 
-            for (int i = 0; 0 < respawns.Length; ++i)
+            for (int i = 0; i < GameCtrl.instance.Prisons.Length; ++i)
             {
-                if (respawns[i].GetComponent<PrisonCtrl>().GetOpen() == false)
+                if (GameCtrl.instance.Prisons[i].GetComponent<PrisonCtrl>().GetOpen() == false)
                 {
-                    float dist = Vector3.Distance(transform.position, respawns[i].transform.position);
+                    float dist = Vector3.Distance(transform.position, GameCtrl.instance.Prisons[i].transform.position);
 
                     if (dist < minDist)
                     {
                         minDist = dist;
-                        minObject = respawns[i];
+                        minObject = GameCtrl.instance.Prisons[i];
                     }
                 }
             }

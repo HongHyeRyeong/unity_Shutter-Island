@@ -13,8 +13,9 @@ public class GameCtrl : MonoBehaviour
     public bool isStart = false;
     [HideInInspector]
     public int Character;
-
+    
     private int MachineCompleteNum = 0;
+    public GameObject[] Prisons = new GameObject[3];
     private int PrisonSurNum = 0;
 
     // 1이면 생존자 승리, 2이면 생존자 패배, 3이면 살인마 승리, 4이면 살인마 패배
@@ -237,10 +238,10 @@ public class GameCtrl : MonoBehaviour
 
     public void DisPrison(Vector3 pos, int num)
     {
-        if (Character == 1)
+        if (Character == 1 && Survivor != null)
             SurvivorUICtrl.instance.DisPrison(pos, num);
-        //else if (Character == 2)
-        //    MurdererUICtrl.instance.DisPrison(pos, num);
+        else if (Character == 2 && Murderer != null)
+            MurdererUICtrl.instance.DisPrison(pos, num);
     }
 
     public void DisSurPrison(int num)
@@ -421,10 +422,10 @@ public class GameCtrl : MonoBehaviour
 
             print(fps);
 
-            //if (Character == 1)
-            //    SurvivorUICtrl.instance.DisFPS(fps);
-            //else if (Character == 2)
-            //    MurdererUICtrl.instance.DisFPS(fps);
+            if (Character == 1)
+                SurvivorUICtrl.instance.DisFPS(fps);
+            else if (Character == 2)
+                MurdererUICtrl.instance.DisFPS(fps);
 
             yield return null;
         }

@@ -120,17 +120,17 @@ public class SurvivorUICtrl : MonoBehaviour
         if (type == 1)
         {
             txtKeyInput.text = "T";
-            txtMessage.text = "Installing the parts";
+            txtMessage.text = "부품 설치하기";
         }
         else if (type == 2)
         {
             txtKeyInput.text = "R";
-            txtMessage.text = "Repairing devices";
+            txtMessage.text = "장치 고치기";
         }
         else if (type == 3)
         {
             txtKeyInput.text = "R";
-            txtMessage.text = "Open prison door";
+            txtMessage.text = "감옥 문 열기";
         }
     }
 

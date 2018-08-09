@@ -47,8 +47,16 @@ public class PrisonCtrl : MonoBehaviour
             if (Survivors[i] == null)
             {
                 Survivors[i] = survivor;
-                if (!isSurvivor)
+
+                if(survivor == GameCtrl.instance.Survivor)
+                {
+                    isSurvivor = true;
+                    break;
+                }
+
+                if (!isSurvivor)    // 감옥 안에 생존자가 없다면
                     StartCoroutine(SurvivorInPrison());
+
                 break;
             }
 
@@ -59,7 +67,7 @@ public class PrisonCtrl : MonoBehaviour
     {
         isSurvivor = true;
 
-        while (!isSurvivor)
+        while (isSurvivor)
         {
             GameCtrl.instance.DisPrison(transform.position, PrisonNum);
             yield return new WaitForEndOfFrame();

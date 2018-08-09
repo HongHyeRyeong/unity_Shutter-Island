@@ -7,7 +7,6 @@ TagManager:
   - Murderer
   - Survivor
   - Machine
-  - Prison
   - ROOM_ITEM
   layers:
   - Default
