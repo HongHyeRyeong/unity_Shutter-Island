@@ -208,7 +208,7 @@ public class SurvivorCtrl : MonoBehaviour
         }
 
         if (Prison)
-            pv.RPC("PrisonTrue", PhotonTargets.All);
+            PrisonTrue();
     }
 
     void InputGet()
@@ -419,7 +419,7 @@ public class SurvivorCtrl : MonoBehaviour
 
             pv.RPC("SetMurdererScore", PhotonTargets.AllBuffered, 1, 500);
 
-            if (Life == 0)
+            if (Life == -1)
             {
                 Prison = false;
                 SurvivorDead();
@@ -543,7 +543,6 @@ public class SurvivorCtrl : MonoBehaviour
         }
     }
 
-    [PunRPC]
     void PrisonTrue()
     {
         Hp -= 1.5f * Time.deltaTime;
@@ -553,7 +552,7 @@ public class SurvivorCtrl : MonoBehaviour
         if (Hp <= 0)
         {
             Prison = false;
-            inPrison.GetComponent<PrisonCtrl>().SurvivorExit(this.gameObject);
+            inPrison.GetComponent<PrisonCtrl>().SurvivorExit(transform.gameObject);
 
             SurvivorDead();
         }
@@ -579,19 +578,11 @@ public class SurvivorCtrl : MonoBehaviour
                 }
             }
 
-            if (minObject != null)
-            {
-                inPrison = minObject;
-                minObject.GetComponent<PrisonCtrl>().SurvivorEnter(this.gameObject);
-                transform.position = minObject.transform.position;
+            inPrison = minObject;
+            minObject.GetComponent<PrisonCtrl>().SurvivorEnter(transform.gameObject);
+            transform.position = minObject.transform.position;
 
-                currPos = transform.position;
-            }
-            else
-            {
-                Prison = false;
-                SurvivorDead();
-            }
+            currPos = transform.position;
         }
     }
 
@@ -775,7 +766,7 @@ public class SurvivorCtrl : MonoBehaviour
         }
     }
 
-    public void SurvivorDead()
+    void SurvivorDead()
     {
         State = State_Die;
         pv.RPC("DieAnim", PhotonTargets.All);

@@ -45,6 +45,7 @@ public class ResultCtrl : MonoBehaviour
         instance = this;
 
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         Result = PlayerPrefs.GetInt("Result", 0);
 

@@ -127,4 +127,7 @@ MonoBehaviour:
   - ItemPutOff
   - ItemPutOn
   - SetMurdererScore
+  - OpenFalse
+  - OpenTrue
+  - RPCSurvivorEnter
   DisableAutoOpenWizard: 1

@@ -58,6 +58,7 @@ public class SurvivorUICtrl : MonoBehaviour
         instance = this;
 
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update()
@@ -70,11 +71,13 @@ public class SurvivorUICtrl : MonoBehaviour
                 Inven.SetActive(false);
                 ItemInfor.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
             else
             {
                 Inven.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
         }
 

@@ -32,7 +32,7 @@ public class LobbyCtrl : MonoBehaviour
 
     void Start()
     {
-        Screen.SetResolution(1920, 1080, true);
+        Screen.SetResolution(1920, 1080, false);
 
         instance = this;
 
@@ -44,6 +44,12 @@ public class LobbyCtrl : MonoBehaviour
         SoundManager.instance.SetBGM("Lobby2-Last Stand");
         SoundManager.instance.CreateEffect();
         StartCoroutine(StartFade(true));
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+            Screen.fullScreen = !Screen.fullScreen;
     }
 
     public void OnClickCharacter(int cha)

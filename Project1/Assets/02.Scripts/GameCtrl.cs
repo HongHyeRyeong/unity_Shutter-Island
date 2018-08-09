@@ -329,19 +329,13 @@ public class GameCtrl : MonoBehaviour
     public void SetSurvivorScore(int score)
     {
         if(Character == 1)
-        {
             SurvivorScore[4] += score;
-            print("Survivor : " + SurvivorScore);
-        }
     }
 
     public void SetMurdererScore(int score)
     {
         if (Character == 2)
-        {
             MurdererScore[4] += score;
-            print("Murderer : " + MurdererScore);
-        }
     }
 
     public IEnumerator StartHit(float delay)

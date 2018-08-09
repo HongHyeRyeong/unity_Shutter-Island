@@ -28,6 +28,7 @@ public class MurdererUICtrl : MonoBehaviour
         instance = this;
 
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void DisFPS(float fps)

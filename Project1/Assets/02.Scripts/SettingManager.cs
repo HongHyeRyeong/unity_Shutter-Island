@@ -28,9 +28,15 @@ public class SettingManager : MonoBehaviour
                 return;
 
             if (Setting.activeSelf)
+            {
                 Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
             else
+            {
                 Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         }
     }
 

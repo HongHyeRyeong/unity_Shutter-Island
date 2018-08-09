@@ -38,7 +38,7 @@ public class Login : MonoBehaviour
 
     void Start()
     {
-        Screen.SetResolution(1920, 1080, true);
+        Screen.SetResolution(1920, 1080, false);
 
         LoginURL = "wjddus0424.dothome.co.kr/Login.php";
         CreateURL = "wjddus0424.dothome.co.kr/CreateAccount.php";
@@ -58,6 +58,9 @@ public class Login : MonoBehaviour
     
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+            Screen.fullScreen = !Screen.fullScreen;
+
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (Input.GetKey(KeyCode.LeftShift))

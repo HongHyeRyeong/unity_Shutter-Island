@@ -5,7 +5,6 @@ using UnityEngine;
 public class PrisonCtrl : MonoBehaviour
 {
     private PhotonView pv = null;
-    GameObject curSur;
 
     private Animator Ani;
     private AudioSource Audio;
@@ -15,7 +14,7 @@ public class PrisonCtrl : MonoBehaviour
     private bool isOpen = false;
 
     private GameObject[] Survivors = new GameObject[4];
-    private bool isSurvivor = false;
+    private int SurvivorNum = 0;
 
     void Start()
     {
@@ -31,13 +30,13 @@ public class PrisonCtrl : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Survivor") && isSurvivor)
+        if (other.CompareTag("Survivor") && SurvivorNum != 0)
             other.gameObject.GetComponent<SurvivorCtrl>().PrisonStay(this.gameObject);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Survivor") && isSurvivor)
+        if (other.CompareTag("Survivor") && SurvivorNum != 0)
             other.gameObject.GetComponent<SurvivorCtrl>().PrisonExit();
     }
 
@@ -47,27 +46,24 @@ public class PrisonCtrl : MonoBehaviour
             if (Survivors[i] == null)
             {
                 Survivors[i] = survivor;
-
-                if(survivor == GameCtrl.instance.Survivor)
-                {
-                    isSurvivor = true;
-                    break;
-                }
-
-                if (!isSurvivor)    // 감옥 안에 생존자가 없다면
-                    StartCoroutine(SurvivorInPrison());
-
+                pv.RPC("RPCSurvivorEnter", PhotonTargets.All);
                 break;
             }
+    }
 
-        GameCtrl.instance.DisSurPrison(1);
+    [PunRPC]
+    void RPCSurvivorEnter()
+    {
+        if (SurvivorNum == 0)    // 감옥에 갇힌 생존자를 제외한 나머지 플레이어
+            StartCoroutine(SurvivorInPrison());
     }
 
     IEnumerator SurvivorInPrison()
     {
-        isSurvivor = true;
+        SurvivorNum++;
+        GameCtrl.instance.DisSurPrison(1);
 
-        while (isSurvivor)
+        while (SurvivorNum == 0)
         {
             GameCtrl.instance.DisPrison(transform.position, PrisonNum);
             yield return new WaitForEndOfFrame();
@@ -76,28 +72,14 @@ public class PrisonCtrl : MonoBehaviour
 
     public void SurvivorExit(GameObject survivor)
     {
-        curSur = survivor;
-        pv.RPC("RPCSurvivorExit", PhotonTargets.All);
-    }
-
-    [PunRPC]
-    void RPCSurvivorExit()
-    {
         for (int i = 0; i < 4; ++i)
-            if (Survivors[i] == curSur)
+            if (Survivors[i] == survivor)
             {
                 Survivors[i] = null;
                 break;
             }
 
-        int num = 0;
-        for (int i = 0; i < 4; ++i)
-            if (Survivors[i] != null)
-                num++;
-
-        if (num == 0)
-            isSurvivor = false;
-
+        SurvivorNum--;
         GameCtrl.instance.SetPrisons(PrisonNum, false, 1);
     }
 
@@ -115,43 +97,20 @@ public class PrisonCtrl : MonoBehaviour
 
     public void Open()
     {
-        pv.RPC("RPCOpen", PhotonTargets.All);
-    }
-
-    [PunRPC]
-    void RPCOpen()
-    {
         isOpen = true;
-
-        int num = 0;
-        for (int i = 0; i < 4; ++i)
-            if (Survivors[i] != null)
-                num++;
-
-        GameCtrl.instance.SetPrisons(PrisonNum, false, num);
+        GameCtrl.instance.SetPrisons(PrisonNum, false, SurvivorNum);
+        SurvivorNum = 0;
 
         for (int i = 0; i < 4; ++i)
-        {
             if (Survivors[i] != null)
             {
                 Survivors[i].transform.position = SpawnPoint;
                 Survivors[i].GetComponent<SurvivorCtrl>().PrisonFalse();
                 Survivors[i] = null;
             }
-        }
-        isSurvivor = false;
     }
 
-    public void Close()
-    {
-        pv.RPC("RPCClose", PhotonTargets.All);
-    }
-
-    [PunRPC]
-    void RPCClose()
-    {
-        isOpen = false;
-    }
+    public void Close() { isOpen = false; }
 
     public bool GetOpen() { return isOpen; }
 }
