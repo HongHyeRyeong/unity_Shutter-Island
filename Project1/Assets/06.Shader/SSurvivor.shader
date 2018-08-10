@@ -1,4 +1,5 @@
-﻿Shader "Custom/SSurvivor" {
+﻿
+Shader "Custom/SSurvivor" {
 	Properties{
 		_MainTex("Albedo", 2D) = "white" {}
 		_BumpMap("Normal Map", 2D) = "bump" {}

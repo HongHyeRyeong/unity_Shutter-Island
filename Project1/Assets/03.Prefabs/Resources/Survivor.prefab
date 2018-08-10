@@ -409,7 +409,7 @@ GameObject:
   - component: {fileID: 95620250947825466}
   - component: {fileID: 114675184894778152}
   - component: {fileID: 114198991211820830}
-  - component: {fileID: 114831926840431748}
+  - component: {fileID: 114924621842565568}
   m_Layer: 11
   m_Name: SurvivorModel
   m_TagString: Survivor
@@ -1931,6 +1931,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 575bec5dae755df45a5553263ce2b532, type: 2}
   m_StaticBatchInfo:
@@ -1965,6 +1966,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 575bec5dae755df45a5553263ce2b532, type: 2}
   m_StaticBatchInfo:
@@ -2080,60 +2082,78 @@ AudioSource:
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0.4
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 136
-    - serializedVersion: 2
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 0.76032716
       value: 0.40782166
       inSlope: -1.6666666
       outSlope: -1.6666666
       tangentMode: 136
-    - serializedVersion: 2
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
@@ -2154,6 +2174,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114198991211820830
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2174,7 +2195,7 @@ MonoBehaviour:
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
-  - {fileID: 114831926840431748}
+  - {fileID: 0}
   - {fileID: 4340522247716368}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
@@ -2260,7 +2281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentCtrl: {fileID: 114337623108998074}
   parentItem: {fileID: 114469038206761618}
---- !u!114 &114831926840431748
+--- !u!114 &114924621842565568
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -2284,32 +2305,32 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: isRepair
   - Type: 9
-    SynchronizeType: 1
-    Name: trPickItem
-  - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: trAttackW
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: trAttackL
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: trParryW
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: trParryL
-  - Type: 9
-    SynchronizeType: 0
-    Name: trDie
-  - Type: 9
-    SynchronizeType: 0
-    Name: trTrap
   - Type: 9
     SynchronizeType: 0
     Name: trDown
   - Type: 9
     SynchronizeType: 0
     Name: trDownFront
+  - Type: 9
+    SynchronizeType: 0
+    Name: trPickItem
+  - Type: 9
+    SynchronizeType: 0
+    Name: trTrap
+  - Type: 9
+    SynchronizeType: 0
+    Name: trDie
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -2326,6 +2347,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 575bec5dae755df45a5553263ce2b532, type: 2}
   m_StaticBatchInfo:
@@ -2393,6 +2415,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 25ff5fe36700d3043855693f6cf2dd58, type: 2}
   m_StaticBatchInfo:

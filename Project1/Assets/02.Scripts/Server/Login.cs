@@ -30,6 +30,7 @@ public class Login : MonoBehaviour
 
     //
     public Text NowLoginState;
+    public Text NowCreateState;
 
     //
     public static string user_id;
@@ -174,12 +175,6 @@ public class Login : MonoBehaviour
     public void CreateAccountButton()
     {
         StartCoroutine(CreateGo());
-
-        NewIDInputField.text = "";
-        NewPWInputField.text = "";
-
-        CreateAccountPanelObj.SetActive(false);
-        LoginPanelObj.SetActive(true);
     }
 
     IEnumerator CreateGo()
@@ -196,9 +191,25 @@ public class Login : MonoBehaviour
 
         print(webRequest.text);
 
-        //NowLoginState.text = "존재하는 아이디입니다.";
-        //yield return new WaitForSeconds(1);
-        //NowLoginState.text = "";
+        if (webRequest.text == "IE")
+        {
+            NowCreateState.text = "존재하는 아이디입니다.";
+
+            NewIDInputField.text = "";
+            NewPWInputField.text = "";
+
+            yield return new WaitForSeconds(1);
+
+            NowCreateState.text = "";
+        }
+        else
+        {
+            NewIDInputField.text = "";
+            NewPWInputField.text = "";
+
+            CreateAccountPanelObj.SetActive(false);
+            LoginPanelObj.SetActive(true);
+        }
     }
 
     IEnumerator StartFade(bool start)

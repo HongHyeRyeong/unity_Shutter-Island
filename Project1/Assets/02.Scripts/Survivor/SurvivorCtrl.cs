@@ -145,14 +145,14 @@ public class SurvivorCtrl : MonoBehaviour
                     if (Input.GetMouseButtonDown(0))
                     {
                         State = State_AttackW;
-                        pv.RPC("AttackWAnim", PhotonTargets.All);
+                        pv.RPC("AttackWAnim", PhotonTargets.AllBuffered);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
                     }
                     else if (Input.GetMouseButtonDown(1))
                     {
                         State = State_AttackL;
-                        pv.RPC("AttackLAnim", PhotonTargets.All);
+                        pv.RPC("AttackLAnim", PhotonTargets.AllBuffered);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
                     }
@@ -482,7 +482,7 @@ public class SurvivorCtrl : MonoBehaviour
             SaveRot = trModel.eulerAngles;
 
         State = State_Trap;
-        pv.RPC("TrapAnim", PhotonTargets.All);
+        Ani.SetTrigger("trTrap");
         Ani.SetBool("isSlowRun", false);
         Ani.SetBool("isRun", false);
     }

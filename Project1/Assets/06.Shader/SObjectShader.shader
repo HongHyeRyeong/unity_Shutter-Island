@@ -68,7 +68,7 @@
 	
 			// 합치기
 			float4 final;
-			final.rgb = (s.Albedo.rgb * ramp.rgb * rim) + (ramp.rgb * _RampPow) + SpecColor;
+			final.rgb = (s.Albedo.rgb/* * ramp.rgb*/ * rim) + (/*ramp.rgb **/ _RampPow) + SpecColor;
 			final.a = s.Alpha;
 			return final;
 		}

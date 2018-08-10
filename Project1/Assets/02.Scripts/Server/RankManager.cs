@@ -59,6 +59,8 @@ public class RankManager : MonoBehaviour
                 Login.SetSurRank(SurRank.ToString());
 
                 StartCoroutine(SurRankUp());
+
+                SurRankTxt.text = SurRank.ToString();
             }
             else if (MurScore >= 100)
             {
@@ -72,6 +74,8 @@ public class RankManager : MonoBehaviour
                 Login.SetMurRank(MurRank.ToString());
 
                 StartCoroutine(MurRankUp());
+
+                MurRankTxt.text = MurRank.ToString();
             }
         }
     }
