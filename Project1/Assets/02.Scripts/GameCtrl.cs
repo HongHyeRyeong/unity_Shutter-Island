@@ -71,6 +71,7 @@ public class GameCtrl : MonoBehaviour
     private GameObject Fade;
     [SerializeField]
     private Image Hit;
+    private int HitNum = 0;
 
     private void Awake()
     {
@@ -338,7 +339,15 @@ public class GameCtrl : MonoBehaviour
             MurdererScore[4] += score;
     }
 
-    public IEnumerator StartHit(float delay)
+    public void HitEffect()
+    {
+        HitNum++;
+
+        if (HitNum == 1)
+            StartCoroutine(StartHit(2));
+    }
+
+    IEnumerator StartHit(float delay)
     {
         Color c = Hit.color;
         c.a = 0;
@@ -351,7 +360,11 @@ public class GameCtrl : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(delay);
+        while (HitNum != 0)
+        {
+            yield return new WaitForSeconds(delay);
+            HitNum--;
+        }
 
         c.a = 1;
         Hit.color = c;
@@ -360,6 +373,10 @@ public class GameCtrl : MonoBehaviour
         {
             c.a -= Time.deltaTime * 0.5f;
             Hit.color = c;
+
+            if (HitNum != 0)
+                break;
+
             yield return null;
         }
     }

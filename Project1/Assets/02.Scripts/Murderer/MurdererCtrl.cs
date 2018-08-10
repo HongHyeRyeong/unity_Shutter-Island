@@ -259,7 +259,7 @@ public class MurdererCtrl : MonoBehaviour
                 }
             index = Num;
         }
-
+        
         TrapItems[index].transform.position = transform.position + transform.forward;
         TrapItems[index].GetComponent<MurdererTrapCtrl>().SetNum = TrapSetNum;
         TrapSetNum++;
@@ -278,7 +278,7 @@ public class MurdererCtrl : MonoBehaviour
             Ani.SetBool("isBackRun", false);
 
             MurdererUICtrl.instance.DispHP(Hp);
-            StartCoroutine(GameCtrl.instance.StartHit(2));
+            GameCtrl.instance.HitEffect();
         }
         GameCtrl.instance.DisMurHP(Hp);
     }

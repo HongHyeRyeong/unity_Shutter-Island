@@ -14,7 +14,8 @@ public class CameraCtrl : MonoBehaviour
     [HideInInspector]
     public Transform targetSurvivorComPivot;
 
-    private float dist = 4f;
+    private float speed = 20;
+    private float dist = 4.5f;
     private float height = 3f;
 
     //Murderer
@@ -41,25 +42,33 @@ public class CameraCtrl : MonoBehaviour
         {
             if (targetSurvivorComPivot)
             {
-                //dist -= 0.5f * Input.mouseScrollDelta.y;
-
-                //if (dist < 4) dist = 4;
-                //else if (dist >= 7) dist = 7;
-
-                dist = 4;
-                height -= Input.GetAxis("Mouse Y") * Time.deltaTime * 10;
-                height = ClampAngle(height, 0, 4);
-
                 Vector3 pos = targetSurvivorComPivot.position;
+
+                float width = 0;
+                height -= Input.GetAxis("Mouse Y") * Time.deltaTime * 10;
+                height = ClampAngle(height, 0, 3f);
 
                 // 맵과 충돌
                 RaycastHit hitinfo;
-                if (Physics.Raycast(pos, transform.forward * -1, out hitinfo, dist, (1 << LayerMask.NameToLayer("Map"))))
-                    dist = hitinfo.distance - 0.1f;    // 충동한 점의 거리
+                if (Physics.Raycast(pos, transform.forward * -1, out hitinfo, 4.5f, (1 << LayerMask.NameToLayer("Map"))))
+                {
+                    speed = 15;
 
-                transform.position = Vector3.Lerp(transform.position,
-                    pos - (targetSurvivorComPivot.forward * dist) + (Vector3.up * height),
-                    Time.deltaTime * 20.0f);
+                    float ratio = (hitinfo.distance - 0.1f) / dist;
+                    dist = dist * ratio;
+                    height = ClampAngle(height * ratio * 0.8f, 0, dist);
+                }
+                else
+                {
+                    speed = 20;
+                    dist = 4.5f;
+                }
+
+                width = Mathf.Sqrt(dist * dist - height * height);
+
+                transform.position = Vector3.Slerp(transform.position,
+                        pos - (targetSurvivorComPivot.forward * width) + (Vector3.up * height),
+                        Time.deltaTime * speed);
 
                 transform.LookAt(pos);
             }

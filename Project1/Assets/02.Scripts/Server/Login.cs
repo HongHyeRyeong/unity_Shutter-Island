@@ -55,7 +55,7 @@ public class Login : MonoBehaviour
 
         StartCoroutine(StartFade(true));
     }
-    
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -116,11 +116,25 @@ public class Login : MonoBehaviour
         {
             print("Password is Error");
             NowLoginState.text = "패스워드를 잘못 입력하셨습니다. 패스워드를 다시 입력해주세요.";
+
+            IDInputField.text = "";
+            PWInputField.text = "";
+
+            yield return new WaitForSeconds(1);
+
+            NowLoginState.text = "";
         }
         else if (webRequest.text == "NF")
         {
             print("User Not Found");
             NowLoginState.text = "사용자를 찾을 수 없습니다. ID를 다시 입력해주세요.";
+
+            IDInputField.text = "";
+            PWInputField.text = "";
+
+            yield return new WaitForSeconds(1);
+
+            NowLoginState.text = "";
         }
         else
         {
@@ -142,30 +156,11 @@ public class Login : MonoBehaviour
         StopCoroutine(LoginGo());
     }
 
-    public static string GetID()
-    {
-        return user_id;
-    }
-
-    public static string GetSurRank()
-    {
-        return SurRank;
-    }
-
-    public static string GetMurRank()
-    {
-        return MurRank;
-    }
-
-    public static void SetSurRank(string rank)
-    {
-        SurRank = rank;
-    }
-
-    public static void SetMurRank(string rank)
-    {
-        MurRank = rank;
-    }
+    public static string GetID() { return user_id; }
+    public static string GetSurRank() { return SurRank; }
+    public static string GetMurRank() { return MurRank; }
+    public static void SetSurRank(string rank) { SurRank = rank; }
+    public static void SetMurRank(string rank) { MurRank = rank; }
 
     public void OpenCreateAccountButton()
     {
@@ -201,7 +196,9 @@ public class Login : MonoBehaviour
 
         print(webRequest.text);
 
-        yield return null;
+        //NowLoginState.text = "존재하는 아이디입니다.";
+        //yield return new WaitForSeconds(1);
+        //NowLoginState.text = "";
     }
 
     IEnumerator StartFade(bool start)
@@ -221,7 +218,7 @@ public class Login : MonoBehaviour
                 color.a = Mathf.Lerp(1, 0, time);
                 imgFade.color = color;
 
-               yield return null;
+                yield return null;
             }
             Fade.SetActive(false);
         }

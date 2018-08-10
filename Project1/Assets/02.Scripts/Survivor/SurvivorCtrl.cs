@@ -399,7 +399,7 @@ public class SurvivorCtrl : MonoBehaviour
         {
             SurvivorUICtrl.instance.DispHP(Hp);
             SurvivorUICtrl.instance.Time.SetActive(false);
-            StartCoroutine(GameCtrl.instance.StartHit(2));
+            GameCtrl.instance.HitEffect();
         }
 
         if (Hp <= 0)
@@ -732,8 +732,11 @@ public class SurvivorCtrl : MonoBehaviour
         }
         else if (s == State_Die)
         {
-            PlayerPrefs.SetInt("Result", 2);
-            StartCoroutine(GameCtrl.instance.StartFade(false));
+            if (pv.isMine)
+            {
+                PlayerPrefs.SetInt("Result", 2);
+                StartCoroutine(GameCtrl.instance.StartFade(false));
+            }
         }
         else
             State = State_Idle;

@@ -16,7 +16,7 @@ public class MurdererTrapCtrl : Photon.MonoBehaviour
     private bool Use = false;              // 트랩이 발동중인지
     private GameObject Survivor = null;    // 트랩에 걸린 생존자
 
-    private void Start()
+    void Awake()
     {
         // 데이터 전송 타입 설정
         pv.synchronization = ViewSynchronization.UnreliableOnChange;

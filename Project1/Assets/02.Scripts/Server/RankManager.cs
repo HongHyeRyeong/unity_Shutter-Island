@@ -47,7 +47,7 @@ public class RankManager : MonoBehaviour
             else if (Check == 3 || Check == 4)
                 MurScore = ResultCtrl.instance.GetMurdererTotalScore();
 
-            if (SurScore >= 10000)
+            if (SurScore >= 100)
             {
                 if (SurRank > 1)
                     SurRank--;
@@ -60,7 +60,7 @@ public class RankManager : MonoBehaviour
 
                 StartCoroutine(SurRankUp());
             }
-            else if (MurScore >= 10000)
+            else if (MurScore >= 100)
             {
                 if (MurRank > 1)
                     MurRank--;

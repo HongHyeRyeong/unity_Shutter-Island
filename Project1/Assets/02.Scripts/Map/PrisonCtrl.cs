@@ -45,8 +45,9 @@ public class PrisonCtrl : MonoBehaviour
         for (int i = 0; i < 4; ++i)
             if (Survivors[i] == null)
             {
+                SurvivorNum++;
                 Survivors[i] = survivor;
-                pv.RPC("RPCSurvivorEnter", PhotonTargets.All);
+                pv.RPC("RPCSurvivorEnter", PhotonTargets.AllBuffered);
                 break;
             }
     }
@@ -56,14 +57,16 @@ public class PrisonCtrl : MonoBehaviour
     {
         if (SurvivorNum == 0)    // 감옥에 갇힌 생존자를 제외한 나머지 플레이어
             StartCoroutine(SurvivorInPrison());
+
+        SurvivorNum++;
+        GameCtrl.instance.DisSurPrison(1);
     }
 
     IEnumerator SurvivorInPrison()
     {
-        SurvivorNum++;
-        GameCtrl.instance.DisSurPrison(1);
+        yield return new WaitForEndOfFrame();
 
-        while (SurvivorNum == 0)
+        while (SurvivorNum != 0)
         {
             GameCtrl.instance.DisPrison(transform.position, PrisonNum);
             yield return new WaitForEndOfFrame();
@@ -79,6 +82,12 @@ public class PrisonCtrl : MonoBehaviour
                 break;
             }
 
+        pv.RPC("RPCSurvivorExit", PhotonTargets.AllBuffered);
+    }
+
+    [PunRPC]
+    void RPCSurvivorExit()
+    {
         SurvivorNum--;
         GameCtrl.instance.SetPrisons(PrisonNum, false, 1);
     }
