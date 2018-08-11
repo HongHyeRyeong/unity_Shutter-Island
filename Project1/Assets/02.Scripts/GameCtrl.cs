@@ -232,7 +232,10 @@ public class GameCtrl : MonoBehaviour
         if (Character == 1)
             SurvivorUICtrl.instance.DisMachine(MachineCompleteNum);
         else if (Character == 2)
+        {
+            CameraCtrl.instance.AttackEffect();
             MurdererUICtrl.instance.DisMachine(MachineCompleteNum);
+        }
 
         Murderer.GetComponent<MurdererCtrl>().DamageByMachine(40);
     }

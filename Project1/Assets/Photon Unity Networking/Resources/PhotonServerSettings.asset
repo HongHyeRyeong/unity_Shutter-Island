@@ -130,4 +130,5 @@ MonoBehaviour:
   - OpenFalse
   - OpenTrue
   - RPCSurvivorEnter
+  - RPCPrisonTrue
   DisableAutoOpenWizard: 1

@@ -7,8 +7,6 @@ public class CameraCtrl : MonoBehaviour
     public static CameraCtrl instance;
 
     public Camera MainCam;
-    [SerializeField]
-    private CameraFilter_Attack FilterAttack;
 
     // Survivor
     [HideInInspector]
@@ -25,11 +23,14 @@ public class CameraCtrl : MonoBehaviour
     public Transform targetMurdererCamPivot;
     [HideInInspector]
     public MurdererCtrl MurCtrl;
+    [SerializeField]
+    private CameraFilter_Attack FilterAttack;
 
     private int saveState = -1;
     private float MouseY;
     private float angleX = 0;
     private float time = 0;
+    private int AttackNum = 0;
 
     private void Awake()
     {
@@ -92,7 +93,7 @@ public class CameraCtrl : MonoBehaviour
                         targetMurderer.transform.position.y + 2.35f,
                         targetMurdererCamPivot.transform.position.z), Time.deltaTime * 20);
 
-                    MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;
+                    MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 80;
                     MouseY = ClampAngle(MouseY, -30, 50);
                     transform.rotation = Quaternion.Euler(MouseY, targetMurderer.eulerAngles.y, 0);
                 }
@@ -109,7 +110,7 @@ public class CameraCtrl : MonoBehaviour
                         targetMurderer.transform.position.y + 2.25f,
                         targetMurdererCamPivot.transform.position.z), Time.deltaTime * 20);
 
-                    MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 100;
+                    MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 80;
                     MouseY = ClampAngle(MouseY, -30, 50);
                     transform.rotation = Quaternion.Euler(MouseY, targetMurderer.eulerAngles.y, 0);
                 }
@@ -159,7 +160,15 @@ public class CameraCtrl : MonoBehaviour
         return Mathf.Clamp(angle, min, max);
     }
 
-    public IEnumerator Attack(float delay)
+    public void AttackEffect()
+    {
+        AttackNum++;
+
+        if (AttackNum == 1)
+            StartCoroutine(Attack(4));
+    }
+
+    IEnumerator Attack(float delay)
     {
         FilterAttack.Fade = 0;
 
@@ -169,6 +178,11 @@ public class CameraCtrl : MonoBehaviour
             yield return null;
         }
 
+        while (AttackNum != 0)
+        {
+            yield return new WaitForSeconds(delay);
+            AttackNum--;
+        }
         yield return new WaitForSeconds(delay);
 
         FilterAttack.Fade = 1;

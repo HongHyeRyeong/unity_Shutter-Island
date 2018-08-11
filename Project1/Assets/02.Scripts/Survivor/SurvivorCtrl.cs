@@ -545,6 +545,9 @@ public class SurvivorCtrl : MonoBehaviour
 
     void PrisonTrue()
     {
+        if (GameCtrl.instance.SurvivorNum == 1)  // 생존자가 한명 남았을 경우 즉사
+            SurvivorDead();
+
         Hp -= 1.5f * Time.deltaTime;
         if (pv.isMine)
             SurvivorUICtrl.instance.DispHP(Hp);

@@ -169,7 +169,7 @@ public class MurdererCtrl : MonoBehaviour
                 if (Ani.GetCurrentAnimatorStateInfo(0).IsName("AttackWRun") || Ani.GetCurrentAnimatorStateInfo(0).IsName("AttackLRun"))
                 {
                     AttackRunTime += Time.deltaTime;
-                    float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.5f;
+                    float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.65f;
                     transform.Translate(new Vector3(0, 0, 1) * newTime * newTime);
                 }
             }
@@ -191,7 +191,7 @@ public class MurdererCtrl : MonoBehaviour
 
             if (State != State_Parry && State != State_Trap)
             {
-                MouseX += Input.GetAxis("Mouse X") * Time.deltaTime * 100;
+                MouseX += Input.GetAxis("Mouse X") * Time.deltaTime * 80;
                 transform.rotation = Quaternion.Euler(0, MouseX, 0);
             }
         }
@@ -288,11 +288,8 @@ public class MurdererCtrl : MonoBehaviour
         Hp -= Power;
 
         if (pv.isMine)
-        {
-            StartCoroutine(CameraCtrl.instance.Attack(4));
-            MurdererUICtrl.instance.DispHP(Hp);
-        }
-        GameCtrl.instance.DisMurHP(Hp);
+            MurdererUICtrl.instance.DispHP(Hp); // 살인마 hp
+        GameCtrl.instance.DisMurHP(Hp); // 생존자 hp
     }
 
     public int GetState()
