@@ -3,7 +3,6 @@
 		_MainTex("Albedo", 2D) = "white" {}
 		_BumpMap("Normal Map", 2D) = "bump" {}
 		_GlossTex("Specular", 2D) = "white" {}
-		_RampTex("Ramp Texture", 2D) = "white" {}
 		_RampPow("Ramp Power", Range(0.1, 0.5)) = 0.1
 		_SpecCol("Specular Color", Color) = (1,1,1,1)
 		_SpecPow("Specular Power", Range(10,200)) = 100
@@ -19,7 +18,6 @@
 		sampler2D _MainTex;
 		sampler2D _BumpMap;
 		sampler2D _GlossTex;
-		sampler2D _RampTex;
 		float _RampPow;
 		float4 _SpecCol;
 		float _SpecPow;
@@ -59,11 +57,10 @@
 
 			// 음영
 			float ndot1 = dot(s.Normal, lightDir) * 0.5 + 0.5;
-			float4 ramp = tex2D(_RampTex, float2(ndot1, rim));
 	
 			// 합치기
 			float4 final;
-			final.rgb = (s.Albedo.rgb * ramp.rgb * rim) + (ramp.rgb * _RampPow) + SpecColor;
+			final.rgb = (s.Albedo.rgb * rim) + _RampPow + SpecColor;
 			final.a = s.Alpha;
 			return final;
 		}
