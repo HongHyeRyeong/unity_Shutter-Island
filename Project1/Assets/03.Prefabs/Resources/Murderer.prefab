@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4885405962263154}
   - component: {fileID: 137854072233038290}
-  m_Layer: 14
+  m_Layer: 10
   m_Name: boreas_low001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2622,8 +2622,8 @@ MonoBehaviour:
   - {fileID: 114063133570671824}
   - {fileID: 4952394071612664}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 1
-  instantiationId: 1
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!137 &137854072233038290
