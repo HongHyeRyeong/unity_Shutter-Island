@@ -545,7 +545,7 @@ public class SurvivorCtrl : MonoBehaviour
 
     void PrisonTrue()
     {
-        Hp -= 1.5f * Time.deltaTime;
+        Hp -= 1f * Time.deltaTime;
         if (pv.isMine)
             SurvivorUICtrl.instance.DispHP(Hp);
 
