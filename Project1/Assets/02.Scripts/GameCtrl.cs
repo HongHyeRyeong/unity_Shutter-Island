@@ -163,9 +163,9 @@ public class GameCtrl : MonoBehaviour
             for (int i = 0; i < keyNum; ++i)
             {
                 Vector3 pos = new Vector3(
-                    spawns[PlayerPrefs.GetInt("keyrand" + (i + 82)) + 1].position.x + PlayerPrefs.GetFloat("random1" + (i + 163)),
+                    spawns[PlayerPrefs.GetInt("keyrand" + (i + 82)) + 1].position.x + PlayerPrefs.GetFloat("random" + (i + 163)),
                     spawns[PlayerPrefs.GetInt("keyrand" + (i + 82)) + 1].position.y,
-                    spawns[PlayerPrefs.GetInt("keyrand" + (i + 82)) + 1].position.z + PlayerPrefs.GetFloat("random2" + (i + 173)));
+                    spawns[PlayerPrefs.GetInt("keyrand" + (i + 82)) + 1].position.z + PlayerPrefs.GetFloat("random" + (i + 173)));
 
                 PhotonNetwork.Instantiate("ItemKey", pos, Quaternion.identity, 0);
             }

@@ -68,16 +68,9 @@ public class MurdererTrapCtrl : Photon.MonoBehaviour
 
     public void TrapDisabled()
     {
-        pv.RPC("TrapAcitveFalse", PhotonTargets.AllBuffered);
-    }
-
-    [PunRPC]
-    public void TrapAcitveFalse()
-    {
         Use = false;
         gameObject.SetActive(false);
 
-        if (Survivor == GameCtrl.instance.Survivor)
-            GameCtrl.instance.DisTrap(1);
+        GameCtrl.instance.DisTrap(1);
     }
 }

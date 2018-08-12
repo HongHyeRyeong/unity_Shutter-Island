@@ -131,4 +131,5 @@ MonoBehaviour:
   - OpenTrue
   - RPCSurvivorEnter
   - RPCPrisonTrue
+  - TrapIdleAnim
   DisableAutoOpenWizard: 1

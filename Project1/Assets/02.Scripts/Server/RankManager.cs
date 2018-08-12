@@ -12,6 +12,8 @@ public class RankManager : MonoBehaviour
     public Text SurRankTxt;
     [SerializeField]
     public Text MurRankTxt;
+    [SerializeField]
+    public GameObject RankUp;
 
     //
     private string UserName;
@@ -47,7 +49,7 @@ public class RankManager : MonoBehaviour
             else if (Check == 3 || Check == 4)
                 MurScore = ResultCtrl.instance.GetMurdererTotalScore();
 
-            if (SurScore >= 100)
+            if (SurScore >= 1000)
             {
                 if (SurRank > 1)
                     SurRank--;
@@ -57,12 +59,13 @@ public class RankManager : MonoBehaviour
                 print(SurRank);
 
                 Login.SetSurRank(SurRank.ToString());
+                RankUp.SetActive(true);
 
                 StartCoroutine(SurRankUp());
 
                 SurRankTxt.text = SurRank.ToString();
             }
-            else if (MurScore >= 100)
+            else if (MurScore >= 1000)
             {
                 if (MurRank > 1)
                     MurRank--;
@@ -72,6 +75,7 @@ public class RankManager : MonoBehaviour
                 print(MurRank);
 
                 Login.SetMurRank(MurRank.ToString());
+                RankUp.SetActive(true);
 
                 StartCoroutine(MurRankUp());
 
