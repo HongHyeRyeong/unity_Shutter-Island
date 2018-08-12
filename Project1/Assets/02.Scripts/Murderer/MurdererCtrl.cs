@@ -169,7 +169,7 @@ public class MurdererCtrl : MonoBehaviour
                 if (Ani.GetCurrentAnimatorStateInfo(0).IsName("AttackWRun") || Ani.GetCurrentAnimatorStateInfo(0).IsName("AttackLRun"))
                 {
                     AttackRunTime += Time.deltaTime;
-                    float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.65f;
+                    float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.7f;
                     transform.Translate(new Vector3(0, 0, 1) * newTime * newTime);
                 }
             }
