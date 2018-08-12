@@ -12,8 +12,6 @@ public class CameraCtrl : MonoBehaviour
     [HideInInspector]
     public Transform targetSurvivorComPivot;
 
-    private float speed = 20;
-    private float dist = 4.5f;
     private float height = 3f;
 
     //Murderer
@@ -45,33 +43,46 @@ public class CameraCtrl : MonoBehaviour
             {
                 Vector3 pos = targetSurvivorComPivot.position;
 
+                float dist = 0;
                 float width = 0;
-                height -= Input.GetAxis("Mouse Y") * Time.deltaTime * 10;
-                height = ClampAngle(height, 0, 3f);
 
-                // 맵과 충돌
                 RaycastHit hitinfo;
-                if (Physics.Raycast(pos, transform.forward * -1, out hitinfo, 4.5f, (1 << LayerMask.NameToLayer("Map"))))
+                if (Physics.Raycast(pos, transform.forward * -1, out hitinfo, 4f, (1 << LayerMask.NameToLayer("Map"))))   // 맵과 카메라 충돌
                 {
-                    speed = 15;
+                    dist = hitinfo.distance;
+                    height = hitinfo.point.y - pos.y;
+                    width = Mathf.Sqrt(dist * dist - height * height);
 
-                    float ratio = (hitinfo.distance - 0.1f) / dist;
-                    dist = dist * ratio;
-                    height = ClampAngle(height * ratio * 0.8f, 0, dist);
+                    if (Input.GetAxis("Mouse Y") != 0)  // 마우스 움직임 가능
+                    {
+                        height -= Input.GetAxis("Mouse Y") * Time.deltaTime * 5;
+                        height = Mathf.Clamp(height, -0.5f, 3f);
+                    }
+
+                    transform.position = pos - (targetSurvivorComPivot.forward * width) + (Vector3.up * height);
+                    transform.LookAt(pos);                    
+
+                    if (!Physics.Raycast(pos, transform.forward * -1, out hitinfo, 4, (1 << LayerMask.NameToLayer("Map")))) // 예외 처리
+                    {
+                        height += 1;
+                        height = Mathf.Clamp(height, -0.5f, 3f);
+
+                        transform.position = pos - (targetSurvivorComPivot.forward * width) + (Vector3.up * height);
+                        transform.LookAt(pos);
+                    }
                 }
                 else
                 {
-                    speed = 20;
-                    dist = 4.5f;
+                    dist = 4f;
+                    height -= Input.GetAxis("Mouse Y") * Time.deltaTime * 10;
+                    height = Mathf.Clamp(height, -0.5f, 3f);
+                    width = Mathf.Sqrt(dist * dist - height * height);
+
+                    transform.position = Vector3.Lerp(transform.position,
+                            pos - (targetSurvivorComPivot.forward * width) + (Vector3.up * height),
+                            Time.deltaTime * 20);
+                    transform.LookAt(pos);
                 }
-
-                width = Mathf.Sqrt(dist * dist - height * height);
-
-                transform.position = Vector3.Slerp(transform.position,
-                        pos - (targetSurvivorComPivot.forward * width) + (Vector3.up * height),
-                        Time.deltaTime * speed);
-
-                transform.LookAt(pos);
             }
         }
         else if (GameCtrl.instance.Character == 2)
