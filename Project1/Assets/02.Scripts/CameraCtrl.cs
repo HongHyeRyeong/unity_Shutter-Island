@@ -95,14 +95,17 @@ public class CameraCtrl : MonoBehaviour
                 {
                     if (saveState != state)
                     {
+                        if (saveState != 0 && saveState != 1)   // 피봇 카메라 따라간 후 마우스 회전 복구
+                            MouseY = transform.localRotation.x + angleX;
+
                         saveState = state;
-                        MainCam.cullingMask = ~(1 << 10);
+                        MainCam.cullingMask = ~((1 << 10) + (1 << 14));
                     }
 
                     transform.position = Vector3.Lerp(transform.position, new Vector3(
                         targetMurdererCamPivot.transform.position.x,
-                        targetMurderer.transform.position.y + 2.35f,
-                        targetMurderer.transform.position.z), Time.deltaTime * 20);
+                        targetMurderer.transform.position.y + 2.3f,
+                        targetMurdererCamPivot.transform.position.z), Time.deltaTime * 20);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 80;
                     MouseY = ClampAngle(MouseY, -30, 50);
@@ -113,7 +116,7 @@ public class CameraCtrl : MonoBehaviour
                     if (saveState != state)
                     {
                         saveState = state;
-                        MainCam.cullingMask = -1;
+                        MainCam.cullingMask = ~(1 << 14);
 
                         if (state == 3)
                             angleX = 90;
@@ -125,9 +128,7 @@ public class CameraCtrl : MonoBehaviour
                         time = 0;
                     }
 
-                    transform.position = targetMurdererCamPivot.transform.position;
-
-                    if (state == 3 && angleX > 0)
+                    if (state == 3 && angleX > 0)   // 덫 깔고 스르륵 일어나는 효과
                     {
                         if (time > 1.5f)
                             angleX -= Time.deltaTime * 100;
@@ -135,11 +136,10 @@ public class CameraCtrl : MonoBehaviour
                             time += Time.deltaTime;
                     }
 
+                    transform.position = targetMurdererCamPivot.transform.position;
                     transform.rotation = Quaternion.Euler(
                         targetMurdererCamPivot.transform.eulerAngles.x + angleX,
                         targetMurderer.transform.eulerAngles.y, 0);
-
-                    MouseY = transform.localRotation.x + angleX;
                 }
             }
         }
