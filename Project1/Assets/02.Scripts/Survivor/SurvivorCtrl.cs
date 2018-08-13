@@ -100,7 +100,7 @@ public class SurvivorCtrl : MonoBehaviour
             SurvivorUICtrl.instance.DispHP(Hp);
             SurvivorUICtrl.instance.DispStamina(Stamina, maxStamina);
 
-            SoundManager.instance.SetBGM("Ingame6-In My Nightmares");
+            SoundManager.instance.SetBGM("Ingame");
         }
     }
 
@@ -183,7 +183,7 @@ public class SurvivorCtrl : MonoBehaviour
                 trModel.rotation = Quaternion.Slerp(trModel.rotation, rot, Time.deltaTime * 10f);
 
                 if (!Audio.isPlaying)
-                    pv.RPC("EffectPlayLoop", PhotonTargets.All);
+                    pv.RPC("EffectPlayLoop", PhotonTargets.AllBuffered);
             }
             else
             {
@@ -218,11 +218,13 @@ public class SurvivorCtrl : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            MoveSpeed = 5f;
-            Ani.SetBool("isRun", false);
-
             if (State == State_Run)
                 State = State_SlowRun;
+            Ani.SetBool("isRun", false);
+
+            MoveSpeed = 5f;
+
+            pv.RPC("EffectPitch", PhotonTargets.AllBuffered, 2f);
         }
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -242,12 +244,16 @@ public class SurvivorCtrl : MonoBehaviour
                         Stamina = 0;
 
                     SurvivorUICtrl.instance.DispStamina(Stamina, maxStamina);
+                    pv.RPC("EffectPitch", PhotonTargets.AllBuffered, 3f);
                 }
                 else
                 {
                     State = State_SlowRun;
                     Ani.SetBool("isRun", false);
+
                     MoveSpeed = 5f;
+
+                    pv.RPC("EffectPitch", PhotonTargets.AllBuffered, 2f);
                 }
             }
             else
@@ -795,75 +801,81 @@ public class SurvivorCtrl : MonoBehaviour
     }
 
     [PunRPC]
-    public void EffectPlayLoop()
+    void EffectPlayLoop()
     {
         Audio.loop = true;
         SoundManager.instance.SetEffect(true, Audio, "SFootStep");
         Audio.Play();
     }
+    
+    [PunRPC]
+    void EffectPitch(float pitch)
+    {
+        Audio.pitch = pitch;
+    }
 
     [PunRPC]
-    public void EffectStop()
+    void EffectStop()
     {
         Audio.Stop();
     }
 
     [PunRPC]
-    public void AttackWAnim()
+    void AttackWAnim()
     {
         Ani.SetTrigger("trAttackW");
     }
 
     [PunRPC]
-    public void AttackLAnim()
+    void AttackLAnim()
     {
         Ani.SetTrigger("trAttackL");
     }
 
     [PunRPC]
-    public void DownFrontAnim()
+    void DownFrontAnim()
     {
         Ani.SetTrigger("trDownFront");  // 같은 방향
     }
 
     [PunRPC]
-    public void DownAnim()
+    void DownAnim()
     {
         Ani.SetTrigger("trDown");   // 서로 반대 방향
     }
 
     [PunRPC]
-    public void ParryWAnim()
+    void ParryWAnim()
     {
         Ani.SetTrigger("trParryW");
     }
 
     [PunRPC]
-    public void ParryLAnim()
+    void ParryLAnim()
     {
         Ani.SetTrigger("trParryL");
     }
 
     [PunRPC]
-    public void PickItemAnim()
+    void PickItemAnim()
     {
         Ani.SetTrigger("trPickItem");
     }
 
     [PunRPC]
-    public void DieAnim()
+    void DieAnim()
     {
         Ani.SetTrigger("trDie");
     }
 
     [PunRPC]
-    public void TrapAnim()
+    void TrapAnim()
     {
         Ani.SetTrigger("trTrap");
     }
 
     [PunRPC]
-    public void SetMurdererScore(int idx, int score)
+    void SetMurdererScore(int idx, int score)
     {
         GameCtrl.instance.MurdererScore[idx] += score;
         GameCtrl.instance.SetMurdererScore(score);

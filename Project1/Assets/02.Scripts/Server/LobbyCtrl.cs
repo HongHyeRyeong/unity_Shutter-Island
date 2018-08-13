@@ -41,7 +41,7 @@ public class LobbyCtrl : MonoBehaviour
         Map = 0;
         SurRoomSelect = false;
 
-        SoundManager.instance.SetBGM("Lobby2-Last Stand");
+        SoundManager.instance.SetBGM("Lobby");
         SoundManager.instance.CreateEffect();
         StartCoroutine(StartFade(true));
     }

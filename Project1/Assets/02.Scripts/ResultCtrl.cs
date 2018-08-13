@@ -120,7 +120,7 @@ public class ResultCtrl : MonoBehaviour
         isVideo = false;
         UI.SetActive(true);
 
-        SoundManager.instance.SetBGM("Ending2-Battle Lines");
+        SoundManager.instance.SetBGM("Ending");
         SoundManager.instance.CreateEffect();
 
         if (Result == 1 || Result == 2)

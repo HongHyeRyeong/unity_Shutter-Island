@@ -71,7 +71,7 @@ public class MurdererCtrl : MonoBehaviour
 
             MouseX = 180;
 
-            SoundManager.instance.SetBGM("Ingame6-In My Nightmares");
+            SoundManager.instance.SetBGM("Ingame");
         }
     }
 

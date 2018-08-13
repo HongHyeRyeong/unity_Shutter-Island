@@ -132,4 +132,5 @@ MonoBehaviour:
   - RPCSurvivorEnter
   - RPCPrisonTrue
   - TrapIdleAnim
+  - EffectPitch
   DisableAutoOpenWizard: 1

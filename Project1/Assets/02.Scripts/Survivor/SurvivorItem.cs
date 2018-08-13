@@ -28,6 +28,15 @@ public class SurvivorItem : MonoBehaviour
     private int saveType = -1;
     private int saveLevel = -1;
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.F1))
+        {
+            ItemKey = !ItemKey;
+            SurvivorUICtrl.instance.DisKey(ItemKey);
+        }
+    }
+
     void SurvivorByItem(int type, int level)
     {
         if (type == 1)

@@ -39,8 +39,6 @@ public class CameraFilter_Attack : MonoBehaviour
 
     void Start()
     {
-        SCShader = Shader.Find("Custom/SAttack");
-
         if (!SystemInfo.supportsImageEffects)
         {
             enabled = false;
