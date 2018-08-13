@@ -238,7 +238,7 @@ public class SurvivorCtrl : MonoBehaviour
 
                     MoveSpeed = 7f;
                     Stamina -= Time.deltaTime;
-                    GameCtrl.instance.UseFootPrint(transform.position);
+                    pv.RPC("RunFoot", PhotonTargets.AllBuffered);
 
                     if (Stamina < 0)
                         Stamina = 0;
@@ -335,6 +335,12 @@ public class SurvivorCtrl : MonoBehaviour
                     DamageByMurderer();
             }
         }
+    }
+
+    [PunRPC]
+    void RunFoot()
+    {
+        GameCtrl.instance.UseFootPrint(transform.position);
     }
 
     [PunRPC]

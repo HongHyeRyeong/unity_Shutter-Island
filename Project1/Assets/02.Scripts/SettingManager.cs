@@ -58,6 +58,16 @@ public class SettingManager : MonoBehaviour
         SoundManager.instance.SetVolume(2, effect.value);
     }
 
+    public void LogOut()
+    {
+        RankManager.instance.UserID.text = "";
+        RankManager.instance.SurRankTxt.text = "";
+        RankManager.instance.MurRankTxt.text = "";
+        RankManager.instance.UserName = "";
+
+        SceneManager.LoadScene("0. Login");
+}
+
     public void GameQuit()
     {
 #if UNITY_EDITOR

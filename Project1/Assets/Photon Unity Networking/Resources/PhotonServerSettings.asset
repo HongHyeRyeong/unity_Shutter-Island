@@ -133,4 +133,5 @@ MonoBehaviour:
   - RPCPrisonTrue
   - TrapIdleAnim
   - EffectPitch
+  - RunFoot
   DisableAutoOpenWizard: 1

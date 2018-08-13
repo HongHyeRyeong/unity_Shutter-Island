@@ -83,6 +83,9 @@ public class Login : MonoBehaviour
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+            LoginButton();
     }
 
     public void PWToStar()

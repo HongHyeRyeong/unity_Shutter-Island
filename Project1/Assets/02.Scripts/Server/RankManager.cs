@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class RankManager : MonoBehaviour
 {
+    public static RankManager instance;
+
     //
     [SerializeField]
     public Text UserID;
@@ -16,7 +18,9 @@ public class RankManager : MonoBehaviour
     public GameObject RankUp;
 
     //
-    private string UserName;
+    [HideInInspector]
+    public string UserName;
+
     private int Check;
     private int SurScore;
     private int MurScore;
@@ -29,6 +33,8 @@ public class RankManager : MonoBehaviour
 
     void Start()
     {
+        instance = this;
+
         UserID.text = Login.GetID();
         UserName = UserID.text;
         SurRankTxt.text = Login.GetSurRank();
@@ -49,7 +55,7 @@ public class RankManager : MonoBehaviour
             else if (Check == 3 || Check == 4)
                 MurScore = ResultCtrl.instance.GetMurdererTotalScore();
 
-            if (SurScore >= 1000)
+            if (SurScore >= 3000)
             {
                 if (SurRank > 1)
                     SurRank--;
@@ -65,7 +71,7 @@ public class RankManager : MonoBehaviour
 
                 SurRankTxt.text = SurRank.ToString();
             }
-            else if (MurScore >= 1000)
+            else if (MurScore >= 3000)
             {
                 if (MurRank > 1)
                     MurRank--;
