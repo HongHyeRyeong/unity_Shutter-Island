@@ -5,7 +5,7 @@
 		_GlossTex("Specular", 2D) = "white" {}
 		_RampPow("Ramp Power", Range(0.1, 0.5)) = 0.1
 		_SpecCol("Specular Color", Color) = (1,1,1,1)
-		_SpecPow("Specular Power", Range(10,200)) = 100
+		_SpecPow("Specular Power", Range(10,1000)) = 1000
 	}
 
 	SubShader{
