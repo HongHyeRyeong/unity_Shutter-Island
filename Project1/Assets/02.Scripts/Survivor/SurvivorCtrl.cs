@@ -130,12 +130,12 @@ public class SurvivorCtrl : MonoBehaviour
             {
                 if (v != 0 || h != 0)
                 {
-                    pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_SlowRun);
+                    State = State_SlowRun;
                     Ani.SetBool("isSlowRun", true);
                 }
                 else
                 {
-                    pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_Idle);
+                    State = State_Idle;
                     Ani.SetBool("isSlowRun", false);
                     Ani.SetBool("isRun", false);
                 }
@@ -144,14 +144,14 @@ public class SurvivorCtrl : MonoBehaviour
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
-                        pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_AttackW);
+                        State = State_AttackW;
                         pv.RPC("AttackWAnim", PhotonTargets.AllBuffered);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
                     }
                     else if (Input.GetMouseButtonDown(1))
                     {
-                        pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_AttackL);
+                        State = State_AttackL;
                         pv.RPC("AttackLAnim", PhotonTargets.AllBuffered);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
@@ -219,7 +219,7 @@ public class SurvivorCtrl : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             if (State == State_Run)
-                pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_SlowRun);
+                State = State_SlowRun;
             Ani.SetBool("isRun", false);
 
             MoveSpeed = 5f;
@@ -233,7 +233,7 @@ public class SurvivorCtrl : MonoBehaviour
             {
                 if (Stamina > 0)
                 {
-                    pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_Run);
+                    State = State_Run;
                     Ani.SetBool("isRun", true);
 
                     MoveSpeed = 7f;
@@ -248,7 +248,7 @@ public class SurvivorCtrl : MonoBehaviour
                 }
                 else
                 {
-                    pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_SlowRun);
+                    State = State_SlowRun;
                     Ani.SetBool("isRun", false);
 
                     MoveSpeed = 5f;
@@ -289,7 +289,7 @@ public class SurvivorCtrl : MonoBehaviour
                         DamageByMurderer();
                     else
                     {
-                        pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_ParryToMurdererW);
+                        State = State_ParryToMurdererW;
                         pv.RPC("ParryWAnim", PhotonTargets.All);
                         pv.RPC("AttackEnd", PhotonTargets.All);
                         pv.RPC("DamageToMurderer", PhotonTargets.All);
@@ -312,7 +312,7 @@ public class SurvivorCtrl : MonoBehaviour
                         DamageByMurderer();
                     else
                     {
-                        pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_ParryToMurdererL);
+                        State = State_ParryToMurdererL;
                         pv.RPC("ParryLAnim", PhotonTargets.All);
                         pv.RPC("AttackEnd", PhotonTargets.All);
                         pv.RPC("DamageToMurderer", PhotonTargets.All);
@@ -367,14 +367,14 @@ public class SurvivorCtrl : MonoBehaviour
                 {
                     if (State == State_AttackW)
                     {
-                        pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_ParryToMurdererW);
+                        State = State_ParryToMurdererW;
                         pv.RPC("ParryWAnim", PhotonTargets.All);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
                     }
                     else
                     {
-                        pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_ParryToMurdererL);
+                        State = State_ParryToMurdererL;
                         pv.RPC("ParryLAnim", PhotonTargets.All);
                         Ani.SetBool("isSlowRun", false);
                         Ani.SetBool("isRun", false);
@@ -414,7 +414,7 @@ public class SurvivorCtrl : MonoBehaviour
 
         if (Hp <= 0)
         {
-            pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_Idle);
+            State = State_Idle;
             Ani.SetBool("isSlowRun", false);
             Ani.SetBool("isRun", false);
             Ani.SetBool("isRepair", false);
@@ -438,7 +438,7 @@ public class SurvivorCtrl : MonoBehaviour
         }
         else
         {
-            pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_Hit);
+            State = State_Hit;
 
             float dir = trModel.forward.z * GameCtrl.instance.Murderer.transform.forward.z;
 
@@ -492,7 +492,7 @@ public class SurvivorCtrl : MonoBehaviour
         if (pv.isMine)
             SaveRot = trModel.eulerAngles;
 
-        pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_Trap);
+        State = State_Trap;
         Ani.SetTrigger("trTrap");
         Ani.SetBool("isSlowRun", false);
         Ani.SetBool("isRun", false);
@@ -619,7 +619,7 @@ public class SurvivorCtrl : MonoBehaviour
 
                     if (machineCtrl.GetComplete())
                     {
-                        pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_Idle);
+                        State = State_Idle;
                         Ani.SetBool("isRepair", false);
 
                         WorkMachine = 0;
@@ -641,7 +641,7 @@ public class SurvivorCtrl : MonoBehaviour
                         {
                             if (State != State_Repair)
                             {
-                                pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_Repair);
+                                State = State_Repair;
                                 Ani.SetBool("isRepair", true);
                                 Ani.SetBool("isSlowRun", false);
                                 Ani.SetBool("isRun", false);
@@ -655,7 +655,7 @@ public class SurvivorCtrl : MonoBehaviour
                             {
                                 WorkMachine = 0;
 
-                                pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_Idle);
+                                State = State_Idle;
                                 Ani.SetBool("isRepair", false);
 
                                 machineRangeCtrl.SetMachineUse(false);
@@ -668,7 +668,7 @@ public class SurvivorCtrl : MonoBehaviour
                         {
                             WorkMachine = 0;
 
-                            pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_Idle);
+                            State = State_Idle;
                             Ani.SetBool("isRepair", false);
 
                             machineCtrl.MachineStop();
@@ -736,7 +736,7 @@ public class SurvivorCtrl : MonoBehaviour
             if (State == State_PickItem)
                 return;
 
-            pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_PickItem);
+            State = State_PickItem;
             pv.RPC("PickItemAnim", PhotonTargets.All);
             Ani.SetBool("isSlowRun", false);
             Ani.SetBool("isRun", false);
@@ -750,7 +750,7 @@ public class SurvivorCtrl : MonoBehaviour
             }
         }
         else
-            pv.RPC("StateRPC", PhotonTargets.AllBuffered, s);
+            State = s;
     }
 
     public int GetState()
@@ -782,7 +782,7 @@ public class SurvivorCtrl : MonoBehaviour
 
     void SurvivorDead()
     {
-        pv.RPC("StateRPC", PhotonTargets.AllBuffered, State_Die);
+        State = State_Die;
         pv.RPC("DieAnim", PhotonTargets.All);
         Ani.SetBool("isSlowRun", false);
         Ani.SetBool("isRun", false);
@@ -871,12 +871,6 @@ public class SurvivorCtrl : MonoBehaviour
     void DieAnim()
     {
         Ani.SetTrigger("trDie");
-    }
-
-    [PunRPC]
-    void StateRPC(int state)
-    {
-        State = state;
     }
 
     [PunRPC]
