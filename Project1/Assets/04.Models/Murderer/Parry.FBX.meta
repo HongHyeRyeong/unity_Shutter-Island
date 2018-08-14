@@ -219,6 +219,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.07521368
+        functionName: SetState
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 19ef23c0ab7241e438c389c64ca62024,
+          type: 3}
+        floatParameter: 0
+        intParameter: 2
+        messageOptions: 0
       - time: 0.9116466
         functionName: SetState
         data: 
@@ -226,6 +234,14 @@ ModelImporter:
           type: 3}
         floatParameter: 0
         intParameter: 0
+        messageOptions: 0
+      - time: 0
+        functionName: SetState
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 19ef23c0ab7241e438c389c64ca62024,
+          type: 3}
+        floatParameter: 0
+        intParameter: 2
         messageOptions: 0
       transformMask: []
       maskType: 3

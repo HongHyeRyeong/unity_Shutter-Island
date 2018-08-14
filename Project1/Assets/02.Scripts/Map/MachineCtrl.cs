@@ -6,11 +6,6 @@ using UnityEngine.UI;
 public class MachineCtrl : MonoBehaviour
 {
     private PhotonView pv = null;
-
-    float currWork = 0;
-    bool currGadgetUse = false;
-
-    //
     private Animator Ani;
     private AudioSource Audio;
 
@@ -18,20 +13,16 @@ public class MachineCtrl : MonoBehaviour
     private Image imgHUD;
     private Text txtHUD;
     private GameObject CompleteLight;
-    private  GameObject Flare;
+    private GameObject Flare;
 
-    public int MachineNum;
-    private float MachineGauge = 0;
-    private  bool Complete = false;
-
-    private bool GadgetUse = false;
-    private float GadgetGauge = 10f;
-    private int GadgetNum = 0;
+    private bool GadgetUse = false;     // 부품 설치 됐는지
+    private int GadgetNum = 0;          // 설치한 부품 수
+    private float MachineGauge = 0;     // 기계 게이지
+    private bool Complete = false;      // 모든 설치가 완료 됐는 지
 
     void Start()
     {
         pv = GetComponent<PhotonView>();
-
         Ani = GetComponent<Animator>();
 
         Audio = GetComponent<AudioSource>();
@@ -47,58 +38,53 @@ public class MachineCtrl : MonoBehaviour
 
     public bool Install(float work)
     {
-        currWork = work;
-        pv.RPC("MachineInstall", PhotonTargets.AllBuffered);
+        pv.RPC("MachineInstall", PhotonTargets.AllBuffered, work);
 
-        if (GadgetGauge < 0)
+        if (MachineGauge >= 10 + 10 * GadgetNum)
         {
-            pv.RPC("MachineOneComplete", PhotonTargets.All);
+            pv.RPC("MachineOneComplete", PhotonTargets.All, GadgetNum);
 
-            if (MachineGauge >= 10f)    // Demo
-            {
+            if (MachineGauge >= 20f)    // 50
                 pv.RPC("MachineComplete", PhotonTargets.All);
-            }
             else
                 pv.RPC("MachineInstallAnim", PhotonTargets.All);
 
             return true;
         }
-
         return false;
     }
 
     [PunRPC]
-    public void MachineInstall()
+    public void MachineInstall(float work)
     {
-        MachineGauge += currWork;
-        GadgetGauge -= currWork;
+        MachineGauge += work;
 
         if (!Audio.isPlaying)
             Audio.Play();
     }
 
     [PunRPC]
-    public void MachineOneComplete()
+    public void MachineOneComplete(int num)
     {
         GadgetUse = false;
-        GadgetGauge = 10f;
-        GadgetNum++;
-
-        MachineGauge = 10 * GadgetNum;
+        GadgetNum = num + 1;
+        MachineGauge = 10 * GadgetNum;  // 10단위로 끊어지게
     }
 
     [PunRPC]
     public void MachineComplete()
     {
         Complete = true;
-        HUD.SetActive(false);
-        CompleteLight.SetActive(true);
-        Flare.SetActive(false);
+        GadgetUse = false;
 
+        Ani.SetTrigger("Complete");
         SoundManager.instance.SetEffect(true, Audio, "MachineComplete");
         Audio.Play();
 
-        Ani.SetTrigger("Complete");
+        HUD.SetActive(false);
+        Flare.SetActive(false);
+        CompleteLight.SetActive(true);
+
         GameCtrl.instance.MachineComplete();
     }
 
@@ -133,30 +119,11 @@ public class MachineCtrl : MonoBehaviour
         imgHUD.fillAmount = MachineGauge / 50;
     }
 
-    public bool GetComplete()
-    {
-        return Complete;
-    }
-
-    public void SetGadgetUse(bool b)
-    {
-        currGadgetUse = b;
-        pv.RPC("GadgetUseSet", PhotonTargets.All);
-    }
-
+    public bool GetGadgetUse() { return GadgetUse; }
+    public void SetGadgetUse(bool use) { pv.RPC("GadgetUseSet", PhotonTargets.All, use); }
     [PunRPC]
-    public void GadgetUseSet()
-    {
-        GadgetUse = currGadgetUse;
-    }
+    void GadgetUseSet(bool use) { GadgetUse = use; }
 
-    public bool GetGadgetUse()
-    {
-        return GadgetUse;
-    }
-
-    public void SetHUD(bool b)
-    {
-        HUD.SetActive(b);
-    }
+    public bool GetComplete() { return Complete; }
+    public void SetHUD(bool b) { HUD.SetActive(b); }
 }

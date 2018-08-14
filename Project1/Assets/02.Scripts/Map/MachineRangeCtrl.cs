@@ -1,36 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class MachineRangeCtrl : MonoBehaviour
 {
     private PhotonView pv = null;
 
-    bool currUse = false;
+    public MachineCtrl Machine;
 
-    //
-    public GameObject Machine;
-    private bool Use = false;
+    [HideInInspector]
+    public int MachineNum;          // 자리 넘버
+    private bool Use = false;       // 사용 중인 자리인지
 
     void Start()
     {
         pv = GetComponent<PhotonView>();
+
+        MachineNum = Convert.ToInt32(transform.gameObject.name);
     }
 
-    public void SetMachineUse(bool b)
-    {
-        currUse = b;
-        pv.RPC("SpaceUse", PhotonTargets.All);
-    }
+    public bool GetMachineUse() { return Use; }
+    public void SetMachineUse(bool use) { pv.RPC("SpaceUse", PhotonTargets.All, use); }
 
     [PunRPC]
-    void SpaceUse()
-    {
-        Use = currUse;
-    }
-
-    public bool GetMachineUse()
-    {
-        return Use;
-    }
+    void SpaceUse(bool use) { Use = use; }
 }

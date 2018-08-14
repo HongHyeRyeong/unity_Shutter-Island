@@ -286,9 +286,7 @@ public class SurvivorCtrl : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     if (Attack == State_AttackL)
-                    {
                         DamageByMurderer();
-                    }
                     else
                     {
                         State = State_ParryToMurdererW;
@@ -308,9 +306,7 @@ public class SurvivorCtrl : MonoBehaviour
                 else if (Input.GetMouseButtonDown(1))
                 {
                     if (Attack == State_AttackW)
-                    {
                         DamageByMurderer();
-                    }
                     else
                     {
                         State = State_ParryToMurdererL;
@@ -383,14 +379,10 @@ public class SurvivorCtrl : MonoBehaviour
                         SurvivorUICtrl.instance.Time.SetActive(false);
                 }
                 else
-                {
                     DamageByMurderer();
-                }
             }
             else if (State == State_Trap)
-            {
                 DamageByMurderer();
-            }
             else
             {
                 Attack = MurdererAttack;
@@ -419,6 +411,7 @@ public class SurvivorCtrl : MonoBehaviour
             State = State_Idle;
             Ani.SetBool("isSlowRun", false);
             Ani.SetBool("isRun", false);
+            Ani.SetBool("isRepair", false);
 
             Prison = true;
             Life -= 1;
@@ -505,6 +498,8 @@ public class SurvivorCtrl : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.R))
             {
+                PrisonTime -= Time.deltaTime;
+
                 if (pv.isMine)
                 {
                     if (SurvivorUICtrl.instance.Message.activeSelf)
@@ -512,17 +507,15 @@ public class SurvivorCtrl : MonoBehaviour
                     SurvivorUICtrl.instance.DisTime(PrisonTime, 3);
                 }
 
-                PrisonTime -= Time.deltaTime;
-
-                if (PrisonTime < 0)
+                if (PrisonTime < 0) // 감옥 문 오픈
                 {
-                    if (pv.isMine)
-                        SurvivorUICtrl.instance.Time.SetActive(false);
-
-                    Item.ItemSet(5, 0);
+                    Item.ItemSet(5, 0); // 열쇠 사용
 
                     prison.GetComponent<PrisonCtrl>().OpenDoor();
+
                     PrisonTime = 3f;
+                    if (pv.isMine)
+                        SurvivorUICtrl.instance.Time.SetActive(false);
 
                     GameCtrl.instance.SurvivorScore[2] += 500;
                     GameCtrl.instance.SetSurvivorScore(500);
@@ -530,16 +523,15 @@ public class SurvivorCtrl : MonoBehaviour
             }
             else
             {
+                PrisonTime = 3f;
+
                 if (pv.isMine)
                 {
                     if (!SurvivorUICtrl.instance.Message.activeSelf)
                         SurvivorUICtrl.instance.DisMessage(3);
-
                     if (SurvivorUICtrl.instance.Time.activeSelf)
                         SurvivorUICtrl.instance.Time.SetActive(false);
                 }
-
-                PrisonTime = 3f;
             }
         }
     }
@@ -617,74 +609,80 @@ public class SurvivorCtrl : MonoBehaviour
                 if (State == 0 || State == 1 || State == 2 || State == 5)
                 {
                     MachineRangeCtrl machineRangeCtrl = other.gameObject.GetComponent<MachineRangeCtrl>();
-                    MachineCtrl machineCtrl = machineRangeCtrl.Machine.GetComponent<MachineCtrl>();
+                    MachineCtrl machineCtrl = machineRangeCtrl.Machine;
 
                     if (machineCtrl.GetComplete())
+                    {
+                        State = State_Idle;
+                        Ani.SetBool("isRepair", false);
+
+                        WorkMachine = 0;
+
+                        if (SurvivorUICtrl.instance.Message.activeSelf)
+                            SurvivorUICtrl.instance.Message.SetActive(false);
+
                         return;
+                    }
 
                     machineCtrl.DisHUD(transform.position);
 
                     if (machineRangeCtrl.GetMachineUse())
                     {
-                        if (WorkMachine == machineCtrl.MachineNum)
+                        if (WorkMachine != machineRangeCtrl.MachineNum)  // 현재 돌리고 있는 머신인지
+                            return;
+
+                        if (Input.GetKey(KeyCode.R))
                         {
-                            if (Input.GetKey(KeyCode.R))
+                            if (State != State_Repair)
                             {
-                                if (State != State_Repair)
-                                {
-                                    State = State_Repair;
-                                    Ani.SetBool("isRepair", true);
-                                    Ani.SetBool("isSlowRun", false);
-                                    Ani.SetBool("isRun", false);
+                                State = State_Repair;
+                                Ani.SetBool("isRepair", true);
+                                Ani.SetBool("isSlowRun", false);
+                                Ani.SetBool("isRun", false);
 
-                                    SaveRot = other.transform.eulerAngles;
-                                }
-
-                                bool complete = machineCtrl.Install(Time.deltaTime * WorkSpeed);
-
-                                if (complete)
-                                {
-                                    WorkMachine = 0;
-
-                                    State = State_Idle;
-                                    Ani.SetBool("isRepair", false);
-
-                                    machineRangeCtrl.SetMachineUse(false);
-
-                                    GameCtrl.instance.SurvivorScore[1] += 200;
-                                    GameCtrl.instance.SetSurvivorScore(200);
-                                }
+                                SaveRot = other.transform.eulerAngles;
                             }
-                            else
+
+                            bool complete = machineCtrl.Install(Time.deltaTime * WorkSpeed);
+
+                            if (complete)   // 머신을 다 돌렸다면
                             {
                                 WorkMachine = 0;
 
                                 State = State_Idle;
                                 Ani.SetBool("isRepair", false);
 
-                                machineCtrl.MachineStop();
                                 machineRangeCtrl.SetMachineUse(false);
+
+                                GameCtrl.instance.SurvivorScore[1] += 200;
+                                GameCtrl.instance.SetSurvivorScore(200);
                             }
+                        }
+                        else
+                        {
+                            WorkMachine = 0;
+
+                            State = State_Idle;
+                            Ani.SetBool("isRepair", false);
+
+                            machineCtrl.MachineStop();
+                            machineRangeCtrl.SetMachineUse(false);
                         }
                     }
                     else
                     {
-                        if (machineCtrl.GetGadgetUse())
+                        if (machineCtrl.GetGadgetUse()) // 부품이 설치돼있다면
                         {
                             if (pv.isMine)
-                            {
-                                if (!SurvivorUICtrl.instance.Message.activeSelf)
-                                    SurvivorUICtrl.instance.DisMessage(2);
-                            }
+                                SurvivorUICtrl.instance.DisMessage(2);
 
                             if (Input.GetKey(KeyCode.R))
                             {
-                                if (pv.isMine)
-                                {
-                                    SurvivorUICtrl.instance.Message.SetActive(false);
-                                }
+                                WorkMachine = machineRangeCtrl.MachineNum;
                                 machineRangeCtrl.SetMachineUse(true);
-                                WorkMachine = machineCtrl.MachineNum;
+
+                                if (pv.isMine)
+                                    SurvivorUICtrl.instance.Message.SetActive(false);
                             }
                         }
                         else
@@ -693,20 +691,15 @@ public class SurvivorCtrl : MonoBehaviour
 
                             if (GadgetNum > 0)
                             {
-                                if (pv.isMine)
-                                {
-                                    if (!SurvivorUICtrl.instance.Message.activeSelf)
-                                        SurvivorUICtrl.instance.DisMessage(1);
-                                }
+                                SurvivorUICtrl.instance.DisMessage(1);
 
                                 if (Input.GetKeyDown(KeyCode.T))
                                 {
-                                    if (pv.isMine)
-                                    {
-                                        SurvivorUICtrl.instance.Message.SetActive(false);
-                                    }
                                     machineCtrl.SetGadgetUse(true);
                                     Item.ItemSet(4, GadgetNum - 1);
+
+                                    if (pv.isMine)
+                                        SurvivorUICtrl.instance.Message.SetActive(false);
                                 }
                             }
                         }
@@ -725,7 +718,7 @@ public class SurvivorCtrl : MonoBehaviour
                 if (SurvivorUICtrl.instance.Message.activeSelf)
                     SurvivorUICtrl.instance.Message.SetActive(false);
 
-                other.gameObject.GetComponent<MachineRangeCtrl>().Machine.GetComponent<MachineCtrl>().SetHUD(false);
+                other.gameObject.GetComponent<MachineRangeCtrl>().Machine.SetHUD(false);
             }
         }
     }
@@ -751,7 +744,7 @@ public class SurvivorCtrl : MonoBehaviour
             }
         }
         else
-            State = State_Idle;
+            State = s;
     }
 
     public int GetState()

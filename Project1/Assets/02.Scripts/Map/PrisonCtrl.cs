@@ -30,8 +30,15 @@ public class PrisonCtrl : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Survivor") && SurvivorNum != 0)
-            other.gameObject.GetComponent<SurvivorCtrl>().PrisonStay(this.gameObject);
+        if (other.CompareTag("Survivor"))
+        {
+            SurvivorCtrl ctrl = other.gameObject.GetComponent<SurvivorCtrl>();
+
+            if (SurvivorNum != 0)    // 감옥에 생존자가 있다면
+                ctrl.PrisonStay(this.gameObject);
+            else
+                ctrl.PrisonExit();
+        }
     }
 
     private void OnTriggerExit(Collider other)
