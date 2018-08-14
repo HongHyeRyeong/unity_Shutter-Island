@@ -72,6 +72,8 @@ public class GameCtrl : MonoBehaviour
     [SerializeField]
     private Image Hit;
     private int HitNum = 0;
+    [SerializeField]
+    private Image Attack;
 
     private void Awake()
     {
@@ -173,10 +175,9 @@ public class GameCtrl : MonoBehaviour
 
         savedelay = delay;
         StartCoroutine(StartFade(true));
+        //StartCoroutine(DisFPS());
 
         GetConnectPlayerCount();
-
-        //StartCoroutine(DisFPS());
     }
 
     IEnumerator FindMurderer()
@@ -382,6 +383,37 @@ public class GameCtrl : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public IEnumerator StartAttack(float delay)
+    {
+        Attack.gameObject.SetActive(true);
+
+        Color c = Attack.color;
+        c.a = 0;
+        Attack.color = c;
+
+        while (Attack.color.a <= 1)
+        {
+            c.a += Time.deltaTime * 2;
+            Attack.color = c;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(delay);
+
+        c.a = 1;
+        Attack.color = c;
+
+        while (Attack.color.a >= 0)
+        {
+            c.a -= Time.deltaTime * 2;
+            Attack.color = c;
+
+            yield return null;
+        }
+
+        Attack.gameObject.SetActive(false);
     }
 
     public IEnumerator StartFade(bool start)

@@ -134,4 +134,11 @@ MonoBehaviour:
   - TrapIdleAnim
   - EffectPitch
   - RunFoot
+  - StateHit
+  - StateIdle
+  - StateRepair
+  - StateRun
+  - StateSlowRun
+  - StateTrap
+  - StateRPC
   DisableAutoOpenWizard: 1

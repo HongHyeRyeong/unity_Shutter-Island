@@ -193,29 +193,13 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
-        functionName: NewEvent
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 3948d0c2ed403f542a0a3839dc4c7487,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.08034188
-        functionName: SetState
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 3948d0c2ed403f542a0a3839dc4c7487,
-          type: 3}
-        floatParameter: 0
-        intParameter: 12
-        messageOptions: 0
       - time: 0.8652727
         functionName: SetState
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 3948d0c2ed403f542a0a3839dc4c7487,
           type: 3}
         floatParameter: 0
-        intParameter: 12
+        intParameter: 0
         messageOptions: 0
       transformMask: []
       maskType: 3

@@ -42,12 +42,12 @@ public class MachineCtrl : MonoBehaviour
 
         if (MachineGauge >= 10 + 10 * GadgetNum)
         {
-            pv.RPC("MachineOneComplete", PhotonTargets.All, GadgetNum);
+            pv.RPC("MachineOneComplete", PhotonTargets.AllBuffered);
 
             if (MachineGauge >= 20f)    // 50
-                pv.RPC("MachineComplete", PhotonTargets.All);
+                pv.RPC("MachineComplete", PhotonTargets.AllBuffered);
             else
-                pv.RPC("MachineInstallAnim", PhotonTargets.All);
+                pv.RPC("MachineInstallAnim", PhotonTargets.AllBuffered);
 
             return true;
         }
@@ -64,10 +64,14 @@ public class MachineCtrl : MonoBehaviour
     }
 
     [PunRPC]
-    public void MachineOneComplete(int num)
+    public void MachineOneComplete()
     {
-        GadgetUse = false;
-        GadgetNum = num + 1;
+        if(GadgetUse)
+        {
+            GadgetUse = false;
+            GadgetNum++;
+        }
+
         MachineGauge = 10 * GadgetNum;  // 10단위로 끊어지게
     }
 
@@ -96,7 +100,7 @@ public class MachineCtrl : MonoBehaviour
 
     public void MachineStop()
     {
-        pv.RPC("RPCMachineStop", PhotonTargets.All);
+        pv.RPC("RPCMachineStop", PhotonTargets.AllBuffered);
     }
 
     [PunRPC]
@@ -120,7 +124,7 @@ public class MachineCtrl : MonoBehaviour
     }
 
     public bool GetGadgetUse() { return GadgetUse; }
-    public void SetGadgetUse(bool use) { pv.RPC("GadgetUseSet", PhotonTargets.All, use); }
+    public void SetGadgetUse(bool use) { pv.RPC("GadgetUseSet", PhotonTargets.AllBuffered, use); }
     [PunRPC]
     void GadgetUseSet(bool use) { GadgetUse = use; }
 
