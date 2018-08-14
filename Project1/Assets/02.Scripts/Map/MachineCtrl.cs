@@ -59,6 +59,9 @@ public class MachineCtrl : MonoBehaviour
     {
         MachineGauge += work;
 
+        if (MachineGauge >= 10 + 10 * GadgetNum)    // 10단위로 끊어지게
+            MachineGauge = 10 + 10 * GadgetNum;
+
         if (!Audio.isPlaying)
             Audio.Play();
     }
@@ -66,13 +69,11 @@ public class MachineCtrl : MonoBehaviour
     [PunRPC]
     public void MachineOneComplete()
     {
-        if(GadgetUse)
+        if (GadgetUse)
         {
             GadgetUse = false;
             GadgetNum++;
         }
-
-        MachineGauge = 10 * GadgetNum;  // 10단위로 끊어지게
     }
 
     [PunRPC]
