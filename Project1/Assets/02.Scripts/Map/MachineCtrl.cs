@@ -78,18 +78,21 @@ public class MachineCtrl : MonoBehaviour
     [PunRPC]
     public void MachineComplete()
     {
-        Complete = true;
-        GadgetUse = false;
+        if (!Complete)
+        {
+            Complete = true;
+            GadgetUse = false;
 
-        Ani.SetTrigger("Complete");
-        SoundManager.instance.SetEffect(true, Audio, "MachineComplete");
-        Audio.Play();
+            Ani.SetTrigger("Complete");
+            SoundManager.instance.SetEffect(true, Audio, "MachineComplete");
+            Audio.Play();
 
-        HUD.SetActive(false);
-        Flare.SetActive(false);
-        CompleteLight.SetActive(true);
+            HUD.SetActive(false);
+            Flare.SetActive(false);
+            CompleteLight.SetActive(true);
 
-        GameCtrl.instance.MachineComplete();
+            GameCtrl.instance.MachineComplete();
+        }
     }
 
     [PunRPC]
