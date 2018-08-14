@@ -194,6 +194,8 @@ public class MurdererCtrl : MonoBehaviour
                 MouseX += Input.GetAxis("Mouse X") * Time.deltaTime * 80;
                 transform.rotation = Quaternion.Euler(0, MouseX, 0);
             }
+
+            print(State);
         }
         else
         {
@@ -299,6 +301,8 @@ public class MurdererCtrl : MonoBehaviour
 
     public void SetState(int s)
     {
+        print("리셋");
+
         State = s;
         Ani.SetBool("isRun", false);
         Ani.SetBool("isBackRun", false);
