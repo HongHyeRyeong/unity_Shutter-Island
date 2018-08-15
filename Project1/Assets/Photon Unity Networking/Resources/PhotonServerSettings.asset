@@ -143,4 +143,8 @@ MonoBehaviour:
   - StateRPC
   - InPrisonPos
   - OpenPrisonPos
+  - teleporttrue
+  - teleportfalse
+  - teleportFalse
+  - teleportTrue
   DisableAutoOpenWizard: 1

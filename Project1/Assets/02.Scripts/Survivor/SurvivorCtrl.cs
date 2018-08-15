@@ -49,6 +49,9 @@ public class SurvivorCtrl : MonoBehaviour
     public bool Trap = false;
 
     private Vector3 SaveRot;
+    private Vector3 SavePos;
+
+    private bool teleport;
 
     //
     const int State_Die = -1;
@@ -203,8 +206,16 @@ public class SurvivorCtrl : MonoBehaviour
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, currPos, Time.deltaTime * 10.0f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, currRot, Time.deltaTime * 10.0f);
+            if (!teleport)
+            {
+                transform.position = Vector3.Lerp(transform.position, currPos, Time.deltaTime * 10.0f);
+                transform.rotation = Quaternion.Slerp(transform.rotation, currRot, Time.deltaTime * 10.0f);
+            }
+            else
+            {
+                transform.position = SavePos;
+                pv.RPC("teleportFalse", PhotonTargets.AllBuffered);
+            }
         }
 
         if (Prison)
@@ -598,8 +609,28 @@ public class SurvivorCtrl : MonoBehaviour
             minObject.GetComponent<PrisonCtrl>().SurvivorEnter(transform.gameObject);
             transform.position = minObject.transform.position;
 
-            currPos = transform.position;
+            pv.RPC("teleportTrue", PhotonTargets.AllBuffered, minObject.transform.position);
         }
+    }
+
+    [PunRPC]
+    public void teleportFalse()
+    {
+        teleport = false;
+        print("false");
+    }
+
+    [PunRPC]
+    public void teleportTrue(Vector3 pos)
+    {
+        SavePos = pos;
+
+        teleport = true;
+    }
+
+    public void SetprisonPos(Vector3 pos)
+    {
+        pv.RPC("teleportTrue", PhotonTargets.AllBuffered, pos);
     }
 
     public void PrisonFalse()

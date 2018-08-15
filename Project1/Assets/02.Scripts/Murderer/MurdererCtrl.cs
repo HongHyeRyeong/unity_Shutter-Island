@@ -186,7 +186,7 @@ public class MurdererCtrl : MonoBehaviour
                     pv.RPC("EffectStop", PhotonTargets.All);
             }
 
-            if (State != State_Parry && State != State_Trap)
+            if (State != State_Parry && State != State_Trap && State != State_Die)
             {
                 MouseX += Input.GetAxis("Mouse X") * Time.deltaTime * 80;
                 transform.rotation = Quaternion.Euler(0, MouseX, 0);
