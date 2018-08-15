@@ -141,4 +141,6 @@ MonoBehaviour:
   - StateSlowRun
   - StateTrap
   - StateRPC
+  - InPrisonPos
+  - OpenPrisonPos
   DisableAutoOpenWizard: 1

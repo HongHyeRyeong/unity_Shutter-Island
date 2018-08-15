@@ -444,12 +444,12 @@ public class SurvivorCtrl : MonoBehaviour
 
             if (dir >= 0)
             {
-                pv.RPC("DownFrontAnim", PhotonTargets.All);
+                pv.RPC("DownFrontAnim", PhotonTargets.AllBuffered);
                 StartCoroutine(Knockback(true));
             }
             else
             {
-                pv.RPC("DownAnim", PhotonTargets.All);
+                pv.RPC("DownAnim", PhotonTargets.AllBuffered);
                 StartCoroutine(Knockback(false));
             }
 
