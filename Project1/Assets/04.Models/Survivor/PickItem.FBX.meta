@@ -201,7 +201,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.7947434
+      - time: 1
         functionName: SetState
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 3948d0c2ed403f542a0a3839dc4c7487,

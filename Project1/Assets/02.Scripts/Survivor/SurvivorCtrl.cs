@@ -200,8 +200,6 @@ public class SurvivorCtrl : MonoBehaviour
             }
 
             InputGet();
-
-            print(State);
         }
         else
         {
@@ -559,7 +557,7 @@ public class SurvivorCtrl : MonoBehaviour
     {
         float temp = 1;
         if (Life == 0)  // 두번째 감옥일때 더 빠르게
-            temp = 1.5f;
+            temp = 2f;
 
         Hp -= Time.deltaTime * temp;
         if (pv.isMine)
@@ -737,8 +735,6 @@ public class SurvivorCtrl : MonoBehaviour
 
     public void SetState(int s)
     {
-        print("setstate: " + s);
-
         if (s == State_PickItem)
         {
             if (State == State_PickItem)
