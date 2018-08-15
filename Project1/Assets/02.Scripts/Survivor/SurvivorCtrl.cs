@@ -114,7 +114,7 @@ public class SurvivorCtrl : MonoBehaviour
     {
         if (pv.isMine)
         {
-            if (!GameCtrl.instance.isStart || SettingManager.instance.Setting.activeSelf)  // 게임 시작 전이거나 셋팅창이 켜져 있을때
+            if (!GameCtrl.instance.isStart)  // 게임 시작 전
                 return;
 
             float h = 0;
@@ -140,7 +140,7 @@ public class SurvivorCtrl : MonoBehaviour
                     Ani.SetBool("isRun", false);
                 }
 
-                if (!SurvivorUICtrl.instance.Inven.activeSelf)  // 인벤 창이 켜져있을때
+                if (!SurvivorUICtrl.instance.Inven.activeSelf && !SettingManager.instance.Setting.activeSelf)  // 인벤, 설정 창이 켜져있을때
                 {
                     if (Input.GetMouseButtonDown(0))
                     {

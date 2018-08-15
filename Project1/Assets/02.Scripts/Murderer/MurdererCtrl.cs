@@ -78,7 +78,7 @@ public class MurdererCtrl : MonoBehaviour
     {
         if (pv.isMine)
         {
-            if (!GameCtrl.instance.isStart || SettingManager.instance.Setting.activeSelf)  // 게임 시작 전이거나 셋팅창이 켜져 있을때
+            if (!GameCtrl.instance.isStart)  // 게임 시작 전
                 return;
 
             float h = 0;
@@ -129,32 +129,35 @@ public class MurdererCtrl : MonoBehaviour
                     Ani.SetBool("isBackRun", false);
                 }
 
-                if (Input.GetMouseButtonDown(0))
+                if (!SettingManager.instance.Setting.activeSelf)
                 {
-                    if (State == State_Run && MoveSpeed == 6.3f)    // 앞으로 뛸때
-                        pv.RPC("AttackWRunAnim", PhotonTargets.All);
-                    else
-                        pv.RPC("AttackWAnim", PhotonTargets.All);
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        if (State == State_Run && MoveSpeed == 6.3f)    // 앞으로 뛸때
+                            pv.RPC("AttackWRunAnim", PhotonTargets.All);
+                        else
+                            pv.RPC("AttackWAnim", PhotonTargets.All);
 
-                    pv.RPC("AttackWTrue", PhotonTargets.All);
-                    Ani.SetBool("isRun", false);
-                    Ani.SetBool("isBackRun", false);
-                }
-                else if (Input.GetMouseButtonDown(1))
-                {
-                    if (State == State_Run && MoveSpeed == 6.3f)    // 앞으로 뛸때
-                        pv.RPC("AttackLRunAnim", PhotonTargets.All);
-                    else
-                        pv.RPC("AttackLAnim", PhotonTargets.All);
+                        pv.RPC("AttackWTrue", PhotonTargets.All);
+                        Ani.SetBool("isRun", false);
+                        Ani.SetBool("isBackRun", false);
+                    }
+                    else if (Input.GetMouseButtonDown(1))
+                    {
+                        if (State == State_Run && MoveSpeed == 6.3f)    // 앞으로 뛸때
+                            pv.RPC("AttackLRunAnim", PhotonTargets.All);
+                        else
+                            pv.RPC("AttackLAnim", PhotonTargets.All);
 
-                    pv.RPC("AttackLTrue", PhotonTargets.All);
-                    Ani.SetBool("isRun", false);
-                    Ani.SetBool("isBackRun", false);
-                }
-                else if (Input.GetKeyDown(KeyCode.E))
-                {
-                    State = State_Trap;
-                    pv.RPC("InstallAnim", PhotonTargets.All);
+                        pv.RPC("AttackLTrue", PhotonTargets.All);
+                        Ani.SetBool("isRun", false);
+                        Ani.SetBool("isBackRun", false);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        State = State_Trap;
+                        pv.RPC("InstallAnim", PhotonTargets.All);
+                    }
                 }
             }
             else if (State == State_AttackW || State == State_AttackL)
