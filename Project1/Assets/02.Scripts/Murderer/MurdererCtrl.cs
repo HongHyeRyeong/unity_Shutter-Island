@@ -132,7 +132,7 @@ public class MurdererCtrl : MonoBehaviour
 
                 if (!SettingManager.instance.Setting.activeSelf)
                 {
-                    if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.R))
+                    if (Input.GetMouseButtonDown(0))
                     {
                         if (State == State_Run && MoveSpeed == 6.3f)    // 앞으로 뛸때
                             pv.RPC("AttackWRunAnim", PhotonTargets.All);
