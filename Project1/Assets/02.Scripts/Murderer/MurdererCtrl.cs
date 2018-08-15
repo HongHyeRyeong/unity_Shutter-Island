@@ -9,7 +9,6 @@ public class MurdererCtrl : MonoBehaviour
 
     private Vector3 currPos = Vector3.zero;
     private Quaternion currRot = Quaternion.identity;
-    GameObject curSurvivor;
 
     //
     [SerializeField]
@@ -28,7 +27,7 @@ public class MurdererCtrl : MonoBehaviour
 
     private int State = 0;
     private float Hp = 200f;
-    private float MoveSpeed = 6f;
+    private float MoveSpeed = 6.3f;
     private bool isAttack = false;
 
     private float MouseX;
@@ -79,7 +78,7 @@ public class MurdererCtrl : MonoBehaviour
     {
         if (pv.isMine)
         {
-            if (!GameCtrl.instance.isStart)
+            if (!GameCtrl.instance.isStart || SettingManager.instance.Setting.activeSelf)  // 게임 시작 전이거나 셋팅창이 켜져 있을때
                 return;
 
             float h = 0;
@@ -90,8 +89,7 @@ public class MurdererCtrl : MonoBehaviour
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
                 v = Input.GetAxis("Vertical");
 
-            Vector3 center = CamCollider.center;
-
+            Vector3 center = CamCollider.center;    // 카메라 충돌박스 이동
             if (center.z != 0.2f)
             {
                 center.z = 0.2f;
@@ -119,7 +117,7 @@ public class MurdererCtrl : MonoBehaviour
                     }
                     else
                     {
-                        MoveSpeed = 6f;
+                        MoveSpeed = 6.3f;
                         Ani.SetBool("isRun", true);
                         Ani.SetBool("isBackRun", false);
                     }
@@ -131,37 +129,34 @@ public class MurdererCtrl : MonoBehaviour
                     Ani.SetBool("isBackRun", false);
                 }
 
-                if (!SettingManager.instance.Setting.activeSelf)
+                if (Input.GetMouseButtonDown(0))
                 {
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        if (State == State_Run && MoveSpeed == 6)
-                            pv.RPC("AttackWRunAnim", PhotonTargets.All);
-                        else
-                            pv.RPC("AttackWAnim", PhotonTargets.All);
+                    if (State == State_Run && MoveSpeed == 6.3f)    // 앞으로 뛸때
+                        pv.RPC("AttackWRunAnim", PhotonTargets.All);
+                    else
+                        pv.RPC("AttackWAnim", PhotonTargets.All);
 
-                        Ani.SetBool("isRun", false);
-                        Ani.SetBool("isBackRun", false);
+                    State = State_AttackW;
+                    pv.RPC("AttackWTrue", PhotonTargets.All);
+                    Ani.SetBool("isRun", false);
+                    Ani.SetBool("isBackRun", false);
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    if (State == State_Run && MoveSpeed == 6.3f)    // 앞으로 뛸때
+                        pv.RPC("AttackLRunAnim", PhotonTargets.All);
+                    else
+                        pv.RPC("AttackLAnim", PhotonTargets.All);
 
-                        pv.RPC("AttackWTrue", PhotonTargets.All);
-                    }
-                    else if (Input.GetMouseButtonDown(1))
-                    {
-                        if (State == State_Run && MoveSpeed == 6)
-                            pv.RPC("AttackLRunAnim", PhotonTargets.All);
-                        else
-                            pv.RPC("AttackLAnim", PhotonTargets.All);
-
-                        Ani.SetBool("isRun", false);
-                        Ani.SetBool("isBackRun", false);
-
-                        pv.RPC("AttackLTrue", PhotonTargets.All);
-                    }
-                    else if (Input.GetKeyDown(KeyCode.E))
-                    {
-                        State = State_Trap;
-                        pv.RPC("InstallAnim", PhotonTargets.All);
-                    }
+                    State = State_AttackL;
+                    pv.RPC("AttackLTrue", PhotonTargets.All);
+                    Ani.SetBool("isRun", false);
+                    Ani.SetBool("isBackRun", false);
+                }
+                else if (Input.GetKeyDown(KeyCode.E))
+                {
+                    State = State_Trap;
+                    pv.RPC("InstallAnim", PhotonTargets.All);
                 }
             }
             else if (State == State_AttackW || State == State_AttackL)
@@ -261,7 +256,7 @@ public class MurdererCtrl : MonoBehaviour
                 }
             index = Num;
         }
-        
+
         TrapItems[index].transform.position = transform.position + transform.forward;
         TrapItems[index].GetComponent<MurdererTrapCtrl>().SetNum = TrapSetNum;
         TrapSetNum++;
@@ -294,11 +289,7 @@ public class MurdererCtrl : MonoBehaviour
         GameCtrl.instance.DisMurHP(Hp); // 생존자 hp
     }
 
-    public int GetState()
-    {
-        return State;
-    }
-
+    public int GetState() { return State; }
     public void SetState(int s)
     {
         print("리셋");
@@ -318,21 +309,6 @@ public class MurdererCtrl : MonoBehaviour
     public void MurdererDie()
     {
         StartCoroutine(GameCtrl.instance.StartFade(false));
-    }
-
-    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        // 로컬 플레이어의 정보 송신
-        if (stream.isWriting)
-        {
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
-        }
-        else // 원격 플레이어의 정보 송신
-        {
-            currPos = (Vector3)stream.ReceiveNext();
-            currRot = (Quaternion)stream.ReceiveNext();
-        }
     }
 
     [PunRPC]
@@ -414,18 +390,14 @@ public class MurdererCtrl : MonoBehaviour
     [PunRPC]
     public void AttackWTrue()
     {
-        State = State_AttackW;
         isAttack = true;
-
         ParticleTrail.SetActive(true);
     }
 
     [PunRPC]
     public void AttackLTrue()
     {
-        State = State_AttackL;
         isAttack = true;
-
         ParticleTrail.SetActive(true);
     }
 
@@ -433,5 +405,20 @@ public class MurdererCtrl : MonoBehaviour
     {
         PlayerPrefs.SetInt("Result", 3);
         StartCoroutine(GameCtrl.instance.StartFade(false));
+    }
+
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // 로컬 플레이어의 정보 송신
+        if (stream.isWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else // 원격 플레이어의 정보 송신
+        {
+            currPos = (Vector3)stream.ReceiveNext();
+            currRot = (Quaternion)stream.ReceiveNext();
+        }
     }
 }

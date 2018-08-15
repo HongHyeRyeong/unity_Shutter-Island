@@ -37,6 +37,9 @@ public class CameraCtrl : MonoBehaviour
 
     void LateUpdate()
     {
+        if (SettingManager.instance.Setting.activeSelf)  // 셋팅창이 켜져 있을때
+            return;
+
         if (GameCtrl.instance.Character == 1)
         {
             if (targetSurvivorComPivot)
