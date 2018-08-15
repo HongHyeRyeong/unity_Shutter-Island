@@ -404,7 +404,7 @@ public class SurvivorCtrl : MonoBehaviour
 
         pv.RPC("SetMurdererScore", PhotonTargets.AllBuffered, 0, 100);
 
-        Hp -= 50f;
+        Hp -= 10f;
         if (pv.isMine)
         {
             SurvivorUICtrl.instance.DispHP(Hp);
@@ -444,12 +444,14 @@ public class SurvivorCtrl : MonoBehaviour
 
             if (dir >= 0)
             {
-                pv.RPC("DownFrontAnim", PhotonTargets.AllBuffered);
+                if (pv.isMine)
+                    pv.RPC("DownFrontAnim", PhotonTargets.AllBuffered);
                 StartCoroutine(Knockback(true));
             }
             else
             {
-                pv.RPC("DownAnim", PhotonTargets.AllBuffered);
+                if (pv.isMine)
+                    pv.RPC("DownAnim", PhotonTargets.AllBuffered);
                 StartCoroutine(Knockback(false));
             }
 
