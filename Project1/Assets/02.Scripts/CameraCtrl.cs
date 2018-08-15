@@ -25,9 +25,11 @@ public class CameraCtrl : MonoBehaviour
     private CameraFilter_Attack FilterAttack;
 
     private int saveState = -1;
+
     private float MouseY;
     private float angleX = 0;
     private float time = 0;
+
     private int AttackNum = 0;
 
     private void Awake()
@@ -101,6 +103,18 @@ public class CameraCtrl : MonoBehaviour
                         saveState = state;
                     }
 
+                    float posY = 0;
+
+                    if (state == 0)
+                        posY = Mathf.Lerp(targetMurdererCamPivot.transform.localPosition.y, 0.6f, Time.deltaTime * 20);
+                    else if (state == 1)
+                        posY = Mathf.Lerp(targetMurdererCamPivot.transform.localPosition.y, 0.2f, Time.deltaTime * 20);
+
+                    targetMurdererCamPivot.transform.localPosition = new Vector3(
+                        targetMurdererCamPivot.transform.localPosition.x,
+                        posY,
+                        targetMurdererCamPivot.transform.localPosition.z);
+
                     transform.position = new Vector3(
                         targetMurdererCamPivot.transform.position.x,
                         targetMurderer.transform.position.y + 2.25f,
@@ -125,6 +139,13 @@ public class CameraCtrl : MonoBehaviour
 
                         time = 0;
                     }
+
+                    float posY = Mathf.Lerp(targetMurdererCamPivot.transform.localPosition.y, 0.3f, Time.deltaTime * 20);
+
+                    targetMurdererCamPivot.transform.localPosition = new Vector3(
+                        targetMurdererCamPivot.transform.localPosition.x,
+                        posY,
+                        targetMurdererCamPivot.transform.localPosition.z);
 
                     if (state == 3 && angleX > 0)   // 덫 깔고 스르륵 일어나는 효과
                     {

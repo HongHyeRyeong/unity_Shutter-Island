@@ -200,6 +200,8 @@ public class SurvivorCtrl : MonoBehaviour
             }
 
             InputGet();
+
+            print(State);
         }
         else
         {
@@ -735,6 +737,8 @@ public class SurvivorCtrl : MonoBehaviour
 
     public void SetState(int s)
     {
+        print("setstate: " + s);
+
         if (s == State_PickItem)
         {
             if (State == State_PickItem)

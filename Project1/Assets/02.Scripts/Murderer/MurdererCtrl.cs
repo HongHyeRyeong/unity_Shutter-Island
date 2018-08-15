@@ -67,6 +67,7 @@ public class MurdererCtrl : MonoBehaviour
             CameraCtrl.instance.targetMurderer = this.gameObject.transform;
             CameraCtrl.instance.targetMurdererCamPivot = MurdererCamPivot;
             CameraCtrl.instance.MurCtrl = this;
+            CameraCtrl.instance.MainCam.cullingMask = ~(1 << 14);
 
             MouseX = 180;
 
