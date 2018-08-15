@@ -64,7 +64,7 @@ public class CameraCtrl : MonoBehaviour
 
                     if (!Physics.Raycast(pos, transform.forward * -1, out hitinfo, 4, (1 << LayerMask.NameToLayer("Map")))) // 예외 처리
                     {
-                        height += 1;
+                        height += 0.4f;
                         height = Mathf.Clamp(height, -0.5f, 3f);
 
                         transform.position = pos - (targetSurvivorComPivot.forward * width) + (Vector3.up * height);
@@ -80,7 +80,7 @@ public class CameraCtrl : MonoBehaviour
 
                     transform.position = Vector3.Lerp(transform.position,
                             pos - (targetSurvivorComPivot.forward * width) + (Vector3.up * height),
-                            Time.deltaTime * 20);
+                            Time.deltaTime * 15);
                     transform.LookAt(pos);
                 }
             }
@@ -99,13 +99,12 @@ public class CameraCtrl : MonoBehaviour
                             MouseY = transform.localRotation.x + angleX;
 
                         saveState = state;
-                        MainCam.cullingMask = ~((1 << 10) + (1 << 14));
                     }
 
-                    transform.position = Vector3.Lerp(transform.position, new Vector3(
+                    transform.position = new Vector3(
                         targetMurdererCamPivot.transform.position.x,
-                        targetMurderer.transform.position.y + 2.3f,
-                        targetMurdererCamPivot.transform.position.z), Time.deltaTime * 20);
+                        targetMurderer.transform.position.y + 2.25f,
+                        targetMurdererCamPivot.transform.position.z);
 
                     MouseY -= Input.GetAxis("Mouse Y") * Time.deltaTime * 80;
                     MouseY = ClampAngle(MouseY, -30, 50);
@@ -116,7 +115,6 @@ public class CameraCtrl : MonoBehaviour
                     if (saveState != state)
                     {
                         saveState = state;
-                        MainCam.cullingMask = ~(1 << 14);
 
                         if (state == 3)
                             angleX = 90;

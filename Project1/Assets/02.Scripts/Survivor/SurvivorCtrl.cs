@@ -555,7 +555,11 @@ public class SurvivorCtrl : MonoBehaviour
 
     void PrisonTrue()
     {
-        Hp -= 1f * Time.deltaTime;
+        float temp = 1;
+        if (Life == 0)  // 두번째 감옥일때 더 빠르게
+            temp = 1.5f;
+
+        Hp -= Time.deltaTime * temp;
         if (pv.isMine)
             SurvivorUICtrl.instance.DispHP(Hp);
 

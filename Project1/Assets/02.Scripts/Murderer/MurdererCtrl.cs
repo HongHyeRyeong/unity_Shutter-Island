@@ -74,7 +74,7 @@ public class MurdererCtrl : MonoBehaviour
         }
     }
 
-    void LateUpdate()
+    void Update()
     {
         if (pv.isMine)
         {
@@ -131,7 +131,7 @@ public class MurdererCtrl : MonoBehaviour
 
                 if (!SettingManager.instance.Setting.activeSelf)
                 {
-                    if (Input.GetMouseButtonDown(0))
+                    if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.R))
                     {
                         if (State == State_Run && MoveSpeed == 6.3f)    // 앞으로 뛸때
                             pv.RPC("AttackWRunAnim", PhotonTargets.All);
@@ -165,8 +165,8 @@ public class MurdererCtrl : MonoBehaviour
                 if (Ani.GetCurrentAnimatorStateInfo(0).IsName("AttackWRun") || Ani.GetCurrentAnimatorStateInfo(0).IsName("AttackLRun"))
                 {
                     AttackRunTime += Time.deltaTime;
-                    float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1) * 0.7f;
-                    transform.Translate(new Vector3(0, 0, 1) * newTime * newTime);
+                    float newTime = Mathf.Clamp(1 - AttackRunTime, 0, 1);
+                    transform.Translate(new Vector3(0, 0, 1) * newTime * newTime * 0.5f);
                 }
             }
 
@@ -190,8 +190,6 @@ public class MurdererCtrl : MonoBehaviour
                 MouseX += Input.GetAxis("Mouse X") * Time.deltaTime * 80;
                 transform.rotation = Quaternion.Euler(0, MouseX, 0);
             }
-
-            print(State);
         }
         else
         {
@@ -293,8 +291,6 @@ public class MurdererCtrl : MonoBehaviour
     public int GetState() { return State; }
     public void SetState(int s)
     {
-        print("리셋");
-
         State = s;
         Ani.SetBool("isRun", false);
         Ani.SetBool("isBackRun", false);
