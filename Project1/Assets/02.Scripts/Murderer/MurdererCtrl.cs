@@ -136,7 +136,6 @@ public class MurdererCtrl : MonoBehaviour
                     else
                         pv.RPC("AttackWAnim", PhotonTargets.All);
 
-                    State = State_AttackW;
                     pv.RPC("AttackWTrue", PhotonTargets.All);
                     Ani.SetBool("isRun", false);
                     Ani.SetBool("isBackRun", false);
@@ -148,7 +147,6 @@ public class MurdererCtrl : MonoBehaviour
                     else
                         pv.RPC("AttackLAnim", PhotonTargets.All);
 
-                    State = State_AttackL;
                     pv.RPC("AttackLTrue", PhotonTargets.All);
                     Ani.SetBool("isRun", false);
                     Ani.SetBool("isBackRun", false);
@@ -390,6 +388,7 @@ public class MurdererCtrl : MonoBehaviour
     [PunRPC]
     public void AttackWTrue()
     {
+        State = State_AttackW;
         isAttack = true;
         ParticleTrail.SetActive(true);
     }
@@ -397,6 +396,7 @@ public class MurdererCtrl : MonoBehaviour
     [PunRPC]
     public void AttackLTrue()
     {
+        State = State_AttackL;
         isAttack = true;
         ParticleTrail.SetActive(true);
     }
