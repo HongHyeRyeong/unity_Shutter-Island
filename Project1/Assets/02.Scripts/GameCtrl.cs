@@ -238,7 +238,7 @@ public class GameCtrl : MonoBehaviour
             MurdererUICtrl.instance.DisMachine(MachineCompleteNum);
         }
 
-        Murderer.GetComponent<MurdererCtrl>().DamageByMachine(100);
+        Murderer.GetComponent<MurdererCtrl>().DamageByMachine(40);
     }
 
     public void DisPrison(Vector3 pos, int num)

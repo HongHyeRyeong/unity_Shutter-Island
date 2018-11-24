@@ -44,7 +44,7 @@ public class MachineCtrl : MonoBehaviour
         {
             pv.RPC("MachineOneComplete", PhotonTargets.AllBuffered);
 
-            if (MachineGauge >= 20f)    // 50
+            if (MachineGauge >= 50f)
                 pv.RPC("MachineComplete", PhotonTargets.AllBuffered);
             else
                 pv.RPC("MachineInstallAnim", PhotonTargets.AllBuffered);
