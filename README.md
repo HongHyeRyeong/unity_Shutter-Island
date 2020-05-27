@@ -19,6 +19,6 @@
 [![][youtube-image]][play-url]
 
 <!-- Markdown link & img dfn's -->
-[dbd-image]: https://w.namu.la/s/d32bbb37c22e4edd78740913c51adec754022998ffa59690b809cf81d4758ffdd4663d3516112c17f5becc090b239f87f8eac3d97b7b6acd260a29ca88b1d28d0eb9eb00c6af6abfcea5344ca2d626c4d27aa7c2d574b8f87bd0f90a33b692a00510962e429b0b47c9edb4f250106498
+[dbd-image]: https://steamcdn-a.akamaihd.net/steam/apps/381210/header.jpg?t=1587510462
 [youtube-image]: https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ0W15QOoCkGdmGAT4yoszK-lomT0IYZmOkZ_m_cGhQJEoHyY-Z&usqp=CAU
 [play-url]: https://youtu.be/zJ4DxAjeA8s
